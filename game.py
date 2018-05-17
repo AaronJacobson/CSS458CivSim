@@ -1,5 +1,6 @@
 from grid import Grid
-from Civilization import Civ
+from civilization import Civ
+from interpreter import Interpreter
 
 class Game(object):
     
@@ -19,4 +20,6 @@ class Game(object):
         #TODO List of grids
     def cellInit(self,mapName):
         pass
-    
+    def run():
+        pass
+        
