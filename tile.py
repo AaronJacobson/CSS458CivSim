@@ -7,6 +7,7 @@ class Tile(object):
         self.x = x
         self.elevation = elevation
         self.biome = biome
+        self.terrain = terrain
         #is this how we should deal with cities and units?
         self.unit = None
         self.city = None
