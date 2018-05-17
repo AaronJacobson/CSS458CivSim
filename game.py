@@ -7,6 +7,8 @@ class Game(object):
         self.turns = []
         self.num_turns = numTurns
         self.turns[0] = Grid(y,x)
+        #TODO initialize the list/dictionary of biomes and they're yields
+        #TODO List of grids\
         
     def initBuildingLookUp(self):
         granary = Building(building_name="granary",gold_yield=-1,gold_bonus=0,food_yield=2,\
@@ -14,3 +16,4 @@ class Game(object):
         prod_yield=0,prod_bonus=0)
         
         self.building_lookup = { granary.building_name:granary }
+        
