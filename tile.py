@@ -1,6 +1,7 @@
 class Tile(object):
     
-    def __init__(self,grid,y,x,elevation,biome):
+    def __init__(self,grid,y,x,biome,elevation,terrain,food_yield=0,prod_yield=0,\
+    science_yield=0,gold_yield=0):
         self.grid = grid
         self.y = y
         self.x = x
