@@ -6,5 +6,5 @@ class Game(object):
         self.turns = []
         self.num_turns = numTurns
         self.turns[0] = Grid(y,x)
-        #TODO Dictionary of Biomes
+        #TODO initialize the list/dictionary of biomes and they're yields
         #TODO List of grids
