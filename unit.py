@@ -1,6 +1,10 @@
 class Unit(object):
     
-    def __init__(self,strength,speed,civ,grid,y,x):
+    def __init__(self,name="none",atype="nothing",prod_cost=0,strength=0,\
+    speed=0,range_strength=0,rangeSize=0,civ=0,grid=None,y=0,x=0):
+        self.name = name
+        self.atype = atype
+        self.prod_cost = prod_cost
         self.strength = strength
         self.speed = speed
         self.civ = civ
