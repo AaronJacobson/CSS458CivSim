@@ -13,6 +13,7 @@ class Game(object):
     def __init__(self,y = 50,x = 100,numTurns = 500,mapName = None):
         """
         """
+        
         #Initialize Dictionaries
         #NEEDS YIELD DICTIONARY
         self.initBuildingLookUp()
@@ -24,6 +25,8 @@ class Game(object):
         self.num_turns = numTurns
         
         #Initialize tile grids and civ list
+        self.x = x
+        self.y = y
         self.civs = None
         self.turns = []
         
@@ -146,11 +149,25 @@ class Game(object):
     def simInit(self,mapName="DefaultMap"):
         """
         """
+        #Check for map directory and move there to grab data
         if os.path.isdir(os.path.dirname(__file__)+"\\"+mapName):
             os.chdir(os.path.dirname(__file__)+"\\"+mapName)
             #RUN INTERPRETER HERE TO FILL CIVLIST + TURNS FROM CURRENT WORKING DIRECTORY
         
-    def run():
+    def run(self):
         """
         """
-        pass
+        #Initialize run loop
+        for i in range(self.numTurns):
+            #Grab Grid for Processing
+            curGrid = self.turns[-1]
+            
+            #Process Civs
+            #Stuff goes here!
+            
+            #Process Tiles
+            #Gods this is inefficient, but without creating a list of tile changes, cellular automata is the way to go!
+            for m in range(y):
+                for n in range(x):
+                    curGrid[m][n].process_turn()
+            #Update State Variables if any exist
