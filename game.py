@@ -10,7 +10,7 @@ import os
 class Game(object):
     """
     """
-    def __init__(self,y=50,x=100,numTurns=500):
+    def __init__(self,y = 50,x = 100,numTurns = 500,mapName = None):
         """
         """
         #Initialize Dictionaries
@@ -130,15 +130,17 @@ class Game(object):
         """
         """
         researchVal = [35,55,85,175,275,375,780,1150,1600,2350,3100,4100,5100,6400,7700,8800]
-        #REMOVE PIKEMAN?
-        buildingResearch = [["archer"],["chariot_archer","spearman"],["horseman","composite_bowman"],["swordsman"],["pikeman"],["knight","crossbowman","trebuchet","longswordsman"],
-        ["musketman"],["lancer","cannon"],["rifleman","cavalry","gatling_gun"],["artillery"],["great_war_infantry"],["infantry","machine_gun","landship"],["marine","paratrooper","tank","Anti-tank_gun"],
-        ["bazooka","rocket_artillery","helicopter","mobile_sam"],["mech_infantry","modern_armor"],["xcom_squad","death_robot"]]
+        
+        buildingResearch = [[]]
     
     
     def initUnitResearch(self):
         """
         """
+        #REMOVE PIKEMAN?
+        unitResearch = [["archer"],["chariot_archer","spearman"],["horseman","composite_bowman"],["swordsman"],["pikeman"],["knight","crossbowman","trebuchet","longswordsman"],
+        ["musketman"],["lancer","cannon"],["rifleman","cavalry","gatling_gun"],["artillery"],["great_war_infantry"],["infantry","machine_gun","landship"],["marine","paratrooper","tank","Anti-tank_gun"],
+        ["bazooka","rocket_artillery","helicopter","mobile_sam"],["mech_infantry","modern_armor"],["xcom_squad","death_robot"]]
         pass
         
     def simInit(self,mapName="DefaultMap"):
