@@ -16,6 +16,8 @@ class Game(object):
         #Initialize Dictionaries
         #NEEDS YIELD DICTIONARY
         self.initBuildingLookUp()
+        self.initBuildingResearch()
+        self.initUnitResearch()
         self.initUnitLookUp()
         
         #Initialize Total Turns
@@ -124,7 +126,21 @@ class Game(object):
         mobile_sam.name:mobile_sam,modern_armor.name:modern_armor,mech_infantry.name:mech_infantry,\
         xcom_squad.name:xcom_squad,giant_death_robot.name:giant_death_robot}
             
-        #TODO List of grids
+    def initBuildingResearch(self):
+        """
+        """
+        researchVal = [35,55,85,175,275,375,780,1150,1600,2350,3100,4100,5100,6400,7700,8800]
+        #REMOVE PIKEMAN?
+        buildingResearch = [["archer"],["chariot_archer","spearman"],["horseman","composite_bowman"],["swordsman"],["pikeman"],["knight","crossbowman","trebuchet","longswordsman"],
+        ["musketman"],["lancer","cannon"],["rifleman","cavalry","gatling_gun"],["artillery"],["great_war_infantry"],["infantry","machine_gun","landship"],["marine","paratrooper","tank","Anti-tank_gun"],
+        ["bazooka","rocket_artillery","helicopter","mobile_sam"],["mech_infantry","modern_armor"],["xcom_squad","death_robot"]]
+    
+    
+    def initUnitResearch(self):
+        """
+        """
+        pass
+        
     def simInit(self,mapName="DefaultMap"):
         """
         """
