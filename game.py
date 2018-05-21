@@ -36,7 +36,7 @@ class Game(object):
         granary = Building(name="granary",gold_yield=-1,food_yield=2)
         library = Building(name="library",gold_yield=-1,science_pop_bonus=.5)
         stoneworks = Building(name="stoneworks",gold_yield=-1,prod_yield=1)
-        watermill = Building(name="watermill",gold_yield=-2,food_field=2,prod_yield=1)
+        watermill = Building(name="watermill",gold_yield=-2,food_yield=2,prod_yield=1)
         market = Building(name="market",gold_yield=2,gold_bonus=.25)
         university = Building(name="university",gold_yield=-2,science_bonus=.33)
         workshop = Building(name="workshop",gold_yield=-2,prod_yield=2,prod_bonus=.1)
@@ -67,9 +67,9 @@ class Game(object):
         archer = Unit(name="archer",atype="archery",prod_cost=40,speed=2,strength=5,\
         range_strength=7,rangeSize=2)
         spearman = Unit(name="spearman",atype="melee",prod_cost=56,speed=2,strength=11)
-        chariot_archer = Unit(name="chariot_archer",atype="mounted",speed=4,strenth=6,\
+        chariot_archer = Unit(name="chariot_archer",atype="mounted",speed=4,strength=6,\
         range_strength=10,rangeSize=2)
-        swordsman = Unit(name="swordsman",atype="melee",prod_cost=75,speed=2,strenth=14)
+        swordsman = Unit(name="swordsman",atype="melee",prod_cost=75,speed=2,strength=14)
         horseman = Unit(name="horseman",atype="mounted",prod_cost=75,speed=4,strength=12)
         composite_bowman = Unit(name="composite_bowman",atype="archery",prod_cost=75,speed=2,\
         strength=7,range_strength=11,rangeSize=2)
