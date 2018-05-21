@@ -1,26 +1,38 @@
+
+#Import Statements
 from grid import Grid
 from building import Building
-from Civilization import Civ
-from Unit import Unit
+from civilization import Civ
+from unit import Unit
+import numpy as N
+import os
 
 class Game(object):
-    
+    """
+    """
     def __init__(self,y=50,x=100,numTurns=500):
+        """
+        """
+        #Initialize Dictionaries
+        #NEEDS YIELD DICTIONARY
         self.initBuildingLookUp()
-        self.turns = []
+        self.initUnitLookUp()
+        
+        #Initialize Total Turns
         self.num_turns = numTurns
-        self.turns[0] = Grid(y,x)
         
-        self.unit_Dict = None
-        self.building_Dict = None
-        self.yields_Dict = None
-        
+        #Initialize tile grids and civ list
         self.civs = None
-        self.grids = None
+        self.turns = []
+        
+        #Fill grid values and civ list
+        self.simInit()
         #TODO initialize the list/dictionary of biomes and they're yields
         #TODO List of grids\
         
     def initBuildingLookUp(self):
+        """
+        """
         granary = Building(name="granary",gold_yield=-1,food_yield=2)
         library = Building(name="library",gold_yield=-1,science_pop_bonus=.5)
         stoneworks = Building(name="stoneworks",gold_yield=-1,prod_yield=1)
@@ -47,6 +59,8 @@ class Game(object):
         , research_lab.name:research_lab, power_plant.name:power_plant}
         
     def initUnitLookUp(self):
+        """
+        """
         warrior = Unit(name="warrior",atype="melee",prod_cost=40,speed=2,strength=8)
         settler = Unit(name="settler",atype="civilian",prod_cost=106,speed=2)
         scout = Unit(name="scout",atype="melee",prod_cost=25,speed=2,strength=5)
@@ -111,5 +125,14 @@ class Game(object):
         xcom_squad.name:xcom_squad,giant_death_robot.name:giant_death_robot}
             
         #TODO List of grids
-    def cellInit(self,mapName):
+    def simInit(self,mapName="DefaultMap"):
+        """
+        """
+        if os.path.isdir(os.path.dirname(__file__)+"\\"+mapName):
+            os.chdir(os.path.dirname(__file__)+"\\"+mapName)
+            #RUN INTERPRETER HERE TO FILL CIVLIST + TURNS FROM CURRENT WORKING DIRECTORY
+        
+    def run():
+        """
+        """
         pass
