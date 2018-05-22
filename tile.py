@@ -19,6 +19,11 @@ class Tile(object):
         self.gold_yield = gold_yield
         self.road = road
         
+    """
+    Roads take 2 turns to build. Road is set to .5 when starting to build.
+    on following turn, processing turn will increase number to 1 to represent
+    a built road. Railroad will be represented the same way, but with 1.5 and 2.
+    """
     def build_road():
         self.road = 0.5
     def build_railroad():
