@@ -4,7 +4,7 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as N
-from grid import Grid
+import grid
 from game import Game
 
 
@@ -18,6 +18,8 @@ class Dataplotter(object):
         for item in plotType:
             if item == "Test":
                 self.testPlot(grid,savefig)
+            elif item == "Terrain":
+                self.terrainPlot(grid,savefig)
         
     def testPlot(self,grid,savefig):
         """
@@ -50,7 +52,7 @@ class Dataplotter(object):
         
         #Display or save plot
         if savefig:
-            fig.savefig("Civ5Sim_Out.png",dpi=300)
+            fig.savefig("Civ5SimOut_Test.png",dpi=300)
         else:
             plt.show()
     
@@ -77,6 +79,20 @@ class Dataplotter(object):
                 line = plt.Polygon(poly,edgecolor='k',facecolor=Game.biome_lookup[grid.tiles[i,j].biome][6])
                 #Draw the polygon on the plot
                 axes.add_patch(line)
+                
+                if grid.tiles[i,j].terrain != None:
+                    pointsX = j + N.array([0.5,0.9,0.9,0.5,0.1,0.1])
+                    pointsY = grid.y - ((i*0.75)+N.array([0.1,0.30,0.7,0.9,0.7,0.30]))
+                    if i%2!=0:
+                        pointsX = pointsX+0.5
+                    poly = N.column_stack((pointsX,pointsY))
+                    
+                    #line2 = plt.Polygon(poly,edgecolor=Game.terrain_lookup[grid.tiles[i,j].terrain][6],facecolor='none',linewidth=4)
+                    line2 = plt.Polygon(poly,facecolor=Game.terrain_lookup[grid.tiles[i,j].terrain][6])
+                    
+                    axes.add_patch(line2)
+                
+                
         #Scale image to fit plot
         axes.autoscale()
         #Set aspect ratio
@@ -86,7 +102,7 @@ class Dataplotter(object):
         
         #Display or save plot
         if savefig:
-            fig.savefig("Civ5Sim_Out.png",dpi=300)
+            fig.savefig("Civ5SimOut_Terrain.png",dpi=300)
         else:
             plt.show()
         
