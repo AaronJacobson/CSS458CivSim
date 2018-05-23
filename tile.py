@@ -36,14 +36,14 @@ class Tile(object):
     def add_building(self, name):
         if(self.improvement == None):
             self.improvement = name
-            building = game.building_lookup[name]
+            building = Game.building_lookup[name]
             improve_food(building.food_yield)
             improve_prod(building.prod_yield)
             improve_gold(building.gold_yield)
             improve_science(building.science_yield)
             
     def move_unit(self, unit_name):
-        
+        pass
         
     def process_turn(self):
         if(self.road == 0.5):
