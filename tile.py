@@ -43,7 +43,8 @@ class Tile(object):
             improve_science(building.science_yield)
             
     def move_unit(self, unit_name):
-        pass
+        if(self.unit == None):
+            self.unit = unit_name
         
     def process_turn(self):
         if(self.road == 0.5):
