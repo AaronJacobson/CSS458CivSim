@@ -4,23 +4,27 @@ class Interpreter(object):
     def __init__(self):
         return
 
-    def write(self, game):
-        #self.gridFile = game.grid
-        self.mapFile = open("testMap","w")
-        self.civFile = open("testCiv","w")
-        self.cityFile = open("testCities","w")
-        self.unitFile = open("testUnits", "w")
+    def write(self, grid):
 
         #get from grid and write all the info about each tile
+        self.mapFile = open("testMap","w")
+
         for self.x in range(game.grid.x):
             for self.y in range(game.grid.y):
-                mapFile.write(self.x + " " + self.y + " ") #add grid features like terrain and stuff
+                mapFile.write(self.x + " " + self.y + " " + ) #add grid features like terrain and stuff
+        self.mapFile.close()
+        #--------------------------------------------------------------
+
 
         #get from Civs and write all info about each civ
+        self.civFile = open("testCiv","w")
         for self.civNum in game.civs:
             civsFile.write(self.civNum + " ")
+        self.civFile.close()
+        #-------------------------------------------------------
 
         #get from Cities and write all info about each cities
+        self.cityFile = open("testCities","w")
         for self.city in grid.cities:
             citiesFile.write(self.city.x + " " + self.city.y + " " + self.city.civ + ""
             + self.city.pop + " " + self.city.food + " " + self.city.production + " "
@@ -28,15 +32,17 @@ class Interpreter(object):
             for self.building in self.city.building_list:
                 citiesFile.write(self.building + "$")
             citiesFile.write("EOL")
+        self.cityFile.close()
         #--------------------------------------------------------
 
         #get from Units and write all info about each units
+        self.unitFile = open("testUnits", "w")
         for self.unit in grid.units:
             unitFile.write(self.unit.name + " " + )
+        self.unitFile.close()
+        #--------------------------------------------------------
 
-
-
-        return
+    return
 
     def read(self, game):
 
