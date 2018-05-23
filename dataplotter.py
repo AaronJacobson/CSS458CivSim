@@ -5,6 +5,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as N
 from grid import Grid
+from game import Game
 
 
 class Dataplotter(object):
@@ -13,7 +14,6 @@ class Dataplotter(object):
     def __init__ (self,grid, savefig = False, plotType=["Test"], numCiv=0):
         """
         """
-        
         #If multiple plot types passed in
         for item in plotType:
             if item == "Test":
@@ -70,11 +70,11 @@ class Dataplotter(object):
                     pointsX = pointsX+0.5
                 #Combine two arrays in one of Nx2 dimensions
                 poly = N.column_stack((pointsX,pointsY))
-                #Get the terrain type for color
+                #Get the terrain and biome type for color
                 
                 #Create the polygon
                 #Color Stuff goes in here!
-                line = plt.Polygon(poly,edgecolor='k',facecolor='g')
+                line = plt.Polygon(poly,edgecolor='k',facecolor=Game.biome_lookup[grid.tiles[i,j].biome][6])
                 #Draw the polygon on the plot
                 axes.add_patch(line)
         #Scale image to fit plot
