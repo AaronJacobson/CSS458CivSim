@@ -140,20 +140,7 @@ class Game(object):
         helicopter.name:helicopter,rocket_artillery.name:rocket_artillery,\
         mobile_sam.name:mobile_sam,modern_armor.name:modern_armor,mech_infantry.name:mech_infantry,\
         xcom_squad.name:xcom_squad,giant_death_robot.name:giant_death_robot}
-            
-    def initBuildingResearch(self):
-        """
-        """
-        
-        
-
-    
-    
-    def initUnitResearch(self):
-        """
-        """
-        
-        
+               
     def simInit(self,mapName="DefaultMap"):
         """
         """
