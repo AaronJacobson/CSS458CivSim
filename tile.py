@@ -18,6 +18,7 @@ class Tile(object):
         self.science_yield = science_yield
         self.gold_yield = gold_yield
         self.road = road
+        self.best_city_checked = False
         
     """
     Roads take 2 turns to build. Road is set to .5 when starting to build.
