@@ -5,5 +5,5 @@ class Grid(object):
     def __init__(self,y,x):
         self.y = y
         self.x = x
-        self.tiles = N.array((y,x),dtype=str(object))
+        self.tiles = N.zeros((y,x),dtype="object")
         #TODO initialize all the tiles in the grid
