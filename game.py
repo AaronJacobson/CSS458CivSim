@@ -12,6 +12,16 @@ import os
 class Game(object):
     """
     """
+    #Class Variable Creation
+    researchVal = [35,55,85,175,275,375,780,1150,1600,2350,3100,4100,5100,6400,7700,8800]
+    buildingResearch = [["Granary"],["library","stoneworks","watermill"],[],["market"],["workshop"],["university"],
+        ["bank","observatory"],["windmill"],["factory","public_school"],["hospital","stock_exchange"],[],["research_lab"],[],["power_plant"],[],[]]
+    unitResearch = [["archer"],["chariot_archer","spearman"],["horseman","composite_bowman"],
+        ["swordsman"],["pikeman"],["knight","crossbowman","trebuchet","longswordsman"],
+        ["musketman"],["lancer","cannon"],["rifleman","cavalry","gatling_gun"],["artillery"],
+        ["great_war_infantry"],["infantry","machine_gun","landship"],["marine","paratrooper","tank","Anti-tank_gun"],
+        ["bazooka","rocket_artillery","helicopter","mobile_sam"],["mech_infantry","modern_armor"],["xcom_squad","death_robot"]]
+    
     def __init__(self,y = 50,x = 100,numTurns = 500,mapName = None):
         """
         """
@@ -134,19 +144,15 @@ class Game(object):
     def initBuildingResearch(self):
         """
         """
-        researchVal = [35,55,85,175,275,375,780,1150,1600,2350,3100,4100,5100,6400,7700,8800]
         
-        buildingResearch = [[]]
+        
+
     
     
     def initUnitResearch(self):
         """
         """
-        #REMOVE PIKEMAN?
-        unitResearch = [["archer"],["chariot_archer","spearman"],["horseman","composite_bowman"],["swordsman"],["pikeman"],["knight","crossbowman","trebuchet","longswordsman"],
-        ["musketman"],["lancer","cannon"],["rifleman","cavalry","gatling_gun"],["artillery"],["great_war_infantry"],["infantry","machine_gun","landship"],["marine","paratrooper","tank","Anti-tank_gun"],
-        ["bazooka","rocket_artillery","helicopter","mobile_sam"],["mech_infantry","modern_armor"],["xcom_squad","death_robot"]]
-        pass
+        
         
     def simInit(self,mapName="DefaultMap"):
         """

@@ -15,8 +15,10 @@ class Interpreter(object):
             if(gameNumber > 0):
                 gameNum = gameNumber
             else:
+                pass
                 #Exception
         else:
+            pass
             #Exception
 
         #varify that turnNum is reasoable
@@ -24,8 +26,10 @@ class Interpreter(object):
             if(turnNumber > 0 and turnNumber <= 500):
                 turnNum = turnNumber
             else:
+                pass
                 #Exception
         else:
+            pass
             #Exception
 
 
