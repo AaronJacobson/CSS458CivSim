@@ -31,6 +31,10 @@ class Tile(object):
         if(self.road == 1):
             self.road = 1.5
             
+    def add_building(self, name):
+        if(self.improvement == None):
+            self.improvement = name
+            
     def process_turn(self):
         if(self.road == 0.5):
             self.road = 1
