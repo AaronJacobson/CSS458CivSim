@@ -23,19 +23,19 @@ class Game(object):
         ["bazooka","rocket_artillery","helicopter","mobile_sam"],["mech_infantry","modern_armor"],["xcom_squad","death_robot"]]
     
     #Class Biome Definition
-    #Biome name, Food Val, Prod Val, Gold Val, Movement Cost, Strength Mod
-    desert = ["desert",0,0,0,1,0]
-    grassland = ["grassland",1,2,2,1,0]
-    plains = ["plains",1,1,0,1,0]
-    snow = ["snow",0,0,0,1,0]
-    tundra = ["tundra",1,0,0,1,0]
+    #Biome name, Food Val, Prod Val, Gold Val, Movement Cost, Strength Mod, Map Color
+    desert = ["desert",0,0,0,1,0,'beige']
+    grassland = ["grassland",1,2,2,1,0,'darkseagreen']
+    plains = ["plains",1,1,0,1,0,'yellowgreen']
+    snow = ["snow",0,0,0,1,0,'snow']
+    tundra = ["tundra",1,0,0,1,0,'lightblue']
     biome_lookup = {desert[0]:desert,grassland[0]:grassland,plains[0]:plains,snow[0]:snow,tundra[0]:tundra}
     
     #Class Terrain Definition
-    #Terrain name, Food Val, Prod Val, Gold Val, Movement Cost, Strength Mod
-    hill = ["hill",0,2,0,2,0.25]
-    forest = ["forest",1,1,0,2,0.25]
-    jungle = ["jungle",2,0,0,2,0.25]
+    #Terrain name, Food Val, Prod Val, Gold Val, Movement Cost, Strength Mod, Map Color
+    hill = ["hill",0,2,0,2,0.25,'saddlebrown']
+    forest = ["forest",1,1,0,2,0.25,'green']
+    jungle = ["jungle",2,0,0,2,0.25,'darkgreen']
     terrain_lookup = {hill[0]:hill,forest[0]:forest,jungle[0]:jungle}
     
     
