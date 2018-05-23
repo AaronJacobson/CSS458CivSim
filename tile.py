@@ -1,3 +1,5 @@
+from game import Game
+
 class Tile(object):
     
     def __init__(self,grid,y,x,biome,elevation,terrain,food_yield=0,prod_yield=0,\
@@ -34,7 +36,15 @@ class Tile(object):
     def add_building(self, name):
         if(self.improvement == None):
             self.improvement = name
+            building = game.building_lookup[name]
+            improve_food(building.food_yield)
+            improve_prod(building.prod_yield)
+            improve_gold(building.gold_yield)
+            improve_science(building.science_yield)
             
+    def move_unit(self, unit_name):
+        
+        
     def process_turn(self):
         if(self.road == 0.5):
             self.road = 1
