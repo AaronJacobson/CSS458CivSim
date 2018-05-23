@@ -5,7 +5,6 @@ from civilization import Civ
 from building import Building
 from unit import Unit
 from interpreter import Interpreter
-from dataplotter import Dataplotter
 import numpy as N
 import os
 
@@ -33,7 +32,7 @@ class Game(object):
     
     #Class Terrain Definition
     #Terrain name, Food Val, Prod Val, Gold Val, Movement Cost, Strength Mod, Map Color
-    hill = ["hill",0,2,0,2,0.25,'saddlebrown']
+    hill = ["hill",0,2,0,2,0.25,'olive']
     forest = ["forest",1,1,0,2,0.25,'green']
     jungle = ["jungle",2,0,0,2,0.25,'darkgreen']
     terrain_lookup = {hill[0]:hill,forest[0]:forest,jungle[0]:jungle}
