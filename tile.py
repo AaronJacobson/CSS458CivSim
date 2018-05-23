@@ -60,9 +60,17 @@ class Tile(object):
                 list_of_neighbors.append(self.grid.tiles[self.y-1,self.x-1])
             else:
                 #odd row
-                list_of_neighbors.append(self.grid.tiles[self.y-1,self.x+1])#TODO check if it's on the edge of the map
+                if self.x+1 == self.grid.x:
+                    list_of_neighbors.append(self.grid.tiles[self.y-1,0])
+                else:
+                    list_of_neighbors.append(self.grid.tiles[self.y-1,self.x+1])
+        
         list_of_neighbors.append(self.grid.tiles[self.y,self.x-1])
-        list_of_neighbors.append(self.grid.tiles[self.y,self.x+1])#TODO check if it's on the edge of the map
+        if self.x+1 == self.grid.x:
+            list_of_neighbors.append(self.grid.tiles[self.y,0])
+        else:
+            list_of_neighbors.append(self.grid.tiles[self.y,self.x+1])
+        
         if self.y < self.grid.y - 1:
             list_of_neighbors.append(self.grid.tiles[self.y+1,self.x])
             if self.y % 2 == 0:
@@ -70,5 +78,9 @@ class Tile(object):
                 list_of_neighbors.append(self.grid.tiles[self.y+1,self.x-1])
             else:
                 #odd row
-                list_of_neighbors.append(self.grid.tiles[self.y+1,self.x+1])#TODO check if it's on the edge of the map
+                if self.x+1 == self.grid.x:
+                    list_of_neighbors.append(self.grid.tiles[self.y+1,0])
+                else:
+                    list_of_neighbors.append(self.grid.tiles[self.y+1,self.x+1])
+        
         return list_of_neighbors
