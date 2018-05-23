@@ -21,32 +21,33 @@ class Game(object):
         ["musketman"],["lancer","cannon"],["rifleman","cavalry","gatling_gun"],["artillery"],
         ["great_war_infantry"],["infantry","machine_gun","landship"],["marine","paratrooper","tank","Anti-tank_gun"],
         ["bazooka","rocket_artillery","helicopter","mobile_sam"],["mech_infantry","modern_armor"],["xcom_squad","death_robot"]]
-    
+
     def __init__(self,y = 50,x = 100,numTurns = 500,mapName = None):
         """
         """
-        
+
         #Initialize Dictionaries
         #NEEDS YIELD DICTIONARY
         self.initBuildingLookUp()
         self.initBuildingResearch()
         self.initUnitResearch()
         self.initUnitLookUp()
-        
+
         #Initialize Total Turns
         self.num_turns = numTurns
-        
+
         #Initialize tile grids and civ list
         self.x = x
         self.y = y
         self.civs = None
         self.turns = []
-        
+        self.curGrid = None
+
         #Fill grid values and civ list
         self.simInit()
         #TODO initialize the list/dictionary of biomes and they're yields
         #TODO List of grids\
-        
+
     def initBuildingLookUp(self):
         """
         """
@@ -74,7 +75,7 @@ class Game(object):
         , observatory.name:observatory, windmill.name:windmill, factory.name:factory \
         , hospital.name:hospital, public_school.name:public_school, stock_exchange.name:stock_exchange \
         , research_lab.name:research_lab, power_plant.name:power_plant}
-        
+
     def initUnitLookUp(self):
         """
         """
@@ -127,7 +128,7 @@ class Game(object):
         mech_infantry = Unit(name="mech_infantry",atype="gunpowder",prod_cost=375,speed=3,strength=90)
         xcom_squad = Unit(name="xcom_squad",atype="gunpowder",prod_cost=400,speed=2,strength=110,airdrop=40)
         giant_death_robot = Unit(name="giant_death_robot",atype="armor",prod_cost=425,speed=5,strength=150)
-        
+
         self.unit_lookup = {warrior.name:warrior,settler.name:settler,scout.name:scout,\
         archer.name:archer, spearman.name:spearman, chariot_archer.name:chariot_archer,\
         swordsman.name:swordsman,horseman.name:horseman,composite_bowman.name:composite_bowman,\
@@ -140,20 +141,20 @@ class Game(object):
         helicopter.name:helicopter,rocket_artillery.name:rocket_artillery,\
         mobile_sam.name:mobile_sam,modern_armor.name:modern_armor,mech_infantry.name:mech_infantry,\
         xcom_squad.name:xcom_squad,giant_death_robot.name:giant_death_robot}
-            
+
     def initBuildingResearch(self):
         """
         """
-        
-        
 
-    
-    
+
+
+
+
     def initUnitResearch(self):
         """
         """
-        
-        
+
+
     def simInit(self,mapName="DefaultMap"):
         """
         """
@@ -161,7 +162,7 @@ class Game(object):
         if os.path.isdir(os.path.dirname(__file__)+"\\"+mapName):
             os.chdir(os.path.dirname(__file__)+"\\"+mapName)
             #RUN INTERPRETER HERE TO FILL CIVLIST + TURNS FROM CURRENT WORKING DIRECTORY
-        
+
     def run(self):
         """
         """
@@ -169,10 +170,10 @@ class Game(object):
         for i in range(self.numTurns):
             #Grab Grid for Processing
             curGrid = self.turns[-1]
-            
+
             #Process Civs
             #Stuff goes here!
-            
+
             #Process Tiles
             #Gods this is inefficient, but without creating a list of tile changes, cellular automata is the way to go!
             for m in range(y):
