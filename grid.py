@@ -2,8 +2,9 @@ import numpy as N
 
 class Grid(object):
 
-    def __init__(self,y,x):
+    def __init__(self,y,x,game):
+        self.Game = game
         self.y = y
         self.x = x
-        self.tiles = N.zeros((y,x),dtype="object")
+        self.tiles = N.array((y,x),dtype=str(object))
         #TODO initialize all the tiles in the grid

@@ -5,6 +5,7 @@ from civilization import Civ
 from building import Building
 from unit import Unit
 from interpreter import Interpreter
+from dataplotter import Dataplotter
 import numpy as N
 import os
 
@@ -20,28 +21,17 @@ class Game(object):
         ["musketman"],["lancer","cannon"],["rifleman","cavalry","gatling_gun"],["artillery"],
         ["great_war_infantry"],["infantry","machine_gun","landship"],["marine","paratrooper","tank","Anti-tank_gun"],
         ["bazooka","rocket_artillery","helicopter","mobile_sam"],["mech_infantry","modern_armor"],["xcom_squad","death_robot"]]
-    
-    #Class Biome Definition
-    #Biome name, Food Val, Prod Val, Gold Val, Movement Cost, Strength Mod, Map Color
-    desert = ["desert",0,0,0,1,0,'beige']
-    grassland = ["grassland",1,2,2,1,0,'darkseagreen']
-    plains = ["plains",1,1,0,1,0,'yellowgreen']
-    snow = ["snow",0,0,0,1,0,'snow']
-    tundra = ["tundra",1,0,0,1,0,'lightblue']
-    biome_lookup = {desert[0]:desert,grassland[0]:grassland,plains[0]:plains,snow[0]:snow,tundra[0]:tundra}
-    
-    #Class Terrain Definition
-    #Terrain name, Food Val, Prod Val, Gold Val, Movement Cost, Strength Mod, Map Color
-    hill = ["hill",0,2,0,2,0.25,'olive']
-    forest = ["forest",1,1,0,2,0.25,'green']
-    jungle = ["jungle",2,0,0,2,0.25,'darkgreen']
-    terrain_lookup = {hill[0]:hill,forest[0]:forest,jungle[0]:jungle}
-    
-    
-    
+
     def __init__(self,y = 50,x = 100,numTurns = 500,mapName = None):
         """
         """
+
+        #Initialize Dictionaries
+        #NEEDS YIELD DICTIONARY
+        self.initBuildingLookUp()
+        self.initBuildingResearch()
+        self.initUnitResearch()
+        self.initUnitLookUp()
 
         #Initialize Total Turns
         self.num_turns = numTurns
@@ -51,14 +41,14 @@ class Game(object):
         self.y = y
         self.civs = None
         self.turns = []
-        self.curGrid = None
+        
 
         #Fill grid values and civ list
         self.simInit()
         #TODO initialize the list/dictionary of biomes and they're yields
         #TODO List of grids\
 
-    def initBuildingLookUp():
+    def initBuildingLookUp(self):
         """
         """
         granary = Building(name="granary",gold_yield=-1,food_yield=2)
@@ -79,18 +69,14 @@ class Game(object):
         research_lab = Building(name="research_lab",gold_yield=-3,science_yield=4,science_bonus=.5)
         #We're combining nuclear and solar plants since we're not looking at strategic resource counts
         power_plant = Building(name="power_plant",gold_yield=-3,prod_yield=5,prod_bonus=.15)
-        building_lookup = { granary.name:granary, library.name:library \
+        self.building_lookup = { granary.name:granary, library.name:library \
         ,stoneworks.name:stoneworks, watermill.name:watermill, market.name:market \
         , university.name:university, workshop.name:workshop, bank.name:bank \
         , observatory.name:observatory, windmill.name:windmill, factory.name:factory \
         , hospital.name:hospital, public_school.name:public_school, stock_exchange.name:stock_exchange \
         , research_lab.name:research_lab, power_plant.name:power_plant}
-        return building_lookup
-    
-    #Create class dictionary for finding building information
-    building_lookup = initBuildingLookUp()
-    
-    def initUnitLookUp():
+
+    def initUnitLookUp(self):
         """
         """
         warrior = Unit(name="warrior",atype="melee",prod_cost=40,speed=2,strength=8)
@@ -143,7 +129,7 @@ class Game(object):
         xcom_squad = Unit(name="xcom_squad",atype="gunpowder",prod_cost=400,speed=2,strength=110,airdrop=40)
         giant_death_robot = Unit(name="giant_death_robot",atype="armor",prod_cost=425,speed=5,strength=150)
 
-        unit_lookup = {warrior.name:warrior,settler.name:settler,scout.name:scout,\
+        self.unit_lookup = {warrior.name:warrior,settler.name:settler,scout.name:scout,\
         archer.name:archer, spearman.name:spearman, chariot_archer.name:chariot_archer,\
         swordsman.name:swordsman,horseman.name:horseman,composite_bowman.name:composite_bowman,\
         catapult.name:catapult,crossbowman.name:crossbowman,longswordsman.name:longswordsman,\
@@ -155,11 +141,20 @@ class Game(object):
         helicopter.name:helicopter,rocket_artillery.name:rocket_artillery,\
         mobile_sam.name:mobile_sam,modern_armor.name:modern_armor,mech_infantry.name:mech_infantry,\
         xcom_squad.name:xcom_squad,giant_death_robot.name:giant_death_robot}
-        return unit_lookup
-    
-    #Create Class Dictionary for find unit information
-    unit_lookup = initUnitLookUp()
-               
+
+    def initBuildingResearch(self):
+        """
+        """
+
+
+
+
+
+    def initUnitResearch(self):
+        """
+        """
+
+
     def simInit(self,mapName="DefaultMap"):
         """
         """
