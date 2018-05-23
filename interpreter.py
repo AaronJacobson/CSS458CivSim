@@ -11,7 +11,8 @@ class Interpreter(object):
 
         for self.x in range(game.grid.x):
             for self.y in range(game.grid.y):
-                mapFile.write(self.x + " " + self.y + " " + ) #add grid features like terrain and stuff
+                pass
+                #mapFile.write(self.x + " " + self.y + " " + ) #add grid features like terrain and stuff
         self.mapFile.close()
         #--------------------------------------------------------------
 
@@ -38,11 +39,12 @@ class Interpreter(object):
         #get from Units and write all info about each units
         self.unitFile = open("testUnits", "w")
         for self.unit in grid.units:
-            unitFile.write(self.unit.name + " " + )
+            pass
+            #unitFile.write(self.unit.name + " " + )
         self.unitFile.close()
         #--------------------------------------------------------
 
-    return
+        return
 
     def read(self, game):
 
