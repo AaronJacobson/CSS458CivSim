@@ -35,7 +35,12 @@ class Unit(object):
         #move unit to army if forming one, move it as part of the army if attacking city
         #TODO if civ is not at war
         #move unit to protect city
-    
+    def move_unit(self, y, x):
+        remove_unit()
+        self.y = y
+        self.x = x
+        self.grid[y,x].move_unit(self)
+        
     def find_best_city_spot(self,y,x,max_distance=30):#might want to move this to the tile class
         self.grid[y,x].best_city_checked = True
         if max_distance == 0:
