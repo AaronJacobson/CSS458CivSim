@@ -42,10 +42,14 @@ class Tile(object):
             improve_gold(building.gold_yield)
             improve_science(building.science_yield)
             
-    def move_unit(self, unit_name):
+    def move_unit(self, unit_object):
         if(self.unit == None):
-            self.unit = unit_name
+            self.unit = unit_object
         
+    def remove_unit(self):
+        if(self.unit != None):
+            self.unit = None
+            
     def process_turn(self):
         if(self.road == 0.5):
             self.road = 1
