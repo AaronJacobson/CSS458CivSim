@@ -21,7 +21,7 @@ class Tile(object):
         self.science_yield = science_yield
         self.gold_yield = gold_yield
         self.road = road
-        self.best_city_checked = False
+        self.get_neighbors_checked = False
         
     """
     Roads take 2 turns to build. Road is set to .5 when starting to build.
@@ -72,36 +72,45 @@ class Tile(object):
         #TODO manage roads, won't change yields
         #TODO manage improvements
 
-    def get_neighbors(self):
+    def get_neighbors(self,radius=1):
         list_of_neighbors = []
-        if self.y > 0:
-            list_of_neighbors.append(self.grid.tiles[self.y-1,self.x])
-            if self.y % 2 == 0:
-                #even row
-                list_of_neighbors.append(self.grid.tiles[self.y-1,self.x-1])
-            else:
-                #odd row
-                if self.x+1 == self.grid.x:
-                    list_of_neighbors.append(self.grid.tiles[self.y-1,0])
-                else:
-                    list_of_neighbors.append(self.grid.tiles[self.y-1,self.x+1])
-        
-        list_of_neighbors.append(self.grid.tiles[self.y,self.x-1])
-        if self.x+1 == self.grid.x:
-            list_of_neighbors.append(self.grid.tiles[self.y,0])
-        else:
-            list_of_neighbors.append(self.grid.tiles[self.y,self.x+1])
-        
-        if self.y < self.grid.y - 1:
-            list_of_neighbors.append(self.grid.tiles[self.y+1,self.x])
-            if self.y % 2 == 0:
-                #even row
-                list_of_neighbors.append(self.grid.tiles[self.y+1,self.x-1])
-            else:
-                #odd row
-                if self.x+1 == self.grid.x:
-                    list_of_neighbors.append(self.grid.tiles[self.y+1,0])
-                else:
-                    list_of_neighbors.append(self.grid.tiles[self.y+1,self.x+1])
-        
+        list_of_neighbors = self.get_neighbors_recursive(list_of_neighbors,radius=radius)
+        for tile in list_of_neighbors:
+            tile.get_neighbors_check = False
         return list_of_neighbors
+    
+    def get_neighbors_recursive(self,neighbor_list,radius=1):
+        if not self.get_neighbors_check and radius > 0:
+            self.get_neighbors_check = True
+            if self.y > 0:
+                neighbor_list.append(self.grid.tiles[self.y-1,self.x])
+                if self.y % 2 == 0:
+                    #even row
+                    neighbor_list.append(self.grid.tiles[self.y-1,self.x-1])
+                else:
+                    #odd row
+                    if self.x+1 == self.grid.x:
+                        neighbor_list.append(self.grid.tiles[self.y-1,0])
+                    else:
+                        neighbor_list.append(self.grid.tiles[self.y-1,self.x+1])
+            
+            neighbor_list.append(self.grid.tiles[self.y,self.x-1])
+            if self.x+1 == self.grid.x:
+                neighbor_list.append(self.grid.tiles[self.y,0])
+            else:
+                neighbor_list.append(self.grid.tiles[self.y,self.x+1])
+            
+            if self.y < self.grid.y - 1:
+                neighbor_list.append(self.grid.tiles[self.y+1,self.x])
+                if self.y % 2 == 0:
+                    #even row
+                    neighbor_list.append(self.grid.tiles[self.y+1,self.x-1])
+                else:
+                    #odd row
+                    if self.x+1 == self.grid.x:
+                        neighbor_list.append(self.grid.tiles[self.y+1,0])
+                    else:
+                        neighbor_list.append(self.grid.tiles[self.y+1,self.x+1])
+        for tile in neighbor_list:
+            tile.get_beighbors_recursive(neighbor_list,radius=radius-1)
+        return neighbor_list

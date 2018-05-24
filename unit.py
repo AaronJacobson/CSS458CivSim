@@ -40,7 +40,8 @@ class Unit(object):
         self.y = y
         self.x = x
         self.grid[y,x].move_unit(self) #check if this is correct for moving unit to a new space
-        
+       
+    """ 
     def find_best_city_spot(self,y,x,max_distance=30):#might want to move this to the tile class
         self.grid[y,x].best_city_checked = True
         if max_distance == 0:
@@ -57,3 +58,4 @@ class Unit(object):
             neighbors = self.grid.tiles[y,x].get_neighbors()
             for tile in neighbors:
                 self.clear_best_city_checked(tile.y,tile.x)
+    """
