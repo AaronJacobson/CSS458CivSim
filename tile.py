@@ -15,6 +15,7 @@ class Tile(object):
         self.improvement = None
         self.unit = None
         self.city = None
+        self.has_city = False
         self.owner = None
         self.food_yield = food_yield
         self.prod_yield = prod_yield
