@@ -2,7 +2,7 @@ from game import Game
 
 class Tile(object):
     
-    def __init__(self,grid,y,x,biome,elevation,terrain,unique_resource,food_yield=0,prod_yield=0,\
+    def __init__(self,grid,y=-1,x=-1,biome="grassland",elevation="none",terrain="none",unique_resource=None,food_yield=0,prod_yield=0,\
     science_yield=0,gold_yield=0, road=0):
         self.grid = grid
         self.y = y
@@ -38,10 +38,10 @@ class Tile(object):
         if(self.improvement == None):
             self.improvement = name
             improvement = Game.improvement_lookup[name]
-            improve_food(improvement.food_yield)
-            improve_prod(improvement.prod_yield)
-            improve_gold(improvement.gold_yield)
-            improve_science(improvement.science_yield)
+            self.improve_food(improvement.food_yield)
+            self.improve_prod(improvement.prod_yield)
+            self.improve_gold(improvement.gold_yield)
+            self.improve_science(improvement.science_yield)
             
     def move_unit(self, unit_object):
         if(self.unit == None):
@@ -114,3 +114,10 @@ class Tile(object):
         for tile in neighbor_list:
             tile.get_beighbors_recursive(neighbor_list,radius=radius-1)
         return neighbor_list
+
+if __name__ == "__main__":
+    test_game = Game(y=5,x=5)
+    list_of_tiles = test_game.grid[2,2].get_neighbors(radius=1)
+    for tile in list_of_tiles:
+        print("x " + str(tile.x) + " y " + str(tile.y))
+    #should print 6 tiles and the
