@@ -1,0 +1,40 @@
+g = Grid(20,20)
+
+civ1 = Civ(0)
+civ2 = Civ(1)
+civ3 = Civ(2)
+civ4 = Civ(3)
+civ5 = Civ(4)
+
+g.tiles[1,1].has_city = True
+g.tiles[1,1].owner = civ1
+g.tiles[0,1].owner = civ1
+g.tiles[2,1].owner = civ1
+g.tiles[1,0].owner = civ1
+g.tiles[1,2].owner = civ1
+g.tiles[0,2].owner = civ1
+g.tiles[2,2].owner = civ1
+
+g.tiles[8,8].has_city = True
+g.tiles[8,8].owner = civ2
+g.tiles[7,8].owner = civ2
+g.tiles[9,8].owner = civ2
+g.tiles[8,7].owner = civ2
+g.tiles[8,9].owner = civ2
+g.tiles[7,7].owner = civ2
+g.tiles[9,7].owner = civ2
+
+g.tiles[10,2].has_city = True
+g.tiles[10,2].owner = civ3
+g.tiles[9,2].owner = civ3
+g.tiles[11,2].owner = civ3
+g.tiles[10,1].owner = civ3
+g.tiles[10,3].owner = civ3
+g.tiles[9,1].owner = civ3
+g.tiles[11,1].owner = civ3
+
+g.tiles[18,18].has_city = True
+g.tiles[18,18].owner = civ4
+
+g.tiles[18,10].has_city = True
+g.tiles[18,10].owner = civ5

@@ -4,7 +4,7 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as N
-from game import Game
+from classlookup import ClassLookUp
 
 
 class Dataplotter(object):
@@ -77,7 +77,7 @@ class Dataplotter(object):
                 
                 #Create the polygon
                 #Color Stuff goes in here!
-                line = plt.Polygon(poly,edgecolor='k',facecolor=Game.biome_lookup[grid.tiles[i,j].biome][6])
+                line = plt.Polygon(poly,edgecolor='k',facecolor=ClassLookUp.biome_lookup[grid.tiles[i,j].biome][6])
                 #Draw the polygon on the plot
                 axes.add_patch(line)
                 
@@ -89,7 +89,7 @@ class Dataplotter(object):
                     poly = N.column_stack((pointsX,pointsY))
                     
                     #line2 = plt.Polygon(poly,edgecolor=Game.terrain_lookup[grid.tiles[i,j].terrain][6],facecolor='none',linewidth=4)
-                    line2 = plt.Polygon(poly,facecolor=Game.terrain_lookup[grid.tiles[i,j].terrain][6])
+                    line2 = plt.Polygon(poly,facecolor=ClassLookUp.terrain_lookup[grid.tiles[i,j].terrain][6])
                     
                     axes.add_patch(line2)
                 
@@ -132,32 +132,19 @@ class Dataplotter(object):
                 
                 if grid.tiles[i,j].owner != None:
                     #Create a polygon based on owner context
-                    if grid.tiles[i,j].hasCity == True:
+                    if grid.tiles[i,j].has_city == True:
                         line = plt.Polygon(poly,edgecolor='k',facecolor=cmap(val[grid.tiles[i,j].owner.civNum]))
                     else:
-                        color = cmap(val[grid.tiles[i,j].owner.civNum])
-                        color[4] = 0.5
+                        color = N.array(cmap(val[grid.tiles[i,j].owner.civNum]))                      
+                        color[3] = 0.5
                         line = plt.Polygon(poly,edgecolor='k',facecolor=color)
                 else:
                     #Create a "blank" polygon
-                    line = plt.Polygon(poly,edgecolor='k',facecolor='grey')
+                    line = plt.Polygon(poly,edgecolor='k',facecolor='lightgrey')
                 #line = plt.Polygon(poly,edgecolor='k',facecolor=Game.biome_lookup[grid.tiles[i,j].biome][6])
                 
                 #Draw the polygon on the plot
                 axes.add_patch(line)
-                
-                if grid.tiles[i,j].terrain != None:
-                    pointsX = j + N.array([0.5,0.9,0.9,0.5,0.1,0.1])
-                    pointsY = grid.y - ((i*0.75)+N.array([0.1,0.30,0.7,0.9,0.7,0.30]))
-                    if i%2!=0:
-                        pointsX = pointsX+0.5
-                    poly = N.column_stack((pointsX,pointsY))
-                    
-                    #line2 = plt.Polygon(poly,edgecolor=Game.terrain_lookup[grid.tiles[i,j].terrain][6],facecolor='none',linewidth=4)
-                    line2 = plt.Polygon(poly,facecolor=Game.terrain_lookup[grid.tiles[i,j].terrain][6])
-                    
-                    axes.add_patch(line2)
-                
                 
         #Scale image to fit plot
         axes.autoscale()
@@ -168,7 +155,7 @@ class Dataplotter(object):
         
         #Display or save plot
         if savefig:
-            fig.savefig("Civ5SimOut_Terrain.png",dpi=300)
+            fig.savefig("Civ5SimOut_Civs.png",dpi=300)
         else:
             plt.show()
         
