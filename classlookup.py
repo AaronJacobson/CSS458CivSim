@@ -119,14 +119,16 @@ class ClassLookUp(object):
     improvement_lookup = initImprovementLookUp()
     
     #Reasearch creation
-    researchVal = [35,55,85,175,275,375,780,1150,1600,2350,3100,4100,5100,6400,7700,8800]
-    buildingResearch = [["Granary"],["library","stoneworks","watermill"],[],["market"],["workshop"],["university"],
+    researchVal = [0,35,55,85,175,275,375,780,1150,1600,2350,3100,4100,5100,6400,7700,8800]
+    buildingResearch = [[],["Granary"],["library","stoneworks","watermill"],[],["market"],["workshop"],["university"],
         ["bank","observatory"],["windmill"],["factory","public_school"],["hospital","stock_exchange"],[],["research_lab"],[],["power_plant"],[],[]]
-    unitResearch = [["archer"],["chariot_archer","spearman"],["horseman","composite_bowman"],
+    unitResearch = [["warrior","settler","scout"],["archer"],["chariot_archer","spearman"],["horseman","composite_bowman"],
         ["swordsman"],["pikeman"],["knight","crossbowman","trebuchet","longswordsman"],
         ["musketman"],["lancer","cannon"],["rifleman","cavalry","gatling_gun"],["artillery"],
         ["great_war_infantry"],["infantry","machine_gun","landship"],["marine","paratrooper","tank","Anti-tank_gun"],
         ["bazooka","rocket_artillery","helicopter","mobile_sam"],["mech_infantry","modern_armor"],["xcom_squad","death_robot"]]
+    improvementResearch =[['farm'],['mine'],['lumber_mill'],['fort'],['trading_post'],[],[],[],[],[],[],[],[],[],[],[],[]]
+    
     
     #Class Biome Definition
     #Biome name, Food Val, Prod Val, Gold Val, Movement Cost, Strength Mod, Map Color
