@@ -1,5 +1,6 @@
 from building import Building
 from unit import Unit
+from improvement import Improvement
 
 class ClassLookUp(object):
     def initUnitLookUp():
@@ -104,6 +105,18 @@ class ClassLookUp(object):
     #Create class dictionary for finding building information
     building_lookup = initBuildingLookUp()
     
+    def initImprovementLookUp():
+        farm = Improvement(name='farm',food_yield=1)
+        fort = Improvement(name='fort',strength_mod=0.50)
+        lumber_mill = Improvement(name='lumber_mill',prod_yield=1)
+        mine = Improvement(name='mine',prod_yield=1)
+        trading_post = Improvement(name='trading_post',gold_yield=1)
+        improvement_lookup = {farm.name:farm,fort.name:fort,lumber_mill.name:lumber_mill,
+        mine.name:mine,trading_post.name:trading_post}
+        return improvement_lookup
+    
+    #Create class dictionary for finding improvement information
+    improvement_lookup = initImprovementLookUp()
     
     #Reasearch creation
     researchVal = [35,55,85,175,275,375,780,1150,1600,2350,3100,4100,5100,6400,7700,8800]
