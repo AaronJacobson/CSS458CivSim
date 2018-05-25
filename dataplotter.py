@@ -4,7 +4,6 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as N
-import grid
 from game import Game
 
 
@@ -20,6 +19,8 @@ class Dataplotter(object):
                 self.testPlot(grid,savefig)
             elif item == "Terrain":
                 self.terrainPlot(grid,savefig)
+            elif item == "Civ":
+                self.civPlot(grid,savefig,numCiv)
         
     def testPlot(self,grid,savefig):
         """
