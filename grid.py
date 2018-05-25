@@ -1,4 +1,5 @@
 import numpy as N
+from tile import Tile
 
 class Grid(object):
 
@@ -8,6 +9,5 @@ class Grid(object):
         self.tiles = N.zeros((y,x),dtype='object')
         for row in range(y):
             for col in range(x):
-                self.tiles[y,x].y = row
-                self.tiles[y,x].x = col
+                self.tiles[row,col] = Tile(self,row,col)
         #TODO initialize all the tiles in the grid
