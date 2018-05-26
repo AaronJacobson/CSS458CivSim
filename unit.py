@@ -1,4 +1,3 @@
-import numpy as N
 
 class Unit(object):
     
@@ -17,18 +16,36 @@ class Unit(object):
         self.airdrop = airdrop
         
         if self.name == "settler":
-            self.moving_to_city = False
+            self.target_city_tile = None
     
     
     def process_turn(self):
         if self.name== "settler":#TODO move to found city
-            if self.moving_to_city:
-                #move to city location
-                pass
-            else:
+            if self.target_city_tile == None:
                 #find a city location to move to and move to it
-                self.moving_to_city = True
-                self.clear_best_city_checked(self.y,self.x)
+                pass
+            #move to city location
+            moved = False
+            if self.target_city_tile.y > self.y:
+                self.move_unit(self.y+1,self.x)
+                moved = True
+            elif self.target_city_tile.y < self.y:
+                self.move_unit(self.y-1,self.x)
+                moved = True
+            if moved:
+                if self.grid.tiles[self.y,self.x].terrain == "hills" or \
+                self.grid.tiles[self.y,self.x].terrain == "forest" or \
+                self.grid.tiles[self.y,self.x].terrain == "jungle":
+                   pass #don't move more
+                else:
+                    if self.target_city_tile.x > self.x:
+                        self.move_unit(self.y,self.x+1)
+                    elif self.target_city_tile.x < self.x:
+                        self.move_unit(self.y,self.x-1)
+            if self.target_city_tile.y == self.y and self.targey_city_tile == self.x:
+                #found city
+                pass
+            
         else:
             pass
         #TODO if civ is at war
@@ -36,27 +53,8 @@ class Unit(object):
         #TODO if civ is not at war
         #move unit to protect city
     def move_unit(self, y, x):
-        remove_unit()
+        self.remove_unit()
         self.y = y
         self.x = x
-        self.grid[y,x].move_unit(self) #check if this is correct for moving unit to a new space
+        self.grid.tiles[y,x].move_unit(self) #check if this is correct for moving unit to a new space
     
-    
-    """ 
-    def find_best_city_spot(self,y,x,max_distance=30):#might want to move this to the tile class
-        self.grid[y,x].best_city_checked = True
-        if max_distance == 0:
-            return [self.grid.total_value(),y,x]
-        else:
-            neighbors = N.array(self.grid[y,x].get_neighbors)
-            neighbors = N.where(neighbors.best_city_checked == False)#not sure if this is correct, I'm trying to remove all the places that have been checked already
-            #TODO call this method on all the remaining neighbors
-        #TODO clear the best_city_checked values
-    
-    def clear_best_city_checked(self,y,x):#TODO this may or may not work
-        if self.grid.tiles[y,x].best_city_checked:
-            self.grid.tile[y,x].best_city_checked = False
-            neighbors = self.grid.tiles[y,x].get_neighbors()
-            for tile in neighbors:
-                self.clear_best_city_checked(tile.y,tile.x)
-    """

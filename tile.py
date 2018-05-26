@@ -17,6 +17,7 @@ class Tile(object):
         self.unit = None
         self.city = None
         self.has_city = False
+        self.close_to_city = False
         self.owner = None
         self.food_yield = food_yield
         self.prod_yield = prod_yield
@@ -84,26 +85,24 @@ class Tile(object):
         x_coords = N.arange(1+distance*2)-distance+self.x
         for row in range(1+distance*2):
             for col in range(1+distance*2):
-                if y_coords[row] >= 0 and y_coords[row] < self.grid.y:
-                    xActual = x_coords[col]
-                    if xActual >= self.grid.x:
-                        xActual = xActual - self.grid.x
-                    if y_coords[row] == self.y and xActual == self.x:
+                if y_coords[row] >= 0 and y_coords[row] < self.grid.y \
+                and x_coords[col] >= 0 and x_coords[col] < self.grid.x:
+                    if y_coords[row] == self.y and x_coords[col] == self.x:
                         pass #found yourself
                     else:
-                        list_of_neighbors.append(self.grid.tiles[y_coords[row],xActual])
+                        list_of_neighbors.append(self.grid.tiles[y_coords[row],x_coords[col]])
         return list_of_neighbors
     
-    def distance(self,other):
-        if type(other) == Tile:
-            return ((self.x-other.x)**2+(self.y-other.y)**2)**.5
+    def total_yield(self,food_coefficient=1,prod_coefficient=1,science_coefficient=1,gold_coefficent=1):
+        return self.food_yield * food_coefficient + self.prod_yield * prod_coefficient \
+        + self.science_yield * science_coefficient + self.gold_yield * gold_coefficent
 
 if __name__ == "__main__":
     #Moved this in here to prevent circular imports
     from grid import Grid
     
     test_grid = Grid(5,5)
-    list_of_tiles = test_grid.tiles[2,0].get_neighbors(distance=2)
+    list_of_tiles = test_grid.tiles[2,2].get_neighbors(distance=2)
     for tile in list_of_tiles:
         print("x " + str(tile.x) + " y " + str(tile.y))
     print("length: " + str(len(list_of_tiles)))
