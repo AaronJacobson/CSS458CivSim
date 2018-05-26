@@ -1,4 +1,5 @@
 import numpy as N
+from classlookup import ClassLookUp
 
 class Tile(object):
     """
@@ -43,7 +44,7 @@ class Tile(object):
     def add_improvement(self, name):
         if(self.improvement == None):
             self.improvement = name
-            improvement = Game.improvement_lookup[name]
+            improvement = ClassLookUp.improvement_lookup[name]
             self.improve_food(improvement.food_yield)
             self.improve_prod(improvement.prod_yield)
             self.improve_gold(improvement.gold_yield)
