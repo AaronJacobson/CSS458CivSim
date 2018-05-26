@@ -24,7 +24,7 @@ class Game(object):
         self.y = y
         self.civs = []
         self.turns = []
-        self.curGrid = None
+        self.cur_grid = None
         
 
         #Fill grid values and civ list
@@ -48,7 +48,7 @@ class Game(object):
         #Initialize run loop
         for i in range(self.numTurns):
             #Grab Grid for Processing
-            curGrid = self.turns[-1]
+            self.cur_grid = self.turns[-1]
             
             #Process Civ Wars
             
@@ -58,8 +58,9 @@ class Game(object):
             
             #Process Tiles
             #Gods this is inefficient, but without creating a list of tile changes, cellular automata is the way to go!
-            for m in range(y):
-                for n in range(x):
-                    curGrid[m][n].process_turn()
+            for m in range(self.y):
+                for n in range(self.x):
+                    self.cur_grid[m][n].process_turn()
             #Update State Variables if any exist
-            self.turns.append(curGrid)
+            self.turns.append(self.cur_grid)
+            return yield_vals
