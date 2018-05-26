@@ -38,7 +38,7 @@ class Game(object):
         """
         """
         #RUN MAP GENERATOR HERE TO POPULATE INITIAL GRID!
-        #REPLACE NONE WITH CALL TO MAP GEN OR SIMPLY GET THAT THROUGH MAP GEN
+        #REPLACE NONE WITH CALL TO MAP GEN OR SET CUR_GRID THROUGH MAP GEN
         self.cur_grid = None
         self.turns.append(copy.deepcopy(self.cur_grid))
 
