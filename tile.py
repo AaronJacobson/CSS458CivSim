@@ -82,16 +82,50 @@ class Tile(object):
 
     def get_neighbors(self,distance=1):
         list_of_neighbors = []
-        y_coords = N.arange(1+distance*2)-distance+self.y
-        x_coords = N.arange(1+distance*2)-distance+self.x
-        for row in range(1+distance*2):
-            for col in range(1+distance*2):
-                if y_coords[row] >= 0 and y_coords[row] < self.grid.y \
-                and x_coords[col] >= 0 and x_coords[col] < self.grid.x:
-                    if y_coords[row] == self.y and x_coords[col] == self.x:
-                        pass #found yourself
+        if distance == 1:
+            if self.y > 0:
+                list_of_neighbors.append(self.grid.tiles[self.y-1,self.x])
+            if self.y % 2 == 0:
+                #even row
+                list_of_neighbors.append(self.grid.tiles[self.y-1,self.x-1])
+            else:
+                #odd row
+                if self.x+1 == self.grid.x:
+                    #list_of_neighbors.append(self.grid.tiles[self.y-1,0])
+                    pass
+                else:
+                    list_of_neighbors.append(self.grid.tiles[self.y-1,self.x+1])
+            
+            list_of_neighbors.append(self.grid.tiles[self.y,self.x-1])
+            if self.x+1 == self.grid.x:
+                #list_of_neighbors.append(self.grid.tiles[self.y,0])
+                pass
+            else:
+                list_of_neighbors.append(self.grid.tiles[self.y,self.x+1])
+            
+            if self.y < self.grid.y - 1:
+                list_of_neighbors.append(self.grid.tiles[self.y+1,self.x])
+                if self.y % 2 == 0:
+                    #even row
+                    list_of_neighbors.append(self.grid.tiles[self.y+1,self.x-1])
+                else:
+                    #odd row
+                    if self.x+1 == self.grid.x:
+                        #list_of_neighbors.append(self.grid.tiles[self.y+1,0])
+                        pass
                     else:
-                        list_of_neighbors.append(self.grid.tiles[y_coords[row],x_coords[col]])
+                        list_of_neighbors.append(self.grid.tiles[self.y+1,self.x+1])
+        else:
+            y_coords = N.arange(1+distance*2)-distance+self.y
+            x_coords = N.arange(1+distance*2)-distance+self.x
+            for row in range(1+distance*2):
+                for col in range(1+distance*2):
+                    if y_coords[row] >= 0 and y_coords[row] < self.grid.y \
+                    and x_coords[col] >= 0 and x_coords[col] < self.grid.x:
+                        if y_coords[row] == self.y and x_coords[col] == self.x:
+                            pass #found yourself
+                        else:
+                            list_of_neighbors.append(self.grid.tiles[y_coords[row],x_coords[col]])
         return list_of_neighbors
     
     def total_yield(self,food_coefficient=1,prod_coefficient=1,science_coefficient=1,gold_coefficent=1):

@@ -1,4 +1,4 @@
-
+from heapq import heappush,heappop
 class Unit(object):
     
     def __init__(self,name="none",atype="nothing",prod_cost=0,strength=0,\
@@ -22,8 +22,12 @@ class Unit(object):
     def process_turn(self):
         if self.name== "settler":#TODO move to found city
             if self.target_city_tile == None:
-                #find a city location to move to and move to it
-                pass
+                #find a city location to move to
+                tiles_to_consider = self.grid.tiles[self.y,self.x].get_neighbors(distance=20)
+                heap_of_tiles = []
+                for tile in tiles_to_consider:
+                    heappush(heap_of_tiles,(tile.total_yield,tile))
+                self.target_city_tile = heappop(heap_of_tiles)[1]
             #move to city location
             moved = False
             if self.target_city_tile.y > self.y:
@@ -44,6 +48,7 @@ class Unit(object):
                         self.move_unit(self.y,self.x-1)
             if self.target_city_tile.y == self.y and self.targey_city_tile == self.x:
                 #found city
+                
                 pass
             
         else:

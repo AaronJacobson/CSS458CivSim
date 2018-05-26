@@ -14,6 +14,7 @@ class City(object):
         self.strength = 8 #this depends on many factors
         
         self.set_close_to_city()
+        self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
     
     def set_close_to_city(self):
         close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
