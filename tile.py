@@ -35,7 +35,11 @@ class Tile(object):
     def build_railroad(self):
         if(self.road == 1):
             self.road = 1.5
-            
+    
+    def set_owner(civ):
+        self.owner = civ
+    
+    #TODO change how to deal with improvements        
     def add_improvement(self, name):
         if(self.improvement == None):
             self.improvement = name
