@@ -7,6 +7,7 @@ from unit import Unit
 from interpreter import Interpreter
 import numpy as N
 import os
+import copy
 
 class Game(object):
     """
@@ -38,8 +39,8 @@ class Game(object):
         """
         #RUN MAP GENERATOR HERE TO POPULATE INITIAL GRID!
         #REPLACE NONE WITH CALL TO MAP GEN OR SIMPLY GET THAT THROUGH MAP GEN
-        self.curGrid = None
-        self.turns.append(self.curGrid)
+        self.cur_grid = None
+        self.turns.append(copy.deepcopy(self.cur_grid))
 
     def run(self):
         """
@@ -47,8 +48,6 @@ class Game(object):
         yield_vals = N.zeros((self.numTurns,len(self.civs),4))
         #Initialize run loop
         for i in range(self.numTurns):
-            #Grab Grid for Processing
-            self.cur_grid = self.turns[-1]
             
             #Process Civ Wars
             
@@ -62,5 +61,5 @@ class Game(object):
                 for n in range(self.x):
                     self.cur_grid[m][n].process_turn()
             #Update State Variables if any exist
-            self.turns.append(self.cur_grid)
+            self.turns.append(copy.deepcopy(self.cur_grid))
             return yield_vals
