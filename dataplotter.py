@@ -194,7 +194,7 @@ class Dataplotter(object):
                 
                 #Create the polygon
                 #Color Stuff goes in here!
-                line = plt.Polygon(poly,edgecolor='k',facecolor=ClassLookUp.biome_lookup[grid.tiles[i,j].biome][6])
+                line = plt.Polygon(poly,edgecolor='none',facecolor=ClassLookUp.biome_lookup[grid.tiles[i,j].biome][6])
                 #Draw the polygon on the plot
                 axes.add_patch(line)
                 
@@ -223,11 +223,11 @@ class Dataplotter(object):
                 if grid.tiles[i,j].owner != None:
                     #Create a polygon based on owner context
                     if grid.tiles[i,j].has_city == True:
-                        line3 = plt.Polygon(poly,edgecolor='k',facecolor=cmap(val[grid.tiles[i,j].owner.civNum]))
+                        line3 = plt.Polygon(poly,edgecolor='none',facecolor=cmap(val[grid.tiles[i,j].owner.civNum]))
                     else:
                         color = N.array(cmap(val[grid.tiles[i,j].owner.civNum]))                      
                         color[3] = 0.5
-                        line3 = plt.Polygon(poly,edgecolor='k',facecolor=color)
+                        line3 = plt.Polygon(poly,edgecolor='none',facecolor=color)
                     axes.add_patch(line3)
                 
                 #Draw the polygon on the plot
