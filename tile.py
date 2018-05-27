@@ -126,17 +126,17 @@ class Tile(object):
         if distance == 1:
             if self.y > 0:
                 list_of_neighbors.append(self.grid.tiles[self.y-1,self.x])
-            if self.y % 2 == 0:
-                #even row
-                list_of_neighbors.append(self.grid.tiles[self.y-1,self.x-1])
-            else:
-                #odd row
-                if self.x+1 == self.grid.x:
-                    #list_of_neighbors.append(self.grid.tiles[self.y-1,0])
-                    pass
+                if self.y % 2 == 0:
+                    #even row
+                    list_of_neighbors.append(self.grid.tiles[self.y-1,self.x-1])
                 else:
-                    list_of_neighbors.append(self.grid.tiles[self.y-1,self.x+1])
-
+                    #odd row
+                    if self.x+1 == self.grid.x:
+                        #list_of_neighbors.append(self.grid.tiles[self.y-1,0])
+                        pass
+                    else:
+                        list_of_neighbors.append(self.grid.tiles[self.y-1,self.x+1])
+                        
             list_of_neighbors.append(self.grid.tiles[self.y,self.x-1])
             if self.x+1 == self.grid.x:
                 #list_of_neighbors.append(self.grid.tiles[self.y,0])

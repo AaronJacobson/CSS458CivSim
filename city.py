@@ -6,7 +6,6 @@ import random
 class City(object):
 
     def __init__(self,grid,y,x,civ):
-        print("city getting" + str(y) + " " + str(x) + " " + str(civ.civNum))
         self.grid = grid
         self.y = y
         self.x = x

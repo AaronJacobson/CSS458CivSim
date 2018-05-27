@@ -25,16 +25,16 @@ class Grid(object):
                 #top tundra circle
                 self.tiles[row,col] = Tile(self,row,col,"tundra","none")
                 #bottom tundra circle
-                self.tiles[self.y-(1+row),col] = Tile(self,row,col,"tundra","none")
+                self.tiles[self.y-(1+row),col] = Tile(self,self.y-(1+row),col,"tundra","none")
                 #print("test")
 
         #Set both tundric circle
         for row in range(self.snowWidth):
             for col in range(x):
                 #top snow circle
-                self.tiles[row+self.tundraWidth,col] = Tile(self,row,col,"snow","none")
+                self.tiles[row+self.tundraWidth,col] = Tile(self,row+self.tundraWidth,col,"snow","none")
                 #bottom snow circle
-                self.tiles[self.y-(1+row+self.tundraWidth),col] = Tile(self,row,col,"snow","none")
+                self.tiles[self.y-(1+row+self.tundraWidth),col] = Tile(self,self.y-(1+row+self.tundraWidth),col,"snow","none")
 
         #Set the middle terrain
 
