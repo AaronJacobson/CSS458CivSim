@@ -121,7 +121,8 @@ class ClassLookUp(object):
     improvement_lookup = initImprovementLookUp()
     
     #Reasearch creation
-    researchVal = [0,35,55,85,175,275,375,780,1150,1600,2350,3100,4100,5100,6400,7700,8800]
+    researchVal = [    0,    35,    90,   175,   350,   625,  1000,  1780,  2930,
+        4530,  6880,  9980, 14080, 19180, 25580, 33280, 42080]
     buildingResearch = [[],["granary"],["library","stoneworks","watermill"],[],["market"],["workshop"],["university"],
         ["bank","observatory"],["windmill"],["factory","public_school"],["hospital","stock_exchange"],[],["research_lab"],[],["power_plant"],[],[]]
     unitResearch = [["warrior","settler","scout"],["archer"],["chariot_archer","spearman"],["horseman","composite_bowman"],
@@ -147,4 +148,6 @@ class ClassLookUp(object):
     forest = ["forest",1,1,0,2,0.25,'green']
     jungle = ["jungle",2,0,0,2,0.25,'darkgreen']
     terrain_lookup = {hill[0]:hill,forest[0]:forest,jungle[0]:jungle}
+    
+    pop_table = [0,1000,6000,21000,48000,90000,150000,232000,337000,469000]
     

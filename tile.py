@@ -28,7 +28,7 @@ class Tile(object):
         self.near_river = river
         self.get_neighbors_checked = False
         self.worked = False
-
+        
     """
     Roads take 2 turns to build. Road is set to .5 when starting to build.
     on following turn, processing turn will increase number to 1 to represent
@@ -49,8 +49,10 @@ class Tile(object):
         if(self.city.has_hydro_plant == True):
             if(self.near_river == True):
                 prod_bonus = 1
+<<<<<<< HEAD
         return (prod_yield + prod_bonus)
 
+>>>>>>> 13c38463bff44702ac7198343058f1057c016158
     #TODO change how to deal with improvements
     def add_improvement(self, name):
         if(self.improvement == None):
@@ -139,7 +141,7 @@ class Tile(object):
         return list_of_neighbors
 
     def total_yield(self,food_coefficient=1,prod_coefficient=1,science_coefficient=1,gold_coefficent=1):
-        return self.food_yield * food_coefficient + get_prod_yield() * prod_coefficient \
+        return self.food_yield * food_coefficient + self.get_prod_yield() * prod_coefficient \
         + self.science_yield * science_coefficient + self.gold_yield * gold_coefficent
 
 if __name__ == "__main__":
