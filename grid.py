@@ -5,7 +5,7 @@ from classlookup import ClassLookUp
 class Grid(object):
 
     def __init__(self,y,x,precentGrass=.5,desert_chance=.01,desert_size=2,snow_width=0.05,tundra_width=0.075,\
-    probForrest=0.05,probJungle=0.05,probRiver = 0.2,probHill = 0.1):
+    probForrest=0.05,probJungle=0.05,probRiver = 0.2,probHill=.085):
         self.y = y
         self.x = x
         self.precentGrass = precentGrass
@@ -23,7 +23,7 @@ class Grid(object):
                 self.tiles[row,col] = Tile(self,row,col)
 
         #---------------setting terrain for map---------------------------------
-        #Set both tundra circle
+        #Set both snow circle
         for row in range(self.snow_width):
             for col in range(x):
                 #print("pretest")
@@ -35,6 +35,18 @@ class Grid(object):
                 self.tiles[self.y-(1+row),col].biome = "snow"
                 #print("test")
 
+                isHillTile = N.random.binomial(1,self.probHill)#for top
+                #set elevation
+                if(isHillTile):
+                    self.tiles[row,col].elevation = "hill"
+                    self.tiles[row,col-1].elevation = "hill"
+                    
+                isHillTile = N.random.binomial(1,self.probHill)#for bottom
+                #set elevation
+                if(isHillTile):
+                    self.tiles[self.y-(1+row),col].elevation = "hill"
+                    self.tiles[self.y-(1+row),col-1].elevation = "hill"
+
         #Set both tundric circle
         for row in range(self.tundra_width):
             for col in range(x):
@@ -44,6 +56,18 @@ class Grid(object):
                 #bottom snow circle
                 #self.tiles[self.y-(1+row+self.tundraWidth),col] = Tile(self,self.y-(1+row+self.tundraWidth),col,"snow","none")
                 self.tiles[self.y-(1+row+self.snow_width),col].biome = "tundra"
+
+                isHillTile = N.random.binomial(1,self.probHill)#for top
+                #set elevation
+                if(isHillTile):
+                    self.tiles[row+self.snow_width,col].elevation = "hill"
+                    self.tiles[row+self.snow_width,col-1].elevation = "hill"
+                    
+                isHillTile = N.random.binomial(1,self.probHill)#for bottom
+                #set elevation
+                if(isHillTile):
+                    self.tiles[self.y-(1+row+self.snow_width),col].elevation = "hill"
+                    self.tiles[self.y-(1+row+self.snow_width),col-1].elevation = "hill"
 
         #Set the middle terrain
 
@@ -61,6 +85,12 @@ class Grid(object):
                         neighbors = self.tiles[row,col].get_neighbors(distance=desert_size)
                         for tile in neighbors:
                             tile.biome = "desert"
+
+                isHillTile = N.random.binomial(1,self.probHill)
+                #set elevation
+                if(isHillTile):
+                    self.tiles[row,col].elevation = "hill"
+                    self.tiles[row,col-1].elevation = "hill"
                     #self.tiles[row,col] = Tile(self,row,col,biome,"none")
         #-----------------------------------------------------------------------,
 
@@ -71,7 +101,6 @@ class Grid(object):
             for col in range(x-1):
                 isJungleTile = N.random.binomial(1,self.probJungle)
                 isForrestTile = N.random.binomial(1,self.probForrest)
-                isHillTile = N.random.binomial(1,self.probHill)
                 #set River
                 if(isRiverTile):
                     self.tiles[row,col].near_river = True
@@ -87,9 +116,5 @@ class Grid(object):
                         self.tiles[row,col+1].terrain = "jungle"
                         self.tiles[row,col].biome = "plains"
                         self.tiles[row,col+1].biome = "plains"
-                #set elevation
-                if(isHillTile):
-                    self.tiles[row,col].elevation = "hill"
-                    self.tiles[row,col+1].elevation = "hill"
         #-----------------------------------------------------------------------
         #TODO initialize all the tiles in the grid
