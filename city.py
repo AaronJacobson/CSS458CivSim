@@ -22,7 +22,7 @@ class City(object):
         self.border_distance = 1
         self.has_hydro_plant = False
         self.has_university = False
-        self.improving_tile = None
+        self.improving_tiles = []
         self.tile_improve_heap = []
         
         self.set_close_to_city()
@@ -32,7 +32,7 @@ class City(object):
         for tile in self.tile_list:
             tile.city = self
             tile.owner = self.civ
-            heappush(tile_improve_heap,(tile.total_yield,tile))
+            heappush(self.tile_improve_heap,(tile.total_yield,tile))
 
     def set_close_to_city(self):
         close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
@@ -137,10 +137,50 @@ class City(object):
                 tile.city = self
                 tile.ownder = self.civ
                 self.tile_list.append(tile)
+                heappush(self.tile_improve_heap,(tile.total_yield,tile))
+    
+    def improve_tiles(self):
+        #improve one at a time
+        if len(self.improving_tiles) == 0:
+            if len(self.tile_improve_heap) > 0:
+                tile_to_improve = heappop(self.tile_improve_heap)[1]
+                tile_to_improve.improvement_turns = 4
+                self.improving_tiles.append(tile_to_improve)
+        if self.border_distance == 2 and len(self.improving_tiles) < 2:
+            if len(self.tile_improve_heap) > 0:
+                tile_to_improve = heappop(self.tile_improve_heap)[1]
+                tile_to_improve.improvement_turns = 4
+                self.improving_tiles.append(tile_to_improve)
+        if self.border_distance == 3 and len(self.improving_tiles) < 3:
+            if len(self.tile_improve_heap) > 0:
+                tile_to_improve = heappop(self.tile_improve_heap)[1]
+                tile_to_improve.improvement_turns = 4
+                self.improving_tiles.append(tile_to_improve)
+        for tile in self.improving_tiles:
+            tile.improvement_turns = tile.improvement_turns - 1
+            if tile.improvement_turns == 0:
+                if tile.terrain == "forest":
+                    #build lumbermill
+                    tile.add_improvement("lumber_mill")
+                elif tile.terrain == "hills":
+                    #build mine
+                    tile.add_improvement("mine")
+                elif tile.terrain == "jungle":
+                    #build trading post
+                    tile.add_improvement("trading_post")
+                else:
+                    if tile.biome == "grassland" or tile.biome == "plains" or tile.near_river:
+                        #build farm
+                        tile.add_improvement("farm")
+                    else:
+                        #build trading post
+                        tile.add_improvement("trading_post")
+                self.improving_tiles.remove(tile)
 
     def process_turn(self):
-        #TODO update improvements
 
+        self.improve_tiles()
+        
         #check food, update pop
         self.food = self.food + self.get_food_yield()
         if self.food >= self.food_to_grow(self.pop+1):
@@ -176,9 +216,6 @@ class City(object):
             #choose new production
             self.production = self.production - self.to_build.prod_cost
             self.to_build = self.choose_production()
-
-        #making improvements
-        
 
         #growing borders
         if self.border_growth_count >= 100 and self.border_distance == 1:
