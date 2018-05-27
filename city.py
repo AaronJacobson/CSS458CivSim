@@ -130,6 +130,7 @@ class City(object):
         tiles_to_add = self.grid[self.y,self.x].get_neighbors(distance=self.border_distance)
         for tile in tiles_to_add:
             if tile.owner == None:
+                tile.city = self
                 tile.ownder = self.civ
                 self.tile_list.append(tile)
     
