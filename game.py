@@ -64,7 +64,7 @@ class Game(object):
 
             #Process Civs Individual turns
             for civ in self.civs:
-                yield_vals[i,civ.civNum]=civ.process_turn()
+                yield_vals[i,civ.civNum]=civ.process_turn(i)
 
             #Process Tiles
             #Gods this is inefficient, but without creating a list of tile changes, cellular automata is the way to go!
