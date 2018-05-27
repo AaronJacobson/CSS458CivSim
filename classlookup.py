@@ -122,7 +122,7 @@ class ClassLookUp(object):
     
     #Reasearch creation
     researchVal = [0,35,55,85,175,275,375,780,1150,1600,2350,3100,4100,5100,6400,7700,8800]
-    buildingResearch = [[],["Granary"],["library","stoneworks","watermill"],[],["market"],["workshop"],["university"],
+    buildingResearch = [[],["granary"],["library","stoneworks","watermill"],[],["market"],["workshop"],["university"],
         ["bank","observatory"],["windmill"],["factory","public_school"],["hospital","stock_exchange"],[],["research_lab"],[],["power_plant"],[],[]]
     unitResearch = [["warrior","settler","scout"],["archer"],["chariot_archer","spearman"],["horseman","composite_bowman"],
         ["swordsman"],["pikeman"],["knight","crossbowman","trebuchet","longswordsman"],

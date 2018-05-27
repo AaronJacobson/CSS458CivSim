@@ -8,6 +8,8 @@ class Unit(object):
         self.atype = atype
         self.prod_cost = prod_cost
         self.strength = strength
+        self.range_strength = range_strength
+        self.rangeSize = rangeSize
         self.speed = speed
         self.civ = civ
         self.grid = grid
@@ -15,6 +17,7 @@ class Unit(object):
         self.x = x
         self.health = 100
         self.airdrop = airdrop
+        self.type = "unit"
         
         if self.name == "settler":
             self.target_city_tile = None
@@ -27,7 +30,7 @@ class Unit(object):
                 tiles_to_consider = self.grid.tiles[self.y,self.x].get_neighbors(distance=20)
                 heap_of_tiles = []
                 for tile in tiles_to_consider:
-                    heappush(heap_of_tiles,(tile.total_yield,tile))
+                    heappush(heap_of_tiles,(100-tile.total_yield,tile))#it's a min heap function
                 self.target_city_tile = heappop(heap_of_tiles)[1]
             #move to city location
             moved = False
