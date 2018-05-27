@@ -17,6 +17,7 @@ class Unit(object):
         self.x = x
         self.health = 100
         self.airdrop = airdrop
+        self.type = "unit"
         
         if self.name == "settler":
             self.target_city_tile = None

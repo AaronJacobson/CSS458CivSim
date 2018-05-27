@@ -6,6 +6,7 @@ class Civ(object):
         """
         self.civNum = civNum
         self.unit_list = []
+        self.mil_unit_list = []
         self.city_list = []
         self.science = 0
         

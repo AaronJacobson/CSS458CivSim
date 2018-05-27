@@ -1,5 +1,6 @@
 from heapq import heappush,heappop
 from classlookup import ClassLookUp
+from unit import Unit
 import random
 
 class City(object):
@@ -17,10 +18,16 @@ class City(object):
         self.to_build = None
         self.health = 200
         self.strength = 8 #this depends on many factors
+        self.border_growth_count = 0
+        self.border_distance = 1
         
         self.set_close_to_city()
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
+        self.grid.tiles[y,x].has_city = True
+        for tile in tile_list:
+            tile.city = self
+            tile.ownder = self.civ
     
     def set_close_to_city(self):
         close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
@@ -117,6 +124,14 @@ class City(object):
         else:
             return heappop(building_heap)[1]
     
+    def grow_borders(self):
+        self.border_distance = self.border_distance + 1
+        tiles_to_add = self.grid[self.y,self.x].get_neighbors(distance=self.border_distance)
+        for tile in tiles_to_add:
+            if tile.owner == None:
+                tile.ownder = self.civ
+                self.tile_list.append(tile)
+    
     def process_turn(self):
         #TODO update improvements
         
@@ -135,16 +150,33 @@ class City(object):
             self.to_build = self.choose_production()
         
         if self.production >= self.to_build.prod_cost:
-            #complete building and choose another thing to build
-            self.building_list.append(self.to_build)#TODO make work with units
+            #complete production
+            if self.to_build.type == "building":
+                self.building_list.append(self.to_build)#TODO make work with units
+            else:
+                if self.to_build.name == "settler":
+                    self.grid.tiles[self.y,self.x].unit = Unit(name="settler",atype="civilian",prod_cost=106,speed=2,y=self.y,x=self.x,civ=self.civ,grid=self.grid)
+                    self.civ.unit_list.append(self.grid.tiles[self.y,self.x].unit)
+                    self.grid.tiles[self.y,self.x].unit.process_turn()
+                else:
+                    unit = self.to_build
+                    unit_to_add = Unit(name=unit.name,atype=unit.atype,prod_cost=unit.prod_cost,speed=unit.speed,y=-1,x=-1,civ=self.civ)
+                    self.civ.mil_unit_list.append(unit_to_add)
+                    
             if self.to_build.name == "hydro_plant":#TODO make this use the lookup
                 for tile in self.tile_list:
                     if tile.near_river:
                         tile.prod_yield = tile.prod_yield + 1
 
+            #choose new production
             self.to_build = self.choose_production()
             self.production = 0
         
+        #growing borders
+        if self.border_growth_count >= 100 and self.border_distance == 1:
+            self.grow_borders()
+        elif self.border_growth_count >= 200 and self.border_distance == 2:
+            self.grow_borders()
 
         #Setting which tiles will be worked.
         heap_of_tiles = []

@@ -14,4 +14,5 @@ class Building(object):
         self.science_pop_bonus = science_pop_bonus
         self.production = prod_yield
         self.production_bonus = prod_bonus
-        self.prod_cost = prod_cost    
+        self.prod_cost = prod_cost
+        self.type = "building"
