@@ -24,6 +24,7 @@ class City(object):
         self.has_university = False
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 =======
@@ -31,6 +32,11 @@ class City(object):
         self.tile_improve_heap = []
         
 >>>>>>> a13cf1fcafa1efcd2c78cb3ec0168bb76551ceae
+=======
+        self.improving_tiles = []
+        self.tile_improve_heap = []
+        
+>>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
 =======
         self.improving_tiles = []
         self.tile_improve_heap = []
@@ -45,9 +51,13 @@ class City(object):
             tile.owner = self.civ
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             heappush(self.tile_improve_heap,(tile.total_yield,tile))
 >>>>>>> a13cf1fcafa1efcd2c78cb3ec0168bb76551ceae
+=======
+            heappush(self.tile_improve_heap,(tile.total_yield,tile))
+>>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
 =======
             heappush(self.tile_improve_heap,(tile.total_yield,tile))
 >>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
@@ -195,6 +205,7 @@ class City(object):
                         tile.add_improvement("trading_post")
                 self.improving_tiles.remove(tile)
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     #TODO Fix unit making error
 
@@ -203,6 +214,10 @@ class City(object):
         self.improve_tiles()
         
         #check food, update pop
+=======
+    
+    def check_food(self):
+>>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
 =======
     
     def check_food(self):
@@ -269,6 +284,9 @@ class City(object):
     """
         Takes a given value and returns the population based on previous data.
     """
+<<<<<<< HEAD
+>>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
+=======
 >>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
     def popF(self,x):
         return 959.0549*x**2.8132
