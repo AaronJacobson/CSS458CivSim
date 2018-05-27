@@ -20,12 +20,13 @@ class City(object):
         self.strength = 8 #this depends on many factors
         self.border_growth_count = 0
         self.border_distance = 1
+        self.has_hydro_plant = False
         
         self.set_close_to_city()
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
         self.grid.tiles[y,x].has_city = True
-        for tile in tile_list:
+        for tile in self.tile_list:
             tile.city = self
             tile.ownder = self.civ
     
@@ -164,9 +165,7 @@ class City(object):
                     self.civ.mil_unit_list.append(unit_to_add)
                     
             if self.to_build.name == "hydro_plant":#TODO make this use the lookup
-                for tile in self.tile_list:
-                    if tile.near_river:
-                        tile.prod_yield = tile.prod_yield + 1
+                self.has_hydro_plant = True
 
             #choose new production
             self.to_build = self.choose_production()
