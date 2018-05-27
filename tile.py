@@ -5,7 +5,7 @@ class Tile(object):
     """
     """
     def __init__(self,grid,y=-1,x=-1,biome="grassland",elevation="none",terrain="none",unique_resource=None,food_yield=0,prod_yield=0,\
-    science_yield=0,gold_yield=0, road=0):
+    science_yield=0,gold_yield=0, road=False, river = False):
         self.grid = grid
         self.y = y
         self.x = x
@@ -25,8 +25,9 @@ class Tile(object):
         self.science_yield = science_yield
         self.gold_yield = gold_yield
         self.road = road
+        self.near_river = river
         self.get_neighbors_checked = False
-        
+
     """
     Roads take 2 turns to build. Road is set to .5 when starting to build.
     on following turn, processing turn will increase number to 1 to represent
@@ -37,11 +38,11 @@ class Tile(object):
     def build_railroad(self):
         if(self.road == 1):
             self.road = 1.5
-    
+
     def set_owner(self,civ):
         self.owner = civ
-    
-    #TODO change how to deal with improvements        
+
+    #TODO change how to deal with improvements
     def add_improvement(self, name):
         if(self.improvement == None):
             self.improvement = name
@@ -50,22 +51,22 @@ class Tile(object):
             self.improve_prod(improvement.prod_yield)
             self.improve_gold(improvement.gold_yield)
             self.improve_science(improvement.science_yield)
-            
+
     def move_unit(self, unit_object):
         if(self.unit == None):
             self.unit = unit_object
-        
+
     def remove_unit(self):
         if(self.unit != None):
             self.unit = None
-            
+
     def process_turn(self):
         if(self.road == 0.5):
             self.road = 1
         if(self.road == 1.5):
             self.road = 2
         #TODO add processing new improvement for the turn
-        
+
     #Class calls with amount needed to improve resource
     def improve_food(self,amount):
         self.food_yield += amount
@@ -75,7 +76,7 @@ class Tile(object):
         self.science_yield += amount
     def improve_gold(self,amount):
         self.gold_yield += amount
-        
+
         #TODO init yields based on elevation and biome
         #TODO manage roads, won't change yields
         #TODO manage improvements
@@ -95,14 +96,14 @@ class Tile(object):
                     pass
                 else:
                     list_of_neighbors.append(self.grid.tiles[self.y-1,self.x+1])
-            
+
             list_of_neighbors.append(self.grid.tiles[self.y,self.x-1])
             if self.x+1 == self.grid.x:
                 #list_of_neighbors.append(self.grid.tiles[self.y,0])
                 pass
             else:
                 list_of_neighbors.append(self.grid.tiles[self.y,self.x+1])
-            
+
             if self.y < self.grid.y - 1:
                 list_of_neighbors.append(self.grid.tiles[self.y+1,self.x])
                 if self.y % 2 == 0:
@@ -127,7 +128,7 @@ class Tile(object):
                         else:
                             list_of_neighbors.append(self.grid.tiles[y_coords[row],x_coords[col]])
         return list_of_neighbors
-    
+
     def total_yield(self,food_coefficient=1,prod_coefficient=1,science_coefficient=1,gold_coefficent=1):
         return self.food_yield * food_coefficient + self.prod_yield * prod_coefficient \
         + self.science_yield * science_coefficient + self.gold_yield * gold_coefficent
@@ -135,7 +136,7 @@ class Tile(object):
 if __name__ == "__main__":
     #Moved this in here to prevent circular imports
     from grid import Grid
-    
+
     test_grid = Grid(5,5)
     list_of_tiles = test_grid.tiles[2,2].get_neighbors(distance=2)
     for tile in list_of_tiles:

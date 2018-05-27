@@ -25,7 +25,6 @@ class Game(object):
         self.y = y
         self.civs = []
         self.turns = []
-<<<<<<< HEAD
         self.curGrid = None
 
 =======
