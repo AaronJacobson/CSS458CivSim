@@ -21,6 +21,7 @@ class City(object):
         self.border_growth_count = 0
         self.border_distance = 1
         self.has_hydro_plant = False
+        self.has_university = False
         """
         self.set_close_to_city()
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
@@ -168,7 +169,8 @@ class City(object):
                     
             if self.to_build.name == "hydro_plant":#TODO make this use the lookup
                 self.has_hydro_plant = True
-
+            elif self.to_build.name == "university":
+                self.has_university = True
             #choose new production
             self.to_build = self.choose_production()
             self.production = 0
