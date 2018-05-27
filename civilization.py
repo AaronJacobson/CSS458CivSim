@@ -29,6 +29,8 @@ class Civ(object):
             sum_gold += gold
             sum_sci += sci
         
+        #sum_gold -= unit_maintenance(len(sel.unit_list)+len(self.mil_unit_list), turn)
+        
         #add new science to civ science value
         self.science += sum_sci
         
