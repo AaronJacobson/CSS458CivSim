@@ -1,6 +1,6 @@
 import numpy as N
 from tile import Tile
-#from classlookup import ClassLookUp
+from classlookup import ClassLookUp
 
 class Grid(object):
 
@@ -14,18 +14,19 @@ class Grid(object):
         self.probJungle = probJungle
         self.probRiver = probRiver
         self.probHill = probHill
+
         self.tiles = N.zeros((y,x),dtype='object')
 
         #---------------setting terrain for map---------------------------------
         #Set both artic circle
         for row in range(self.articWidth):
             for col in range(x):
-                print("pretest")
+                #print("pretest")
                 #top artic circle
                 self.tiles[row,col] = Tile(self,row,col,"artic","none")
                 #bottom artic circle
-                self.tiles[y-row,col] = Tile(self,row,col,"artic","none")
-                print("test")
+                self.tiles[self.y-(1+row),col] = Tile(self,row,col,"artic","none")
+                #print("test")
 
         #Set both tundric circle
         for row in range(self.tundraWidth):
@@ -33,11 +34,11 @@ class Grid(object):
                 #top tundra circle
                 self.tiles[row,col] = Tile(self,row,col,"tundra","none")
                 #bottom tundra circle
-                self.tiles[y-row-self.articWidth,col] = Tile(self,row,col,"tundra","none")
+                self.tiles[self.y-row-self.articWidth,col] = Tile(self,row,col,"tundra","none")
 
         #Set the middle terrain
 
-        for row in range((self.tundraWidth+self.articWidth),(y-self.tundraWidth-self.articWidth)):
+        for row in range((self.tundraWidth+self.articWidth),(self.y-self.tundraWidth-self.articWidth)):
             for col in range(x):
                 #Random initialization of tiles terrain
                 isGrassTile = N.random.binomial(1,self.precentGrass)
@@ -45,17 +46,17 @@ class Grid(object):
                     biome = "grassland"
                 else:
                     biome = "plain"
-                self.tiles[row,col] = Tile(self,row,col,isGrassTile,"none")
+                self.tiles[row,col] = Tile(self,row,col,biome,"none")
         #-----------------------------------------------------------------------
 
         #----------------------Setting rivers/terrain/elevation-----------------------------------
-        for row in range(y-1):
+        for row in range(y):
             isRiverTile = N.random.binomial(1,self.probRiver)
             isJungleTile = N.random.binomial(1,self.probJungle)
             isForrestTile = N.random.binomial(1,self.probForrest)
             isHillTile = N.random.binomial(1,self.probHill)
             if(isRiverTile):
-                for col in range(x):
+                for col in range(x-1):
                     #set River
                     if(isRiverTile):
                         self.tiles[row,col].near_river = True
@@ -72,4 +73,5 @@ class Grid(object):
                         self.tiles[row,col].elevation = "hill"
                         self.tiles[row,col+1].elevation = "hill"
         #-----------------------------------------------------------------------
+
         #TODO initialize all the tiles in the grid

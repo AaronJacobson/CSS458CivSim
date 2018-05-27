@@ -1,6 +1,6 @@
 from heapq import heappush,heappop
 import classlookup
-import unit
+from unit import Unit
 import random
 
 class City(object):
@@ -21,12 +21,21 @@ class City(object):
         self.border_growth_count = 0
         self.border_distance = 1
         self.has_hydro_plant = False
+        self.has_university = False
+<<<<<<< HEAD
 <<<<<<< HEAD
 
+
 =======
-        self.has_university = False
+        self.improving_tiles = []
+        self.tile_improve_heap = []
         
->>>>>>> 13c38463bff44702ac7198343058f1057c016158
+>>>>>>> a13cf1fcafa1efcd2c78cb3ec0168bb76551ceae
+=======
+        self.improving_tiles = []
+        self.tile_improve_heap = []
+        
+>>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
         self.set_close_to_city()
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
@@ -35,11 +44,14 @@ class City(object):
             tile.city = self
             tile.owner = self.civ
 <<<<<<< HEAD
-
+<<<<<<< HEAD
 =======
-        
-    
->>>>>>> 13c38463bff44702ac7198343058f1057c016158
+            heappush(self.tile_improve_heap,(tile.total_yield,tile))
+>>>>>>> a13cf1fcafa1efcd2c78cb3ec0168bb76551ceae
+=======
+            heappush(self.tile_improve_heap,(tile.total_yield,tile))
+>>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
+
     def set_close_to_city(self):
         close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
         for tile in close_tiles:
@@ -51,7 +63,7 @@ class City(object):
         total_bonus = 0
         for tile in self.tile_list:
             if tile.worked:
-                food_yield = food_yield + tile.food_yield
+                food_yield = food_yield + tile.get_food_yield()
         for building in self.building_list:
             food_yield = food_yield + building.food
             total_bonus = total_bonus + building.food_bonus
@@ -63,7 +75,7 @@ class City(object):
         total_bonus = 0
         for tile in self.tile_list:
             if tile.worked:
-                prod_yield = prod_yield + tile.prod_yield
+                prod_yield = prod_yield + tile.get_prod_yield()
         for building in self.building_list:
             prod_yield = prod_yield + building.production
             total_bonus = total_bonus + building.production_bonus
@@ -75,7 +87,7 @@ class City(object):
         total_bonus = 0
         for tile in self.tile_list:
             if tile.worked:
-                science_yield = science_yield + tile.science_yield
+                science_yield = science_yield + tile.get_science_yield()
         for building in self.building_list:
             science_yield = science_yield + building.science
             total_bonus = total_bonus + building.science_bonus
@@ -87,7 +99,7 @@ class City(object):
         total_bonus = 0
         for tile in self.tile_list:
             if tile.worked:
-                gold_yield = gold_yield + tile.gold_yield
+                gold_yield = gold_yield + tile.get_gold_yield()
         for building in self.building_list:
             gold_yield = gold_yield + building.gold
             total_bonus = total_bonus + building.gold_bonus
@@ -143,11 +155,58 @@ class City(object):
                 tile.city = self
                 tile.ownder = self.civ
                 self.tile_list.append(tile)
+                heappush(self.tile_improve_heap,(tile.total_yield,tile))
+    
+    def improve_tiles(self):
+        #improve one at a time
+        if len(self.improving_tiles) == 0:
+            if len(self.tile_improve_heap) > 0:
+                tile_to_improve = heappop(self.tile_improve_heap)[1]
+                tile_to_improve.improvement_turns = 4
+                self.improving_tiles.append(tile_to_improve)
+        if self.border_distance == 2 and len(self.improving_tiles) < 2:
+            if len(self.tile_improve_heap) > 0:
+                tile_to_improve = heappop(self.tile_improve_heap)[1]
+                tile_to_improve.improvement_turns = 4
+                self.improving_tiles.append(tile_to_improve)
+        if self.border_distance == 3 and len(self.improving_tiles) < 3:
+            if len(self.tile_improve_heap) > 0:
+                tile_to_improve = heappop(self.tile_improve_heap)[1]
+                tile_to_improve.improvement_turns = 4
+                self.improving_tiles.append(tile_to_improve)
+        for tile in self.improving_tiles:
+            tile.improvement_turns = tile.improvement_turns - 1
+            if tile.improvement_turns == 0:
+                if tile.terrain == "forest":
+                    #build lumbermill
+                    tile.add_improvement("lumber_mill")
+                elif tile.terrain == "hills":
+                    #build mine
+                    tile.add_improvement("mine")
+                elif tile.terrain == "jungle":
+                    #build trading post
+                    tile.add_improvement("trading_post")
+                else:
+                    if tile.biome == "grassland" or tile.biome == "plains" or tile.near_river:
+                        #build farm
+                        tile.add_improvement("farm")
+                    else:
+                        #build trading post
+                        tile.add_improvement("trading_post")
+                self.improving_tiles.remove(tile)
+<<<<<<< HEAD
+
+    #TODO Fix unit making error
 
     def process_turn(self):
-        #TODO update improvements
 
+        self.improve_tiles()
+        
         #check food, update pop
+=======
+    
+    def check_food(self):
+>>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
         self.food = self.food + self.get_food_yield()
         if self.food >= self.food_to_grow(self.pop+1):
             #grow
@@ -155,6 +214,13 @@ class City(object):
             #TODO set which tile is being worked.
             self.food = 0
 
+    def process_turn(self):
+        #improve the tiles
+        self.improve_tiles()
+        
+        #check food, update pop
+        self.check_food()
+        
         #add prod, check production
         self.production = self.production + self.get_prod_yield
         if self.to_build == None:
@@ -167,12 +233,12 @@ class City(object):
                 self.building_list.append(self.to_build)#TODO make work with units
             else:
                 if self.to_build.name == "settler":
-                    self.grid.tiles[self.y,self.x].unit = unit.Unit(name="settler",atype="civilian",prod_cost=106,speed=2,y=self.y,x=self.x,civ=self.civ,grid=self.grid)
+                    self.grid.tiles[self.y,self.x].unit = Unit(name="settler",atype="civilian",prod_cost=106,speed=2,y=self.y,x=self.x,civ=self.civ,grid=self.grid)
                     self.civ.unit_list.append(self.grid.tiles[self.y,self.x].unit)
                     self.grid.tiles[self.y,self.x].unit.process_turn()
                 else:
                     unit = self.to_build
-                    unit_to_add = unit.Unit(name=unit.name,atype=unit.atype,prod_cost=unit.prod_cost,speed=unit.speed,y=-1,x=-1,civ=self.civ)
+                    unit_to_add = Unit(name=unit.name,atype=unit.atype,prod_cost=unit.prod_cost,speed=unit.speed,y=-1,x=-1,civ=self.civ)
                     self.civ.mil_unit_list.append(unit_to_add)
 
             if self.to_build.name == "hydro_plant":#TODO make this use the lookup
@@ -180,8 +246,8 @@ class City(object):
             elif self.to_build.name == "university":
                 self.has_university = True
             #choose new production
+            self.production = self.production - self.to_build.prod_cost
             self.to_build = self.choose_production()
-            self.production = 0
 
         #growing borders
         if self.border_growth_count >= 100 and self.border_distance == 1:
@@ -196,17 +262,29 @@ class City(object):
             heappush(heap_of_tiles,(self.tile_list[i].total_yield,i))
         for i in range(self.pop):
             self.tile_list[heappop(heap_of_tiles)[1]].worked = True
+<<<<<<< HEAD
+
+=======
     
+    """
+        Takes a given value and returns the population based on previous data.
+    """
+>>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
     def popF(self,x):
         return 959.0549*x**2.8132
 
+    """
+        Returns the population, not population points, in the city. Uses a look
+        up table for the first 9 values to increase accuracy. Likely innaccurate
+        beyond pop = 40.
+    """
     def calculate_population(self):
         look = classlookup.ClassLookUp()
         if self.pop < 10:
             return look.pop_table[self.pop]
         else:
             return int(self.popF(self.pop))
-    
+
 if __name__ == "__main__":
     test_city = City(None,None,None,None)
     for i in range(41):

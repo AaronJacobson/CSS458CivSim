@@ -1,5 +1,5 @@
 import numpy as N
-#from classlookup import ClassLookUp
+import classlookup
 
 class Tile(object):
     """
@@ -28,7 +28,8 @@ class Tile(object):
         self.near_river = river
         self.get_neighbors_checked = False
         self.worked = False
-        
+        self.improvement_turns = -1
+
     """
     Roads take 2 turns to build. Road is set to .5 when starting to build.
     on following turn, processing turn will increase number to 1 to represent
@@ -36,7 +37,7 @@ class Tile(object):
     """
     def build_road(self):
         self.road = 0.5
-        
+
     def build_railroad(self):
         if(self.road == 1):
             self.road = 1.5
@@ -44,20 +45,49 @@ class Tile(object):
     def set_owner(self,civ):
         self.owner = civ
 
+    def get_science_yield(self):
+        science_bonus = 0
+        if(self.city.has_university == True):
+            if(self.terrain == "jungle"):
+                science_bonus += 2
+        return (self.science_yield + science_bonus)
+
+
     def get_prod_yield(self):
         prod_bonus = 0
         if(self.city.has_hydro_plant == True):
             if(self.near_river == True):
-                prod_bonus = 1
-<<<<<<< HEAD
-        return (prod_yield + prod_bonus)
+                prod_bonus += 1
+        if(self.improvement == "mine"):
+            if(self.owner.science >= 2930):
+                prod_bonus += 1
+        if(self.improvement == "lumber_mill"):
+            if(self.owner.science >= 4530):
+                prod_bonus += 1
+        return (self.prod_yield + prod_bonus)
 
->>>>>>> 13c38463bff44702ac7198343058f1057c016158
+    def get_food_yield(self):
+        food_bonus = 0
+        if(self.improvement == "farm"):
+            if(self.owner.science >= 625):
+                if(self.near_river == True):
+                    food_bonus += 1
+            if(self.owner.science >= 4530):
+                food_bonus += 1
+        return (self.food_yield + food_bonus)
+
+    def get_gold_yield(self):
+        gold_bonus = 0
+        if(self.improvement == "trading_post"):
+            if(self.owner.science >= 2930):
+                gold_bonus += 1
+        return (self.gold_yield + gold_bonus)
+
     #TODO change how to deal with improvements
     def add_improvement(self, name):
         if(self.improvement == None):
             self.improvement = name
-            improvement = ClassLookUp.improvement_lookup[name]
+            improvement = classlookup.ClassLookUp.improvement_lookup[name]
             self.improve_food(improvement.food_yield)
             self.improve_prod(improvement.prod_yield)
             self.improve_gold(improvement.gold_yield)
@@ -141,8 +171,10 @@ class Tile(object):
         return list_of_neighbors
 
     def total_yield(self,food_coefficient=1,prod_coefficient=1,science_coefficient=1,gold_coefficent=1):
-        return self.food_yield * food_coefficient + self.get_prod_yield() * prod_coefficient \
-        + self.science_yield * science_coefficient + self.gold_yield * gold_coefficent
+
+        return self.get_food_yield() * food_coefficient + self.get_prod_yield() * prod_coefficient \
+        + self.get_science_yield() * science_coefficient + self.get_gold_yield() * gold_coefficent
+
 
 if __name__ == "__main__":
     #Moved this in here to prevent circular imports
