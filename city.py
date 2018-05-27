@@ -28,7 +28,7 @@ class City(object):
         self.grid.tiles[y,x].has_city = True
         for tile in self.tile_list:
             tile.city = self
-            tile.ownder = self.civ
+            tile.owner = self.civ
     
     def set_close_to_city(self):
         close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
@@ -130,6 +130,7 @@ class City(object):
         tiles_to_add = self.grid[self.y,self.x].get_neighbors(distance=self.border_distance)
         for tile in tiles_to_add:
             if tile.owner == None:
+                tile.city = self
                 tile.ownder = self.civ
                 self.tile_list.append(tile)
     
