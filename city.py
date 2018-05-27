@@ -201,7 +201,7 @@ class City(object):
         if self.production >= self.to_build.prod_cost:
             #complete production
             if self.to_build.type == "building":
-                self.building_list.append(self.to_build)#TODO make work with units
+                self.building_list.append(self.to_build)
             else:
                 if self.to_build.name == "settler":
                     self.grid.tiles[self.y,self.x].unit = Unit(name="settler",atype="civilian",prod_cost=106,speed=2,y=self.y,x=self.x,civ=self.civ,grid=self.grid)
@@ -212,7 +212,7 @@ class City(object):
                     unit_to_add = Unit(name=unit.name,atype=unit.atype,prod_cost=unit.prod_cost,speed=unit.speed,y=-1,x=-1,civ=self.civ)
                     self.civ.mil_unit_list.append(unit_to_add)
 
-            if self.to_build.name == "hydro_plant":#TODO make this use the lookup
+            if self.to_build.name == "hydro_plant":
                 self.has_hydro_plant = True
             elif self.to_build.name == "university":
                 self.has_university = True
