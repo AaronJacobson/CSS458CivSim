@@ -1,5 +1,5 @@
 import numpy as N
-import classlookup
+#from classlookup import ClassLookUp
 
 class Tile(object):
     """
@@ -43,19 +43,28 @@ class Tile(object):
 
     def set_owner(self,civ):
         self.owner = civ
-
+    
+    def get_science_yield(self):
+        science_bonus = 0
+        if(self.city.has_university == True):
+            if(self.terrain == "jungle"):
+                science_bonus = 2
+        return (self.science_yield + science_bonus)
+    
     def get_prod_yield(self):
         prod_bonus = 0
         if(self.city.has_hydro_plant == True):
             if(self.near_river == True):
                 prod_bonus = 1
-        return (prod_yield + prod_bonus)
+<<<<<<< HEAD
+        return (self.prod_yield + prod_bonus)
 
+>>>>>>> 13c38463bff44702ac7198343058f1057c016158
     #TODO change how to deal with improvements
     def add_improvement(self, name):
         if(self.improvement == None):
             self.improvement = name
-            improvement = classlookup.ClassLookUp.improvement_lookup[name]
+            improvement = ClassLookUp.improvement_lookup[name]
             self.improve_food(improvement.food_yield)
             self.improve_prod(improvement.prod_yield)
             self.improve_gold(improvement.gold_yield)
@@ -140,7 +149,7 @@ class Tile(object):
 
     def total_yield(self,food_coefficient=1,prod_coefficient=1,science_coefficient=1,gold_coefficent=1):
         return self.food_yield * food_coefficient + self.get_prod_yield() * prod_coefficient \
-        + self.science_yield * science_coefficient + self.gold_yield * gold_coefficent
+        + self.get_science_yield() * science_coefficient + self.gold_yield * gold_coefficent
 
 if __name__ == "__main__":
     #Moved this in here to prevent circular imports
