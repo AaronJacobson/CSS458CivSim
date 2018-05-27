@@ -25,13 +25,7 @@ class Game(object):
         self.y = y
         self.civs = []
         self.turns = []
-<<<<<<< HEAD
-        self.curGrid = None
-
-=======
         self.cur_grid = None
-        
->>>>>>> 0c9a66cf5afb4b7d0853e45f4777172fac34f2e1
 
         #Fill grid values and civ list
         self.simInit()
@@ -44,8 +38,8 @@ class Game(object):
         """
         #RUN MAP GENERATOR HERE TO POPULATE INITIAL GRID!
         #REPLACE NONE WITH CALL TO MAP GEN OR SIMPLY GET THAT THROUGH MAP GEN
-        self.curGrid = None
-        self.turns.append(self.curGrid)
+        self.cur_grid = None
+        self.turns.append(self.cur_grid)
         #REPLACE NONE WITH CALL TO MAP GEN OR SET CUR_GRID THROUGH MAP GEN
         self.cur_grid = None
         self.turns.append(copy.deepcopy(self.cur_grid))
