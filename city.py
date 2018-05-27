@@ -1,6 +1,6 @@
 from heapq import heappush,heappop
-from classlookup import ClassLookUp
-from unit import Unit
+import classlookup
+import unit
 import random
 
 class City(object):
@@ -21,7 +21,7 @@ class City(object):
         self.border_growth_count = 0
         self.border_distance = 1
         self.has_hydro_plant = False
-        
+        """
         self.set_close_to_city()
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
@@ -29,6 +29,7 @@ class City(object):
         for tile in self.tile_list:
             tile.city = self
             tile.owner = self.civ
+        """
     
     def set_close_to_city(self):
         close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
@@ -95,7 +96,7 @@ class City(object):
         
     def choose_production(self,yield_coef=1.0,food_val_coef=1.0,prod_val_coef=1.0,\
     science_val_coef=1.0,gold_val_coef=1.0,settler_chance=.1,unit_chance=.4):
-        look = ClassLookUp()
+        look = classlookup.ClassLookUp()
         building_heap = []
         unit_heap = []
         for i in range(len(look.researchVal)):
@@ -157,12 +158,12 @@ class City(object):
                 self.building_list.append(self.to_build)#TODO make work with units
             else:
                 if self.to_build.name == "settler":
-                    self.grid.tiles[self.y,self.x].unit = Unit(name="settler",atype="civilian",prod_cost=106,speed=2,y=self.y,x=self.x,civ=self.civ,grid=self.grid)
+                    self.grid.tiles[self.y,self.x].unit = unit.Unit(name="settler",atype="civilian",prod_cost=106,speed=2,y=self.y,x=self.x,civ=self.civ,grid=self.grid)
                     self.civ.unit_list.append(self.grid.tiles[self.y,self.x].unit)
                     self.grid.tiles[self.y,self.x].unit.process_turn()
                 else:
                     unit = self.to_build
-                    unit_to_add = Unit(name=unit.name,atype=unit.atype,prod_cost=unit.prod_cost,speed=unit.speed,y=-1,x=-1,civ=self.civ)
+                    unit_to_add = unit.Unit(name=unit.name,atype=unit.atype,prod_cost=unit.prod_cost,speed=unit.speed,y=-1,x=-1,civ=self.civ)
                     self.civ.mil_unit_list.append(unit_to_add)
                     
             if self.to_build.name == "hydro_plant":#TODO make this use the lookup
@@ -185,3 +186,19 @@ class City(object):
             heappush(heap_of_tiles,(self.tile_list[i].total_yield,i))
         for i in range(self.pop):
             self.tile_list[heappop(heap_of_tiles)[1]].worked = True
+    
+    def popF(self,x):
+        return 959.0549*x**2.8132
+
+    def calculate_population(self):
+        look = classlookup.ClassLookUp()
+        if self.pop < 10:
+            return look.pop_table[self.pop]
+        else:
+            return self.popF(self.pop)
+    
+if __name__ == "__main__":
+    test_city = City(None,None,None,None)
+    for i in range(41):
+        test_city.pop = i
+        print(test_city.calculate_population())
