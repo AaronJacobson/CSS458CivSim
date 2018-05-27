@@ -11,7 +11,7 @@ class Grid(object):
         self.tundraWidth = tundraWidth
         self.probForrest = probForrest
         self.probJungle = probJungle
-
+        self.probRiver = probRiver
         self.tiles = N.zeros((y,x),dtype='object')
 
         #---------------setting terrain for map---------------------------------
@@ -32,10 +32,10 @@ class Grid(object):
                 self.tiles[y-row-self.articWidth,col] = Tile(self,row,col,"tundra","none")
 
         #Set the middle terrain
-        for row in range((self.tundraWidth+self.articWidth):(y-self.tundraWidth-self.articWidth)):
+        for row in range((self.tundraWidth+self.articWidth),(y-self.tundraWidth-self.articWidth)):
             for col in range(x):
                 #Random initialization of tiles terrain
-                isGrassTile = N.random.binomial(1,self.precentGrass,1000)
+                isGrassTile = N.random.binomial(1,self.precentGrass)
                 if(isGrassTile):
                     biome = "grassland"
                 else:
@@ -45,6 +45,8 @@ class Grid(object):
 
         #----------------------Setting rivers/terrain-----------------------------------
         for row in range(y-1):
-            
+            for col in range(x):
+                isRiverTile = N.random.binomial(1,self.probRiver)
+
         #-----------------------------------------------------------------------
         #TODO initialize all the tiles in the grid
