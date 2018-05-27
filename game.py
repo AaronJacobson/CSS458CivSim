@@ -53,13 +53,8 @@ class Game(object):
         yield_vals = N.zeros((self.numTurns,len(self.civs),4))
         #Initialize run loop
         for i in range(self.numTurns):
-<<<<<<< HEAD
             #Grab Grid for Processing
             curGrid = self.turns[-1]
-
-=======
-            
->>>>>>> 0c9a66cf5afb4b7d0853e45f4777172fac34f2e1
             #Process Civ Wars
 
             #Process Civs Individual turns

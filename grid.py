@@ -32,6 +32,7 @@ class Grid(object):
                 self.tiles[y-row-self.articWidth,col] = Tile(self,row,col,"tundra","none")
 
         #Set the middle terrain
+        """
         for row in range((self.tundraWidth+self.articWidth):(y-self.tundraWidth-self.articWidth)):
             for col in range(x):
                 #Random initialization of tiles terrain
@@ -41,6 +42,7 @@ class Grid(object):
                 else:
                     biome = "plain"
                 self.tiles[row,col] = Tile(self,row,col,isGrassTile,"none")
+        """
         #-----------------------------------------------------------------------
 
         #----------------------Setting rivers/terrain-----------------------------------
