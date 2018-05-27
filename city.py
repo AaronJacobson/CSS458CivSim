@@ -179,14 +179,6 @@ class City(object):
                         tile.add_improvement("trading_post")
                 self.improving_tiles.remove(tile)
 
-    #TODO Fix unit making error
-
-    def process_turn(self):
-
-        self.improve_tiles()
-        
-        #check food, update pop
-
     def check_food(self):
         self.food = self.food + self.get_food_yield()
         if self.food >= self.food_to_grow(self.pop+1):
@@ -265,6 +257,4 @@ class City(object):
 
 if __name__ == "__main__":
     test_city = City(None,None,None,None)
-    for i in range(41):
-        test_city.pop = i
-        print(test_city.calculate_population())
+    
