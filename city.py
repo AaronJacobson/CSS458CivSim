@@ -42,7 +42,7 @@ class City(object):
         total_bonus = 0
         for tile in self.tile_list:
             if tile.worked:
-                food_yield = food_yield + tile.food_yield
+                food_yield = food_yield + tile.get_food_yield()
         for building in self.building_list:
             food_yield = food_yield + building.food
             total_bonus = total_bonus + building.food_bonus
@@ -54,7 +54,7 @@ class City(object):
         total_bonus = 0
         for tile in self.tile_list:
             if tile.worked:
-                prod_yield = prod_yield + tile.prod_yield
+                prod_yield = prod_yield + tile.get_prod_yield()
         for building in self.building_list:
             prod_yield = prod_yield + building.production
             total_bonus = total_bonus + building.production_bonus
@@ -66,7 +66,7 @@ class City(object):
         total_bonus = 0
         for tile in self.tile_list:
             if tile.worked:
-                science_yield = science_yield + tile.science_yield
+                science_yield = science_yield + tile.get_science_yield()
         for building in self.building_list:
             science_yield = science_yield + building.science
             total_bonus = total_bonus + building.science_bonus
@@ -78,7 +78,7 @@ class City(object):
         total_bonus = 0
         for tile in self.tile_list:
             if tile.worked:
-                gold_yield = gold_yield + tile.gold_yield
+                gold_yield = gold_yield + tile.get_gold_yield()
         for building in self.building_list:
             gold_yield = gold_yield + building.gold
             total_bonus = total_bonus + building.gold_bonus
