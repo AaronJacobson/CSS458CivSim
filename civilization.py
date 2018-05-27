@@ -37,4 +37,5 @@ class Civ(object):
     
     def unit_maintenance(unit, turn):
         #TODO input formula
+        #maintenance = ((0.5 + (8/1000)*turn) round(unit, 2))**(1 + (2/700) * turn)
         return unit
