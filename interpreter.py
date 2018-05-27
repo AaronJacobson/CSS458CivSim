@@ -9,7 +9,7 @@ class Interpreter(object):
     '''
         #get from grid and write all the info about each tile
         self.mapFile = open("testMap","w")
-        
+
         for self.x in range(game.grid.x):
             for self.y in range(game.grid.y):
                 mapFile.write(self.x + " " + self.y + " " + ) #add grid features like terrain and stuff
@@ -124,6 +124,7 @@ class Interpreter(object):
 
         #varify that variables is indeed what they should be
         #if(game)
+
 
         #varify that gameNum is resonable
         if(type(game.gameNumber) is int):

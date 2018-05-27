@@ -11,7 +11,7 @@ import os
 class Game(object):
     """
     """
-    
+
     def __init__(self,y = 50,x = 100,numTurns = 500,mapName = None):
         """
         """
@@ -25,14 +25,14 @@ class Game(object):
         self.civs = []
         self.turns = []
         self.curGrid = None
-        
+
 
         #Fill grid values and civ list
         self.simInit()
         #TODO initialize the list/dictionary of biomes and they're yields
         #TODO List of grids\
-    
-    
+
+
     def simInit(self):
         """
         """
@@ -40,6 +40,9 @@ class Game(object):
         #REPLACE NONE WITH CALL TO MAP GEN OR SIMPLY GET THAT THROUGH MAP GEN
         self.curGrid = None
         self.turns.append(self.curGrid)
+
+
+
 
     def run(self):
         """
@@ -49,13 +52,13 @@ class Game(object):
         for i in range(self.numTurns):
             #Grab Grid for Processing
             curGrid = self.turns[-1]
-            
+
             #Process Civ Wars
-            
+
             #Process Civs Individual turns
             for civ in self.civs:
                 yield_vals[i,civ.civNum]=civ.process_turn()
-            
+
             #Process Tiles
             #Gods this is inefficient, but without creating a list of tile changes, cellular automata is the way to go!
             for m in range(y):
