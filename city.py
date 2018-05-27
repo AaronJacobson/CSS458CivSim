@@ -130,7 +130,7 @@ class City(object):
         decision = random.uniform(0,1)
         if decision < settler_chance:
             return look.unit_lookup["settler"]
-        elif decision < unit_chance:
+        elif decision < unit_chance+settler_chance:
             return heappop(unit_heap)[1]
         else:
             return heappop(building_heap)[1]

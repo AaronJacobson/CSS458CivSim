@@ -4,7 +4,7 @@ import classlookup
 class Tile(object):
     """
     """
-    def __init__(self,grid,y=-1,x=-1,biome="grassland",elevation="none",terrain="none",unique_resource=None,food_yield=0,prod_yield=0,\
+    def __init__(self,grid,y=-1,x=-1,biome="none",elevation="none",terrain="none",unique_resource=None,food_yield=0,prod_yield=0,\
     science_yield=0,gold_yield=0, road=False, river = False):
         self.grid = grid
         self.y = y

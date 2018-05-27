@@ -28,6 +28,7 @@ class Game(object):
         self.civs = []
         self.turns = []
 
+        self.num_civ = num_civ
         self.cur_grid = Grid(y,x)
         self.initCivs(num_civ)
 
