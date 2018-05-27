@@ -76,30 +76,32 @@ class ClassLookUp(object):
     def initBuildingLookUp():
         """
         """
-        granary = Building(name="granary",gold_yield=-1,food_yield=2)
-        library = Building(name="library",gold_yield=-1,science_pop_bonus=.5)
-        stoneworks = Building(name="stoneworks",gold_yield=-1,prod_yield=1)
-        watermill = Building(name="watermill",gold_yield=-2,food_yield=2,prod_yield=1)
-        market = Building(name="market",gold_yield=2,gold_bonus=.25)
-        university = Building(name="university",gold_yield=-2,science_bonus=.33)
-        workshop = Building(name="workshop",gold_yield=-2,prod_yield=2,prod_bonus=.1)
-        bank = Building(name="bank",gold_yield=2,gold_bonus=.25)
-        observatory = Building(name="observatory",science_bonus=.5)
+        granary = Building(name="granary",gold_yield=-1,food_yield=2,prod_cost=60)
+        library = Building(name="library",gold_yield=-1,science_pop_bonus=.5,prod_cost=75)
+        stoneworks = Building(name="stoneworks",gold_yield=-1,prod_yield=1,prod_cost=75)
+        watermill = Building(name="watermill",gold_yield=-2,food_yield=2,prod_yield=1,prod_cost=75)
+        market = Building(name="market",gold_yield=2,gold_bonus=.25,prod_cost=100)
+        university = Building(name="university",gold_yield=-2,science_bonus=.33,prod_cost=160)
+        workshop = Building(name="workshop",gold_yield=-2,prod_yield=2,prod_bonus=.1,prod_cost=120)
+        bank = Building(name="bank",gold_yield=2,gold_bonus=.25,prod_cost=200)
+        observatory = Building(name="observatory",science_bonus=.5,prod_cost=200)
         #We're ignoring the clause of windmill only helping building construction
-        windmill = Building(name="windmill",gold_yield=-2,prod_yield=2,prod_bonus=.1)
-        factory = Building(name="factory",gold_yield=-3,prod_yield=4,prod_bonus=.1)
-        hospital = Building(name="hospital",gold_yield=-2,food_yield=5)
-        public_school = Building(name="public_school",gold_yield=-3,science_yield=3,science_pop_bonus=.5)
-        stock_exchange = Building(name="stock_exchange",gold_yield=3,gold_bonus=.33)
-        research_lab = Building(name="research_lab",gold_yield=-3,science_yield=4,science_bonus=.5)
+        windmill = Building(name="windmill",gold_yield=-2,prod_yield=2,prod_bonus=.1,prod_cost=250)
+        factory = Building(name="factory",gold_yield=-3,prod_yield=4,prod_bonus=.1,prod_cost=360)
+        hospital = Building(name="hospital",gold_yield=-2,food_yield=5,prod_cost=360)
+        public_school = Building(name="public_school",gold_yield=-3,science_yield=3,science_pop_bonus=.5,prod_cost=360)
+        hydro_plant = Building(name="hydro_plant",gold_yield=-3,prod_cost=360)
+        stock_exchange = Building(name="stock_exchange",gold_yield=3,gold_bonus=.33,prod_cost=500)
+        research_lab = Building(name="research_lab",gold_yield=-3,science_yield=4,science_bonus=.5,prod_cost=500)
         #We're combining nuclear and solar plants since we're not looking at strategic resource counts
-        power_plant = Building(name="power_plant",gold_yield=-3,prod_yield=5,prod_bonus=.15)
+        power_plant = Building(name="power_plant",gold_yield=-3,prod_yield=5,prod_bonus=.15,prod_cost=500)
         building_lookup = { granary.name:granary, library.name:library \
         ,stoneworks.name:stoneworks, watermill.name:watermill, market.name:market \
         , university.name:university, workshop.name:workshop, bank.name:bank \
         , observatory.name:observatory, windmill.name:windmill, factory.name:factory \
         , hospital.name:hospital, public_school.name:public_school, stock_exchange.name:stock_exchange \
-        , research_lab.name:research_lab, power_plant.name:power_plant}
+        , research_lab.name:research_lab, power_plant.name:power_plant\
+        , hydro_plant.name:hydro_plant}
         return building_lookup
     
     #Create class dictionary for finding building information

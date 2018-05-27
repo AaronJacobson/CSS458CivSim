@@ -41,6 +41,7 @@ class Grid(object):
                 else:
                     biome = "plain"
                 self.tiles[row,col] = Tile(self,row,col,isGrassTile,"none")
+        """
         #-----------------------------------------------------------------------
 
         #----------------------Setting rivers/terrain-----------------------------------

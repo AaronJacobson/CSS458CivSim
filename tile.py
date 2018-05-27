@@ -27,7 +27,8 @@ class Tile(object):
         self.road = road
         self.near_river = river
         self.get_neighbors_checked = False
-
+        self.worked = False
+        
     """
     Roads take 2 turns to build. Road is set to .5 when starting to build.
     on following turn, processing turn will increase number to 1 to represent
