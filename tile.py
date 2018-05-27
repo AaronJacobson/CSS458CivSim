@@ -123,7 +123,6 @@ class Tile(object):
 
     def get_neighbors(self,distance=1):
         list_of_neighbors = []
-        
         if distance == 1:
             if self.y > 0:
                 list_of_neighbors.append(self.grid.tiles[self.y-1,self.x])
