@@ -1,5 +1,5 @@
 from heapq import heappush,heappop
-from city import City
+import city
 class Unit(object):
     
     def __init__(self,name="none",atype="nothing",prod_cost=0,strength=0,\
@@ -52,7 +52,7 @@ class Unit(object):
                         self.move_unit(self.y,self.x-1)
             if self.target_city_tile.y == self.y and self.targey_city_tile == self.x:
                 #found city
-                self.grid.tiles[self.y,self.x].city = City(self.grid,self.y,self.x,self.civ.civ_number)
+                self.grid.tiles[self.y,self.x].city = city.City(self.grid,self.y,self.x,self.civ.civ_number)
                 self.civ.city_list.append(self.grid.tiles[self.y,self.x].city)
                 self.grid.tiles[self.y,self.x].city.process_turn()
         else:
