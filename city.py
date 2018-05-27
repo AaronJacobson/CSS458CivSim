@@ -1,6 +1,6 @@
 from heapq import heappush,heappop
 import classlookup
-from unit import Unit
+import unit as tunit
 import random
 
 class City(object):
@@ -206,7 +206,7 @@ class City(object):
                 self.building_list.append(self.to_build)
             else:
                 if self.to_build.name == "settler":
-                    self.grid.tiles[self.y,self.x].unit = Unit(name="settler",atype="civilian",prod_cost=106,speed=2,y=self.y,x=self.x,civ=self.civ,grid=self.grid)
+                    self.grid.tiles[self.y,self.x].unit = tunit.Unit(name="settler",atype="civilian",prod_cost=106,speed=2,y=self.y,x=self.x,civ=self.civ,grid=self.grid)
                     self.civ.unit_list.append(self.grid.tiles[self.y,self.x].unit)
                     self.grid.tiles[self.y,self.x].unit.process_turn()
                 else:
