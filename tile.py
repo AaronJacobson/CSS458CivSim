@@ -48,7 +48,7 @@ class Tile(object):
         if(self.city.has_hydro_plant == True):
             if(self.near_river == True):
                 prod_bonus = 1
-        return (prod_yield + prod_bonus)
+        return (self.prod_yield + prod_bonus)
     
     #TODO change how to deal with improvements
     def add_improvement(self, name):
@@ -138,7 +138,7 @@ class Tile(object):
         return list_of_neighbors
 
     def total_yield(self,food_coefficient=1,prod_coefficient=1,science_coefficient=1,gold_coefficent=1):
-        return self.food_yield * food_coefficient + get_prod_yield() * prod_coefficient \
+        return self.food_yield * food_coefficient + self.get_prod_yield() * prod_coefficient \
         + self.science_yield * science_coefficient + self.gold_yield * gold_coefficent
 
 if __name__ == "__main__":
