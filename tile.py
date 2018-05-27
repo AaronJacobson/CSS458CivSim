@@ -1,5 +1,5 @@
 import numpy as N
-from classlookup import ClassLookUp
+#from classlookup import ClassLookUp
 
 class Tile(object):
     """
@@ -36,20 +36,21 @@ class Tile(object):
     """
     def build_road(self):
         self.road = 0.5
+        
     def build_railroad(self):
         if(self.road == 1):
             self.road = 1.5
 
     def set_owner(self,civ):
         self.owner = civ
-    
+
     def get_prod_yield(self):
         prod_bonus = 0
         if(self.city.has_hydro_plant == True):
             if(self.near_river == True):
                 prod_bonus = 1
         return (prod_yield + prod_bonus)
-    
+
     #TODO change how to deal with improvements
     def add_improvement(self, name):
         if(self.improvement == None):
@@ -143,6 +144,7 @@ class Tile(object):
 
 if __name__ == "__main__":
     #Moved this in here to prevent circular imports
+
     from grid import Grid
 
     test_grid = Grid(5,5)

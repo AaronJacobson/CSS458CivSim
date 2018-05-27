@@ -1,6 +1,6 @@
 import numpy as N
 from tile import Tile
-from classlookup import ClassLookUp
+#from classlookup import ClassLookUp
 
 class Grid(object):
 
@@ -20,10 +20,12 @@ class Grid(object):
         #Set both artic circle
         for row in range(self.articWidth):
             for col in range(x):
+                print("pretest")
                 #top artic circle
                 self.tiles[row,col] = Tile(self,row,col,"artic","none")
                 #bottom artic circle
                 self.tiles[y-row,col] = Tile(self,row,col,"artic","none")
+                print("test")
 
         #Set both tundric circle
         for row in range(self.tundraWidth):
@@ -45,7 +47,7 @@ class Grid(object):
                     biome = "plain"
                 self.tiles[row,col] = Tile(self,row,col,isGrassTile,"none")
         #-----------------------------------------------------------------------
-'''
+
         #----------------------Setting rivers/terrain/elevation-----------------------------------
         for row in range(y-1):
             isRiverTile = N.random.binomial(1,self.probRiver)
@@ -71,4 +73,3 @@ class Grid(object):
                         self.tiles[row,col+1].elevation = "hill"
         #-----------------------------------------------------------------------
         #TODO initialize all the tiles in the grid
-'''
