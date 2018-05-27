@@ -22,26 +22,13 @@ class City(object):
         self.border_distance = 1
         self.has_hydro_plant = False
         self.has_university = False
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+        self.improving_tiles = []
+        self.tile_improve_heap = []
+        self.improving_tiles = []
+        self.tile_improve_heap = []
+        self.improving_tiles = []
+        self.tile_improve_heap = []
 
-
-=======
-        self.improving_tiles = []
-        self.tile_improve_heap = []
-        
->>>>>>> a13cf1fcafa1efcd2c78cb3ec0168bb76551ceae
-=======
-        self.improving_tiles = []
-        self.tile_improve_heap = []
-        
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
-=======
-        self.improving_tiles = []
-        self.tile_improve_heap = []
-        
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
         self.set_close_to_city()
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
@@ -49,18 +36,13 @@ class City(object):
         for tile in self.tile_list:
             tile.city = self
             tile.owner = self.civ
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
             heappush(self.tile_improve_heap,(tile.total_yield,tile))
->>>>>>> a13cf1fcafa1efcd2c78cb3ec0168bb76551ceae
-=======
+
             heappush(self.tile_improve_heap,(tile.total_yield,tile))
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
-=======
+
             heappush(self.tile_improve_heap,(tile.total_yield,tile))
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
+
 
     def set_close_to_city(self):
         close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
@@ -204,8 +186,6 @@ class City(object):
                         #build trading post
                         tile.add_improvement("trading_post")
                 self.improving_tiles.remove(tile)
-<<<<<<< HEAD
-<<<<<<< HEAD
 
     #TODO Fix unit making error
 
@@ -214,14 +194,8 @@ class City(object):
         self.improve_tiles()
         
         #check food, update pop
-=======
-    
+
     def check_food(self):
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
-=======
-    
-    def check_food(self):
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
         self.food = self.food + self.get_food_yield()
         if self.food >= self.food_to_grow(self.pop+1):
             #grow
@@ -277,17 +251,11 @@ class City(object):
             heappush(heap_of_tiles,(self.tile_list[i].total_yield,i))
         for i in range(self.pop):
             self.tile_list[heappop(heap_of_tiles)[1]].worked = True
-<<<<<<< HEAD
-
-=======
     
     """
         Takes a given value and returns the population based on previous data.
     """
-<<<<<<< HEAD
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
-=======
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
+
     def popF(self,x):
         return 959.0549*x**2.8132
 
