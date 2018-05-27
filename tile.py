@@ -26,6 +26,7 @@ class Tile(object):
         self.gold_yield = gold_yield
         self.road = road
         self.get_neighbors_checked = False
+        self.worked = False
         
     """
     Roads take 2 turns to build. Road is set to .5 when starting to build.
