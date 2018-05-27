@@ -29,11 +29,7 @@ class Tile(object):
         self.get_neighbors_checked = False
         self.worked = False
         self.improvement_turns = -1
-<<<<<<< HEAD
-
-=======
         
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
     """
     Roads take 2 turns to build. Road is set to .5 when starting to build.
     on following turn, processing turn will increase number to 1 to represent
@@ -48,23 +44,14 @@ class Tile(object):
 
     def set_owner(self,civ):
         self.owner = civ
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
     def get_science_yield(self):
         science_bonus = 0
         if(self.city.has_university == True):
             if(self.terrain == "jungle"):
                 science_bonus += 2
         return (self.science_yield + science_bonus)
-<<<<<<< HEAD
-
-
-=======
-    
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
+        
     def get_prod_yield(self):
         prod_bonus = 0
         if(self.city.has_hydro_plant == True):
@@ -77,11 +64,7 @@ class Tile(object):
             if(self.owner.science >= 4530):
                 prod_bonus += 1
         return (self.prod_yield + prod_bonus)
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
+        
     def get_food_yield(self):
         food_bonus = 0
         if(self.improvement == "farm"):
@@ -91,11 +74,7 @@ class Tile(object):
             if(self.owner.science >= 4530):
                 food_bonus += 1
         return (self.food_yield + food_bonus)
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
+        
     def get_gold_yield(self):
         gold_bonus = 0
         if(self.improvement == "trading_post"):
@@ -191,15 +170,8 @@ class Tile(object):
         return list_of_neighbors
 
     def total_yield(self,food_coefficient=1,prod_coefficient=1,science_coefficient=1,gold_coefficent=1):
-<<<<<<< HEAD
-
         return self.get_food_yield() * food_coefficient + self.get_prod_yield() * prod_coefficient \
         + self.get_science_yield() * science_coefficient + self.get_gold_yield() * gold_coefficent
-
-=======
-        return self.get_food_yield() * food_coefficient + self.get_prod_yield() * prod_coefficient \
-        + self.get_science_yield() * science_coefficient + self.get_gold_yield() * gold_coefficent
->>>>>>> 8e7981353131cb21f9dc2ff5988e2658217f46a5
 
 if __name__ == "__main__":
     #Moved this in here to prevent circular imports
