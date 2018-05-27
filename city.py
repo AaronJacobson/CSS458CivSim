@@ -1,6 +1,6 @@
 from heapq import heappush,heappop
 import classlookup
-import unit
+from unit import Unit
 import random
 
 class City(object):
@@ -22,6 +22,8 @@ class City(object):
         self.border_distance = 1
         self.has_hydro_plant = False
         self.has_university = False
+        self.improving_tile = None
+        self.tile_improve_heap = []
         
         self.set_close_to_city()
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
@@ -30,6 +32,7 @@ class City(object):
         for tile in self.tile_list:
             tile.city = self
             tile.owner = self.civ
+            heappush(tile_improve_heap,(tile.total_yield,tile))
 
     def set_close_to_city(self):
         close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
@@ -158,12 +161,12 @@ class City(object):
                 self.building_list.append(self.to_build)#TODO make work with units
             else:
                 if self.to_build.name == "settler":
-                    self.grid.tiles[self.y,self.x].unit = unit.Unit(name="settler",atype="civilian",prod_cost=106,speed=2,y=self.y,x=self.x,civ=self.civ,grid=self.grid)
+                    self.grid.tiles[self.y,self.x].unit = Unit(name="settler",atype="civilian",prod_cost=106,speed=2,y=self.y,x=self.x,civ=self.civ,grid=self.grid)
                     self.civ.unit_list.append(self.grid.tiles[self.y,self.x].unit)
                     self.grid.tiles[self.y,self.x].unit.process_turn()
                 else:
                     unit = self.to_build
-                    unit_to_add = unit.Unit(name=unit.name,atype=unit.atype,prod_cost=unit.prod_cost,speed=unit.speed,y=-1,x=-1,civ=self.civ)
+                    unit_to_add = Unit(name=unit.name,atype=unit.atype,prod_cost=unit.prod_cost,speed=unit.speed,y=-1,x=-1,civ=self.civ)
                     self.civ.mil_unit_list.append(unit_to_add)
 
             if self.to_build.name == "hydro_plant":#TODO make this use the lookup
@@ -171,8 +174,11 @@ class City(object):
             elif self.to_build.name == "university":
                 self.has_university = True
             #choose new production
+            self.production = self.production - self.to_build.prod_cost
             self.to_build = self.choose_production()
-            self.production = 0
+
+        #making improvements
+        
 
         #growing borders
         if self.border_growth_count >= 100 and self.border_distance == 1:
