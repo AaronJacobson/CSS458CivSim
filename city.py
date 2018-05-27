@@ -22,7 +22,7 @@ class City(object):
         self.border_distance = 1
         self.has_hydro_plant = False
         self.has_university = False
-        """
+        
         self.set_close_to_city()
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
@@ -30,7 +30,7 @@ class City(object):
         for tile in self.tile_list:
             tile.city = self
             tile.owner = self.civ
-        """
+        
     
     def set_close_to_city(self):
         close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
@@ -136,6 +136,7 @@ class City(object):
                 tile.ownder = self.civ
                 self.tile_list.append(tile)
     
+    #TODO Fix unit making error
     def process_turn(self):
         #TODO update improvements
         
@@ -197,7 +198,7 @@ class City(object):
         if self.pop < 10:
             return look.pop_table[self.pop]
         else:
-            return self.popF(self.pop)
+            return int(self.popF(self.pop))
     
 if __name__ == "__main__":
     test_city = City(None,None,None,None)
