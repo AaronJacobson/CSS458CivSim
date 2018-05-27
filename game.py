@@ -26,28 +26,10 @@ class Game(object):
         self.civs = []
         self.turns = []
 
-        self.cur_grid = None
+        self.cur_grid = Grid(y,x)
 
-        #Fill grid values and civ list
-        self.simInit()
         #TODO initialize the list/dictionary of biomes and they're yields
         #TODO List of grids\
-
-
-    def simInit(self):
-        """
-        """
-        #RUN MAP GENERATOR HERE TO POPULATE INITIAL GRID!
-        #Do we need what's below?
-        #REPLACE NONE WITH CALL TO MAP GEN OR SIMPLY GET THAT THROUGH MAP GEN
-        #self.cur_grid = None
-        #self.turns.append(self.cur_grid)
-        
-        #REPLACE NONE WITH CALL TO MAP GEN OR SET CUR_GRID THROUGH MAP GEN
-        self.cur_grid = None
-        self.turns.append(copy.deepcopy(self.cur_grid))
-
-
 
 
     def run(self):
