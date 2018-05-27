@@ -24,10 +24,6 @@ class City(object):
         self.has_university = False
         self.improving_tiles = []
         self.tile_improve_heap = []
-        self.improving_tiles = []
-        self.tile_improve_heap = []
-        self.improving_tiles = []
-        self.tile_improve_heap = []
 
         self.set_close_to_city()
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
@@ -36,10 +32,6 @@ class City(object):
         for tile in self.tile_list:
             tile.city = self
             tile.owner = self.civ
-
-            heappush(self.tile_improve_heap,(tile.total_yield,tile))
-
-            heappush(self.tile_improve_heap,(tile.total_yield,tile))
 
             heappush(self.tile_improve_heap,(tile.total_yield,tile))
 
