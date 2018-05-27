@@ -257,4 +257,6 @@ class City(object):
 
 if __name__ == "__main__":
     test_city = City(None,None,None,None)
-    
+    for i in range(41):
+        test_city.pop = i
+        print(test_city.calculate_population())
