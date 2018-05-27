@@ -48,15 +48,38 @@ class Tile(object):
         science_bonus = 0
         if(self.city.has_university == True):
             if(self.terrain == "jungle"):
-                science_bonus = 2
+                science_bonus += 2
         return (self.science_yield + science_bonus)
     
     def get_prod_yield(self):
         prod_bonus = 0
         if(self.city.has_hydro_plant == True):
             if(self.near_river == True):
-                prod_bonus = 1
+                prod_bonus += 1
+        if(improvement == "mine"):
+            if(self.owner.science >= 2930):
+                prod_bonus += 1
+        if(improvement == "lumber_mill):
+            if(self.owner.science >= 4530):
+                prod_bonus += 1
         return (self.prod_yield + prod_bonus)
+    
+    def get_food_yield(self):
+        food_bonus = 0
+        if(improvement == "farm"):
+            if(self.owner.science >= 625):
+                if(self.near_river == True):
+                    food_bonus += 1
+            if(self.owner.science >= 4530):
+                food_bonus += 1
+        return (self.food_yield + food_bonus)
+    
+    def get_gold_yield(self):
+        gold_bonus = 0
+        if(improvement == "trading_post"):
+            if(self.owner.science >= 2930):
+                gold_bonus += 1
+        return (self.gold_yield + gold_bonus)
 
     #TODO change how to deal with improvements
     def add_improvement(self, name):
