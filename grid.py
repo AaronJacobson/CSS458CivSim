@@ -46,8 +46,20 @@ class Grid(object):
 
         #----------------------Setting rivers/terrain-----------------------------------
         for row in range(y-1):
-            for col in range(x):
-                isRiverTile = N.random.binomial(1,self.probRiver)
+            isRiverTile = N.random.binomial(1,self.probRiver)
+            isJungleTile = N.random.binomial(1,self.probJungle)
+            isForrestTile = N.random.binomial(1,self.probForrest)
+            if(isRiverTile)
+                for col in range(x):
+                    if(isRiverTile):
+                        self.tiles[row,col].near_river = True
+                    if(isForrestTile):
+                        self.tiles[row,col].terrain = "forrest"
+                    elif(isJungleTile):
+                        self.tiles[row,col].terrain = "jungle"
+
+
+
 
         #-----------------------------------------------------------------------
         #TODO initialize all the tiles in the grid
