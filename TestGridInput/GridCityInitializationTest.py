@@ -7,6 +7,7 @@ os.chdir("..")
 from grid import Grid
 from city import City
 from civilization import Civ
+from dataplotter import Dataplotter
 
 
 
@@ -28,13 +29,12 @@ print(str(g.tiles[12,13].city.y)+', '+str(g.tiles[12,13].city.x)+', '+str(g.tile
 city3 = City(g,4,16,civ2)
 print('city 3: '+str(city3.y)+', '+str(city3.x)+', '+str(city3.civ.civNum))
 print(str(g.tiles[4,16].city.y)+', '+str(g.tiles[4,16].city.x)+', '+str(g.tiles[4,16].city.civ.civNum))
-city4 = City(g,15,4,civ3)
+city4 = City(g,15,5,civ3)
 print('city 4: '+str(city4.y)+', '+str(city4.x)+', '+str(city4.civ.civNum))
-print(str(g.tiles[15,4].city.y)+', '+str(g.tiles[15,4].city.x)+', '+str(g.tiles[15,4].city.civ.civNum))
+print(str(g.tiles[15,5].city.y)+', '+str(g.tiles[15,5].city.x)+', '+str(g.tiles[15,5].city.civ.civNum))
 city5 = City(g,17,15,civ4)
 print('city 5: '+str(city5.y)+', '+str(city5.x)+', '+str(city5.civ.civNum))
 print(str(g.tiles[17,15].city.y)+', '+str(g.tiles[17,15].city.x)+', '+str(g.tiles[17,15].city.civ.civNum))
-
 
 print('\n')
 print('city 1: '+str(city1.y)+', '+str(city1.x)+', '+str(city1.civ.civNum))
@@ -44,6 +44,9 @@ print(str(g.tiles[12,13].city.y)+', '+str(g.tiles[12,13].city.x)+', '+str(g.tile
 print('city 3: '+str(city3.y)+', '+str(city3.x)+', '+str(city3.civ.civNum))
 print(str(g.tiles[4,16].city.y)+', '+str(g.tiles[4,16].city.x)+', '+str(g.tiles[4,16].city.civ.civNum))
 print('city 4: '+str(city4.y)+', '+str(city4.x)+', '+str(city4.civ.civNum))
-print(str(g.tiles[15,4].city.y)+', '+str(g.tiles[15,4].city.x)+', '+str(g.tiles[15,4].city.civ.civNum))
+print(str(g.tiles[15,5].city.y)+', '+str(g.tiles[15,5].city.x)+', '+str(g.tiles[15,5].city.civ.civNum))
 print('city 5: '+str(city5.y)+', '+str(city5.x)+', '+str(city5.civ.civNum))
 print(str(g.tiles[17,15].city.y)+', '+str(g.tiles[17,15].city.x)+', '+str(g.tiles[17,15].city.civ.civNum))
+
+
+d = Dataplotter(g,plotType=['All'],numCiv=5)
