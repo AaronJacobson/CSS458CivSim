@@ -24,7 +24,11 @@ class City(object):
         self.has_university = False
         self.improving_tiles = []
         self.tile_improve_heap = []
-        
+        self.improving_tiles = []
+        self.tile_improve_heap = []
+        self.improving_tiles = []
+        self.tile_improve_heap = []
+
         self.set_close_to_city()
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
@@ -32,7 +36,13 @@ class City(object):
         for tile in self.tile_list:
             tile.city = self
             tile.owner = self.civ
+
             heappush(self.tile_improve_heap,(tile.total_yield,tile))
+
+            heappush(self.tile_improve_heap,(tile.total_yield,tile))
+
+            heappush(self.tile_improve_heap,(tile.total_yield,tile))
+
 
     def set_close_to_city(self):
         close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
@@ -176,7 +186,15 @@ class City(object):
                         #build trading post
                         tile.add_improvement("trading_post")
                 self.improving_tiles.remove(tile)
-    
+
+    #TODO Fix unit making error
+
+    def process_turn(self):
+
+        self.improve_tiles()
+        
+        #check food, update pop
+
     def check_food(self):
         self.food = self.food + self.get_food_yield()
         if self.food >= self.food_to_grow(self.pop+1):
@@ -237,6 +255,7 @@ class City(object):
     """
         Takes a given value and returns the population based on previous data.
     """
+
     def popF(self,x):
         return 959.0549*x**2.8132
 
@@ -251,7 +270,7 @@ class City(object):
             return look.pop_table[self.pop]
         else:
             return int(self.popF(self.pop))
-    
+
 if __name__ == "__main__":
     test_city = City(None,None,None,None)
     for i in range(41):

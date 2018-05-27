@@ -1,7 +1,7 @@
 from heapq import heappush,heappop
 import city
 class Unit(object):
-    
+
     def __init__(self,name="none",atype="nothing",prod_cost=0,strength=0,\
     speed=0,range_strength=0,rangeSize=0,civ=None,grid=None,y=0,x=0,airdrop=0):
         self.name = name
@@ -18,11 +18,11 @@ class Unit(object):
         self.health = 100
         self.airdrop = airdrop
         self.type = "unit"
-        
+
         if self.name == "settler":
             self.target_city_tile = None
-    
-    
+
+
     def process_turn(self):
         if self.name== "settler":#TODO move to found city
             if self.target_city_tile == None:
@@ -66,4 +66,3 @@ class Unit(object):
         self.y = y
         self.x = x
         self.grid.tiles[y,x].move_unit(self) #check if this is correct for moving unit to a new space
-    
