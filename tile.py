@@ -1,4 +1,5 @@
-
+import numpy as N
+from classlookup import ClassLookUp
 
 class Tile(object):
     """
@@ -17,6 +18,7 @@ class Tile(object):
         self.unit = None
         self.city = None
         self.has_city = False
+        self.close_to_city = False
         self.owner = None
         self.food_yield = food_yield
         self.prod_yield = prod_yield
@@ -35,11 +37,15 @@ class Tile(object):
     def build_railroad(self):
         if(self.road == 1):
             self.road = 1.5
-            
+    
+    def set_owner(self,civ):
+        self.owner = civ
+    
+    #TODO change how to deal with improvements        
     def add_improvement(self, name):
         if(self.improvement == None):
             self.improvement = name
-            improvement = Game.improvement_lookup[name]
+            improvement = ClassLookUp.improvement_lookup[name]
             self.improve_food(improvement.food_yield)
             self.improve_prod(improvement.prod_yield)
             self.improve_gold(improvement.gold_yield)
@@ -74,55 +80,64 @@ class Tile(object):
         #TODO manage roads, won't change yields
         #TODO manage improvements
 
-    def get_neighbors(self,radius=1):
+    def get_neighbors(self,distance=1):
         list_of_neighbors = []
-        list_of_neighbors = self.get_neighbors_recursive(list_of_neighbors,radius=radius)
-        for tile in list_of_neighbors:
-            tile.get_neighbors_check = False
-        return list_of_neighbors
-    
-    def get_neighbors_recursive(self,neighbor_list,radius=1):
-        if not self.get_neighbors_check and radius > 0:
-            self.get_neighbors_check = True
+        if distance == 1:
             if self.y > 0:
-                neighbor_list.append(self.grid.tiles[self.y-1,self.x])
-                if self.y % 2 == 0:
-                    #even row
-                    neighbor_list.append(self.grid.tiles[self.y-1,self.x-1])
-                else:
-                    #odd row
-                    if self.x+1 == self.grid.x:
-                        neighbor_list.append(self.grid.tiles[self.y-1,0])
-                    else:
-                        neighbor_list.append(self.grid.tiles[self.y-1,self.x+1])
-            
-            neighbor_list.append(self.grid.tiles[self.y,self.x-1])
-            if self.x+1 == self.grid.x:
-                neighbor_list.append(self.grid.tiles[self.y,0])
+                list_of_neighbors.append(self.grid.tiles[self.y-1,self.x])
+            if self.y % 2 == 0:
+                #even row
+                list_of_neighbors.append(self.grid.tiles[self.y-1,self.x-1])
             else:
-                neighbor_list.append(self.grid.tiles[self.y,self.x+1])
+                #odd row
+                if self.x+1 == self.grid.x:
+                    #list_of_neighbors.append(self.grid.tiles[self.y-1,0])
+                    pass
+                else:
+                    list_of_neighbors.append(self.grid.tiles[self.y-1,self.x+1])
+            
+            list_of_neighbors.append(self.grid.tiles[self.y,self.x-1])
+            if self.x+1 == self.grid.x:
+                #list_of_neighbors.append(self.grid.tiles[self.y,0])
+                pass
+            else:
+                list_of_neighbors.append(self.grid.tiles[self.y,self.x+1])
             
             if self.y < self.grid.y - 1:
-                neighbor_list.append(self.grid.tiles[self.y+1,self.x])
+                list_of_neighbors.append(self.grid.tiles[self.y+1,self.x])
                 if self.y % 2 == 0:
                     #even row
-                    neighbor_list.append(self.grid.tiles[self.y+1,self.x-1])
+                    list_of_neighbors.append(self.grid.tiles[self.y+1,self.x-1])
                 else:
                     #odd row
                     if self.x+1 == self.grid.x:
-                        neighbor_list.append(self.grid.tiles[self.y+1,0])
+                        #list_of_neighbors.append(self.grid.tiles[self.y+1,0])
+                        pass
                     else:
-                        neighbor_list.append(self.grid.tiles[self.y+1,self.x+1])
-        for tile in neighbor_list:
-            tile.get_beighbors_recursive(neighbor_list,radius=radius-1)
-        return neighbor_list
+                        list_of_neighbors.append(self.grid.tiles[self.y+1,self.x+1])
+        else:
+            y_coords = N.arange(1+distance*2)-distance+self.y
+            x_coords = N.arange(1+distance*2)-distance+self.x
+            for row in range(1+distance*2):
+                for col in range(1+distance*2):
+                    if y_coords[row] >= 0 and y_coords[row] < self.grid.y \
+                    and x_coords[col] >= 0 and x_coords[col] < self.grid.x:
+                        if y_coords[row] == self.y and x_coords[col] == self.x:
+                            pass #found yourself
+                        else:
+                            list_of_neighbors.append(self.grid.tiles[y_coords[row],x_coords[col]])
+        return list_of_neighbors
+    
+    def total_yield(self,food_coefficient=1,prod_coefficient=1,science_coefficient=1,gold_coefficent=1):
+        return self.food_yield * food_coefficient + self.prod_yield * prod_coefficient \
+        + self.science_yield * science_coefficient + self.gold_yield * gold_coefficent
 
 if __name__ == "__main__":
     #Moved this in here to prevent circular imports
-    from game import Game
+    from grid import Grid
     
-    test_game = Game(y=5,x=5)
-    list_of_tiles = test_game.curGrid[2,2].get_neighbors(radius=1)
+    test_grid = Grid(5,5)
+    list_of_tiles = test_grid.tiles[2,2].get_neighbors(distance=2)
     for tile in list_of_tiles:
         print("x " + str(tile.x) + " y " + str(tile.y))
-    #should print 6 tiles and the
+    print("length: " + str(len(list_of_tiles)))
