@@ -21,12 +21,8 @@ class City(object):
         self.border_growth_count = 0
         self.border_distance = 1
         self.has_hydro_plant = False
-<<<<<<< HEAD
-
-=======
         self.has_university = False
         
->>>>>>> 13c38463bff44702ac7198343058f1057c016158
         self.set_close_to_city()
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
@@ -34,12 +30,7 @@ class City(object):
         for tile in self.tile_list:
             tile.city = self
             tile.owner = self.civ
-<<<<<<< HEAD
 
-=======
-        
-    
->>>>>>> 13c38463bff44702ac7198343058f1057c016158
     def set_close_to_city(self):
         close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
         for tile in close_tiles:
