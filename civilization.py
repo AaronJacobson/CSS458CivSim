@@ -34,3 +34,7 @@ class Civ(object):
         
         #return sum values
         return sum_food,sum_prod,sum_gold,sum_sci
+    
+    def unit_maintenance(unit, turn):
+        #TODO input formula
+        return unit
