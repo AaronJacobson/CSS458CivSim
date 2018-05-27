@@ -83,7 +83,7 @@ class Dataplotter(object):
                 #Draw the polygon on the plot
                 axes.add_patch(line)
                 
-                if grid.tiles[i,j].terrain != None:
+                if grid.tiles[i,j].terrain != 'none':
                     pointsX = j + N.array([0.5,0.9,0.9,0.5,0.1,0.1])
                     pointsY = grid.y - ((i*0.75)+N.array([0.1,0.30,0.7,0.9,0.7,0.30]))
                     if i%2!=0:
@@ -92,6 +92,17 @@ class Dataplotter(object):
                     
                     #line2 = plt.Polygon(poly,edgecolor=Game.terrain_lookup[grid.tiles[i,j].terrain][6],facecolor='none',linewidth=4)
                     line2 = plt.Polygon(poly,facecolor=ClassLookUp.terrain_lookup[grid.tiles[i,j].terrain][6])
+                    
+                    axes.add_patch(line2)
+                elif grid.tiles[i,j].elevation == 'hill':
+                    pointsX = j + N.array([0.5,0.9,0.9,0.5,0.1,0.1])
+                    pointsY = grid.y - ((i*0.75)+N.array([0.1,0.30,0.7,0.9,0.7,0.30]))
+                    if i%2!=0:
+                        pointsX = pointsX+0.5
+                    poly = N.column_stack((pointsX,pointsY))
+                    
+                    #line2 = plt.Polygon(poly,edgecolor=Game.terrain_lookup[grid.tiles[i,j].terrain][6],facecolor='none',linewidth=4)
+                    line2 = plt.Polygon(poly,facecolor=ClassLookUp.terrain_lookup[grid.tiles[i,j].elevation][6])
                     
                     axes.add_patch(line2)
                 
@@ -132,7 +143,7 @@ class Dataplotter(object):
                 #Combine two arrays in one of Nx2 dimensions
                 poly = N.column_stack((pointsX,pointsY))
                 
-                if grid.tiles[i,j].owner != None:
+                if grid.tiles[i,j].owner != 'none':
                     #Create a polygon based on owner context
                     if grid.tiles[i,j].has_city == True:
                         line = plt.Polygon(poly,edgecolor='k',facecolor=cmap(val[grid.tiles[i,j].owner.civNum]))
@@ -187,7 +198,7 @@ class Dataplotter(object):
                 #Draw the polygon on the plot
                 axes.add_patch(line)
                 
-                if grid.tiles[i,j].terrain != None:
+                if grid.tiles[i,j].terrain != 'none':
                     pointsX = j + N.array([0.5,0.9,0.9,0.5,0.1,0.1])
                     pointsY = grid.y - ((i*0.75)+N.array([0.1,0.30,0.7,0.9,0.7,0.30]))
                     if i%2!=0:
@@ -198,7 +209,17 @@ class Dataplotter(object):
                     line2 = plt.Polygon(poly,facecolor=ClassLookUp.terrain_lookup[grid.tiles[i,j].terrain][6])
                     
                     axes.add_patch(line2)
-                
+                elif grid.tiles[i,j].elevation == 'hill':
+                    pointsX = j + N.array([0.5,0.9,0.9,0.5,0.1,0.1])
+                    pointsY = grid.y - ((i*0.75)+N.array([0.1,0.30,0.7,0.9,0.7,0.30]))
+                    if i%2!=0:
+                        pointsX = pointsX+0.5
+                    poly = N.column_stack((pointsX,pointsY))
+                    
+                    #line2 = plt.Polygon(poly,edgecolor=Game.terrain_lookup[grid.tiles[i,j].terrain][6],facecolor='none',linewidth=4)
+                    line2 = plt.Polygon(poly,facecolor=ClassLookUp.terrain_lookup[grid.tiles[i,j].elevation][6])
+                    
+                    axes.add_patch(line2)
                 if grid.tiles[i,j].owner != None:
                     #Create a polygon based on owner context
                     if grid.tiles[i,j].has_city == True:
@@ -207,13 +228,10 @@ class Dataplotter(object):
                         color = N.array(cmap(val[grid.tiles[i,j].owner.civNum]))                      
                         color[3] = 0.5
                         line3 = plt.Polygon(poly,edgecolor='k',facecolor=color)
-                else:
-                    #Create a "blank" polygon
-                    line3 = plt.Polygon(poly,edgecolor='k',facecolor='lightgrey')
-                #line = plt.Polygon(poly,edgecolor='k',facecolor=Game.biome_lookup[grid.tiles[i,j].biome][6])
+                    axes.add_patch(line3)
                 
                 #Draw the polygon on the plot
-                axes.add_patch(line3)
+                
         #Scale image to fit plot
         axes.autoscale()
         #Set aspect ratio
