@@ -34,9 +34,11 @@ class City(object):
             if tile.city == None:
                 tile.city = self
                 tile.owner = self.civ
+                #heappush(self.tile_improve_heap,(int(tile.total_yield()),tile))
         
-        self.grid.tiles[self.y,self.x].city = self
-            #heappush(self.tile_improve_heap,(int(tile.total_yield),tile))
+        self.grid.tiles[self.y,self.x].city = self#not sure if this is redundant
+        
+
 
 
     def set_close_to_city(self):

@@ -170,7 +170,7 @@ class Tile(object):
         return list_of_neighbors
 
     def total_yield(self,food_coefficient=1.0,prod_coefficient=1.0,science_coefficient=1.0,gold_coefficent=1.0):
-        return float(self.get_food_yield() * food_coefficient + self.get_prod_yield() * prod_coefficient \
+        return int(self.get_food_yield() * food_coefficient + self.get_prod_yield() * prod_coefficient \
         + self.get_science_yield() * science_coefficient + self.get_gold_yield() * gold_coefficent)
 
 if __name__ == "__main__":
@@ -178,8 +178,8 @@ if __name__ == "__main__":
 
     from grid import Grid
 
-    test_grid = Grid(5,5)
-    list_of_tiles = test_grid.tiles[2,2].get_neighbors(distance=2)
+    test_grid = Grid(50,50)
+    list_of_tiles = test_grid.tiles[2,2].get_neighbors(distance=1)
     for tile in list_of_tiles:
-        print("x " + str(tile.x) + " y " + str(tile.y))
+        print("y " + str(tile.y) + " x " + str(tile.x))
     print("length: " + str(len(list_of_tiles)))
