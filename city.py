@@ -176,12 +176,8 @@ class City(object):
                         #build trading post
                         tile.add_improvement("trading_post")
                 self.improving_tiles.remove(tile)
-
-    def process_turn(self):
-
-        self.improve_tiles()
-        
-        #check food, update pop
+    
+    def check_food(self):
         self.food = self.food + self.get_food_yield()
         if self.food >= self.food_to_grow(self.pop+1):
             #grow
@@ -189,6 +185,13 @@ class City(object):
             #TODO set which tile is being worked.
             self.food = 0
 
+    def process_turn(self):
+        #improve the tiles
+        self.improve_tiles()
+        
+        #check food, update pop
+        self.check_food()
+        
         #add prod, check production
         self.production = self.production + self.get_prod_yield
         if self.to_build == None:
@@ -231,9 +234,17 @@ class City(object):
         for i in range(self.pop):
             self.tile_list[heappop(heap_of_tiles)[1]].worked = True
     
+    """
+        Takes a given value and returns the population based on previous data.
+    """
     def popF(self,x):
         return 959.0549*x**2.8132
 
+    """
+        Returns the population, not population points, in the city. Uses a look
+        up table for the first 9 values to increase accuracy. Likely innaccurate
+        beyond pop = 40.
+    """
     def calculate_population(self):
         look = classlookup.ClassLookUp()
         if self.pop < 10:
