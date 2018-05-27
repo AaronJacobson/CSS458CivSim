@@ -4,7 +4,7 @@ from grid import Grid
 from civilization import Civ
 from building import Building
 from unit import Unit
-from interpreter import Interpreter
+#from interpreter import Interpreter
 import numpy as N
 import os
 import copy
