@@ -13,12 +13,12 @@ class Game(object):
     """
     """
 
-    def __init__(self,y = 50,x = 100,numTurns = 500,mapName = None):
+    def __init__(self,y = 50,x = 100,num_turns = 500,map_name = None, num_civ = 0):
         """
         """
 
         #Initialize Total Turns
-        self.num_turns = numTurns
+        self.num_turns = num_turns
 
         #Initialize tile grids and civ list
         self.x = x
@@ -31,7 +31,9 @@ class Game(object):
         #TODO initialize the list/dictionary of biomes and they're yields
         #TODO List of grids\
 
-
+    def initCivs(num_civ):
+        pass
+    
     def run(self):
         """
         """
