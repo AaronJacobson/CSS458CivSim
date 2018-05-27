@@ -6,6 +6,7 @@ import random
 class City(object):
 
     def __init__(self,grid,y,x,civ):
+        print("city getting" + str(y) + " " + str(x) + " " + str(civ.civNum))
         self.grid = grid
         self.y = y
         self.x = x
@@ -30,10 +31,12 @@ class City(object):
         self.tile_list.append(self.grid.tiles[y,x])
         self.grid.tiles[y,x].has_city = True
         for tile in self.tile_list:
-            tile.city = self
-            tile.owner = self.civ
-
-            heappush(self.tile_improve_heap,(tile.total_yield,tile))
+            if tile.city == None:
+                tile.city = self
+                tile.owner = self.civ
+        
+        self.grid.tiles[self.y,self.x].city = self
+            #heappush(self.tile_improve_heap,(int(tile.total_yield),tile))
 
 
     def set_close_to_city(self):

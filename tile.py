@@ -169,9 +169,9 @@ class Tile(object):
                             list_of_neighbors.append(self.grid.tiles[y_coords[row],x_coords[col]])
         return list_of_neighbors
 
-    def total_yield(self,food_coefficient=1,prod_coefficient=1,science_coefficient=1,gold_coefficent=1):
-        return self.get_food_yield() * food_coefficient + self.get_prod_yield() * prod_coefficient \
-        + self.get_science_yield() * science_coefficient + self.get_gold_yield() * gold_coefficent
+    def total_yield(self,food_coefficient=1.0,prod_coefficient=1.0,science_coefficient=1.0,gold_coefficent=1.0):
+        return float(self.get_food_yield() * food_coefficient + self.get_prod_yield() * prod_coefficient \
+        + self.get_science_yield() * science_coefficient + self.get_gold_yield() * gold_coefficent)
 
 if __name__ == "__main__":
     #Moved this in here to prevent circular imports
