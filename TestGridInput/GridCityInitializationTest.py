@@ -13,7 +13,7 @@ from dataplotter import Dataplotter
 
 game = Game(num_civ=5)
 
-g = Grid(50,100,tundraWidth=.05,snowWidth=.1)
+g = Grid(50,100,snow_width=.05,tundra_width=.7)
 
 civ0 = Civ(0)
 civ1 = Civ(1)
