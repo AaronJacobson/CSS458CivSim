@@ -15,7 +15,7 @@ class Game(object):
     """
     """
 
-    def __init__(self,y = 50,x = 100,num_turns = 500, num_civ = 0,war_chance = 0.02,loss_chance = 0.01,war_base = 9, war_mod = 0.1,percent_grass=.5,\
+    def __init__(self,y = 50,x = 100,num_turns = 500, num_civ = 0,war_chance = 0.02,loss_chance = 0.01,war_base = 9, war_mod = 0.2,percent_grass=.5,\
     desert_chance=.01,desert_size=2,snow_width=0.05,tundra_width=0.075,\
     prob_forest=0.05,prob_jungle=0.05,prob_river = 0.2,prob_hill=.085):
         """
@@ -138,7 +138,7 @@ class Game(object):
                                 if other_sum_strength != 0:
                                     rel_strength = sum_strength/other_sum_strength
                                 else:
-                                    rel_strength = sum_strength/1
+                                    rel_strength = 3
                                 if rel_strength == 0:
                                     rel_strength = 0.0001
                                 #Compute our mil_strength score
