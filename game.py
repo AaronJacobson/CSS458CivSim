@@ -76,6 +76,10 @@ class Game(object):
                 #Process turn
                 print("get yields")
                 yield_vals[i,civ.civNum]=civ.process_turn(i)
+                #Temporily get Settlers position
+                print("Civ #"+str(civ.civNum))
+                for i in range(len(civ.unit_list)):
+                    print("Settler "+str(i)+":\t"+str(civ.unit_list[i].y)+'\t'+str(civ.unit_list[i].x))
                 print("Trying to War!")
                 #Try to be at war if not at war
                 if len(civ.wars) == 0 and len(civ.at_war) == 0:
@@ -172,7 +176,7 @@ class Game(object):
                                             warciv.wars.remove(item)
                                 for war in lose_civ.wars:
                                     war[0].at_war.remove(lose_civ)
-                                self.num_civ -= 1
+                                
                                 self.civs.remove(lose_civ)
                             #This civ has no cities and loses
                             elif len(civ.city_list) == 0:
@@ -182,7 +186,7 @@ class Game(object):
                                             warciv.wars.remove(item)
                                 for war in civ.wars:
                                     war[0].at_war.remove(civ)
-                                self.num_civ -= 1
+                                
                                 self.civs.remove(civ)
                             else:
                                 #Peace time?
@@ -207,4 +211,7 @@ class Game(object):
 
             #Update State Variables
             #self.turns.append(copy.deepcopy(self.cur_grid))
+            inp = input()
+            if inp == 'ret':
+                return
         return yield_vals
