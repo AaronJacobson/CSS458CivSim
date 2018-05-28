@@ -3,6 +3,7 @@
 from grid import Grid
 from civilization import Civ
 from building import Building
+from dataplotter import Dataplotter
 from unit import Unit
 from city import City
 import classlookup
@@ -72,6 +73,9 @@ class Game(object):
         yield_vals = N.zeros((self.num_turns,len(self.civs),5),dtype=N.dtype(int))
         #Initialize run loop
         for i in range(self.num_turns):
+            if (i+1) % 50 == 0:
+                d = Dataplotter(self.cur_grid,plotType=['All'],numCiv=self.num_civ)              
+                # d = Dataplotter(game.cur_grid,plotType=['All'],numCiv=game.num_civ)
             print("Turn: "+str(i))
             #Process Civs Individual turns and Civ Wars
             for civ in self.civs:
@@ -80,7 +84,7 @@ class Game(object):
                     #print("get yields")
                     yield_vals[i,civ.civNum]=civ.process_turn(i)
                     #Temporily get Settlers position
-                    print("Civ #"+str(civ.civNum))
+                    # print("Civ #"+str(civ.civNum))
                     #for i in range(len(civ.unit_list)):
                     #    print("Settler "+str(i)+":\t"+str(civ.unit_list[i].y)+'\t'+str(civ.unit_list[i].x))
                     #print("Trying to War!")

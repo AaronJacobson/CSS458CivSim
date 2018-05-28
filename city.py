@@ -43,7 +43,7 @@ class City(object):
 
 
     def set_close_to_city(self):
-        close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=2)
+        close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
         for tile in close_tiles:
             tile.close_to_city = True
         self.grid.tiles[self.y,self.x].close_to_city = True
@@ -130,10 +130,9 @@ class City(object):
                         unit_priority = (unit.prod_cost-unit.strength-unit.range_strength)
                         heappush(unit_heap,(unit_priority,unit))
         decision = random.uniform(0,1)
-        if self.pop < 3:
-            settler_chance = 0
-        elif self.pop > 7:
-            settler_chance *= 2
+        settler_chance = settler_chance * min(5,self.pop) * (1.0/len(self.civ.city_list))
+        # if self.pop < 4:
+        #     settler_chance = 0
         if decision < settler_chance:
             return look.unit_lookup["settler"]
         elif decision < unit_chance+settler_chance:
@@ -192,7 +191,6 @@ class City(object):
         if self.food >= self.food_to_grow(self.pop+1):
             #grow
             self.pop = self.pop + 1
-            #TODO set which tile is being worked.
             self.food = 0
 
     def process_turn(self):
@@ -214,7 +212,7 @@ class City(object):
                 self.building_list.append(self.to_build)
             else:
                 if self.to_build.name == "settler":
-                    print("-------------------finished a settler")
+                    # print("-------------------finished a settler")
                     self.grid.tiles[self.y,self.x].unit = tunit.Unit(name="settler",atype="civilian",prod_cost=106,speed=2,y=self.y,x=self.x,civ=self.civ,grid=self.grid)
                     self.civ.unit_list.append(self.grid.tiles[self.y,self.x].unit)
                     self.grid.tiles[self.y,self.x].unit.process_turn()
@@ -233,9 +231,9 @@ class City(object):
 
         #growing borders
         self.border_growth_count += 1
-        if self.border_growth_count >= 100 and self.border_distance == 1:
+        if self.border_growth_count >= 50 and self.border_distance == 1:
             self.grow_borders()
-        elif self.border_growth_count >= 200 and self.border_distance == 2:
+        elif self.border_growth_count >= 175 and self.border_distance == 2:
             self.grow_borders()
 
         #Setting which tiles will be worked.

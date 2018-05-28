@@ -151,5 +151,5 @@ class ClassLookUp(object):
     jungle = ["jungle",2,0,0,2,0.25,'darkgreen']
     terrain_lookup = {hill[0]:hill,forest[0]:forest,jungle[0]:jungle}
     
-    pop_table = [0,1000,6000,21000,48000,90000,150000,232000,337000,469000]
+    pop_table = [1000,1000,6000,21000,48000,90000,150000,232000,337000,469000]
     
