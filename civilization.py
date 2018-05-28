@@ -9,6 +9,7 @@ class Civ(object):
         self.mil_unit_list = []
         self.city_list = []
         self.wars = []
+        self.at_war = []
         self.science = 0
         
     def process_turn(self, turn):
