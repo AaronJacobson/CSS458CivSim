@@ -15,7 +15,7 @@ class Game(object):
     """
     """
 
-    def __init__(self,y = 50,x = 100,num_turns = 500, num_civ = 0,percent_grass=.5,\
+    def __init__(self,y = 50,x = 100,num_turns = 500, num_civ = 0,war_chance = 0.05,loss_chance = 0.005,percent_grass=.5,\
     desert_chance=.01,desert_size=2,snow_width=0.05,tundra_width=0.075,\
     prob_forest=0.05,prob_jungle=0.05,prob_river = 0.2,prob_hill=.085):
         """
@@ -31,6 +31,8 @@ class Game(object):
         self.turns = []
 
         self.num_civ = num_civ
+        self.war_chance = war_chance
+        self.loss_chance = loss_chance
         self.cur_grid = Grid(y,x,percent_grass=percent_grass,desert_chance=desert_chance,\
         desert_size=desert_size,snow_width=snow_width,tundra_width=tundra_width,\
         prob_forest=prob_forest,prob_jungle=prob_jungle,prob_river=prob_river,prob_hill=prob_hill)
@@ -58,27 +60,146 @@ class Game(object):
                 yrand = N.random.normal(0,0.05*self.y)
             self.civs[i].city_list.append(City(self.cur_grid,int(self.y//ydiv*((i//ydiv)+1)+yrand),int(((self.x//xdiv)*((i+1)%4))+xrand),self.civs[i]))
             warrior = classlookup.ClassLookUp.unit_lookup['warrior']
-            warrior_add = Unit(name = warrior.name,atype = warrior.atype,prod_cost = warrior.prod_cost,speed = warrior.speed,y=-1,x=-1,civ=self.civs[i])
+            warrior_add = Unit(name = warrior.name,atype = warrior.atype,prod_cost = warrior.prod_cost,speed = warrior.speed,strength=warrior.strength,y=-1,x=-1,civ=self.civs[i])
             self.civs[i].mil_unit_list.append(warrior_add)
                 
     
     def run(self):
         """
         """
-        yield_vals = N.zeros((self.num_turns,len(self.civs),4))
+        yield_vals = N.zeros((self.num_turns,len(self.civs),4),dtype='l')
         #Initialize run loop
         for i in range(self.num_turns):
-            #Process Civ Wars
-
-            #Process Civs Individual turns
+            print(i)
+            #Process Civs Individual turns and Civ Wars
             for civ in self.civs:
+                #Process turn
+                
                 yield_vals[i,civ.civNum]=civ.process_turn(i)
+                
+                #Try to be at war if not at war
+                if len(civ.wars) == 0 and len(civ.at_war) == 0:
+                    close_val = 999999999
+                    for otherciv in self.civs:
+                        if otherciv is not civ:
+                            dist = ((otherciv.city_list[0].x-civ.city_list[0].x)**2+(otherciv.city_list[0].y-civ.city_list[0].y)**2)**0.5
+                            if dist < close_val:
+                                close_val = dist
+                    for otherciv in self.civs:
+                        if otherciv is not civ:
+                            dist = ((otherciv.city_list[0].x-civ.city_list[0].x)**2+(otherciv.city_list[0].y-civ.city_list[0].y)**2)**0.5
+                            sum_strength = 0
+                            for unit in civ.mil_unit_list:
+                                sum_strength += unit.strength
+                            other_sum_strength = 0
+                            for unit in otherciv.mil_unit_list:
+                                other_sum_strength += unit.strength
+                            if other_sum_strength != 0:
+                                rel_strength = sum_strength/other_sum_strength
+                            else:
+                                rel_strength = sum_strength/1
+                            if yield_vals[i,otherciv.civNum,1] != 0:
+                                rel_prod = yield_vals[i,civ.civNum,1]/yield_vals[i,otherciv.civNum,1]
+                            else:
+                                rel_prod = yield_vals[i,civ.civNum,1]/1
+                            
+                            rel_dist = close_val / dist
+                            
+                            adjusted_chance = self.war_chance * rel_strength * rel_prod * rel_dist
+                            if adjusted_chance > N.random.uniform():
+                                #Civ, Turns war has gone on, Lost cities, Lost Units, Gained Cities, Killed units
+                                civ.wars.append([otherciv,0,0,0,0,0])
+                                otherciv.at_war.append(civ)
+                                print("War were declared!")
 
-            #Process Tiles
-            #Gods this is inefficient, but without creating a list of tile changes, cellular automata is the way to go!
-            # for m in range(self.y):
-            #     for n in range(self.x):
-            #         self.cur_grid.tiles[m][n].process_turn()
-            #Update State Variables if any exist
+                #Process War!
+                for entry in civ.wars:
+                            #Compute Relative Strength
+                            sum_strength = 0
+                            for unit in civ.mil_unit_list:
+                                sum_strength += unit.strength
+                            other_sum_strength = 0
+                            for unit in otherciv.mil_unit_list:
+                                other_sum_strength += unit.strength
+                            if other_sum_strength != 0:
+                                rel_strength = sum_strength/other_sum_strength
+                            else:
+                                rel_strength = sum_strength/1
+                            if rel_strength == 0:
+                                rel_strength = 0.0001
+                            #Lose a city (oh no)
+                            if self.loss_chance*(1/rel_strength) > N.random.uniform():
+                                civ.city_list[-1].pop = civ.city_list[-1].pop//2
+                                entry[0].city_list.append(civ.city_list[-1])
+                                del(civ.city_list[-1])
+                                entry[2]+=1
+                            
+                            #Gain a city (yay)
+                            if self.loss_chance*(rel_strength) > N.random.uniform():
+                                entry[0].city_list[-1].pop = entry[0].city_list[-1].pop//2
+                                civ.city_list.append(entry[0].city_list[-1])
+                                del(entry[0].city_list[-1])
+                                entry[4]+=1
+                                                
+                                
+                            #Kill Unit!
+                            if len(entry[0].mil_unit_list) != 0:
+                                if self.loss_chance*rel_strength > N.random.uniform():
+                                    other_sum_strength -= entry[0].mil_unit_list[0].strength
+                                    del(entry[0].mil_unit_list[0])
+                                    entry[5]+=1
+                            
+                            #Lose Unit
+                            if len(civ.mil_unit_list) != 0:
+                                if self.loss_chance*(1/rel_strength) > N.random.uniform():
+                                    sum_strength -= civ.mil_unit_list[0].strength
+                                    del(civ.mil_unit_list[0])
+                                    entry[3]+=1
+                            #Other Civ has no cities and loses
+                            if len(entry[0].city_list) == 0:
+                                lose_civ = entry[0]
+                                #Get all the civs that losing civ is at war with
+                                for warciv in lose_civ.at_war:
+                                    #Look at their wars lists
+                                    for item in warciv.wars:
+                                        #remove entry if the civ they are at war with is the civ that has just lost
+                                        if item[0] == lose_civ:
+                                            warciv.wars.remove(item)
+                                for war in lose_civ.wars:
+                                    war[0].at_war.remove(lose_civ)
+                                self.num_civ -= 1
+                                self.civs.remove(lose_civ)
+                            #This civ has no cities and loses
+                            elif len(civ.city_list) == 0:
+                                for warciv in civ.at_war:
+                                    for item in warciv.wars:
+                                        if item[0] == civ:
+                                            warciv.wars.remove(item)
+                                for war in civ.wars:
+                                    war[0].at_war.remove(civ)
+                                self.num_civ -= 1
+                                self.civs.remove(civ)
+                            else:
+                                #Peace time?
+                                age_factor = entry[1]*0.05
+                                if entry[5] != 0:
+                                    rel_unit_lost = entry[3]/entry[5]
+                                else:
+                                    rel_unit_lost = entry[3]/1
+                                if entry[4] != 0:
+                                    rel_city_lost = entry[2]/entry[4]
+                                else:
+                                    rel_city_lost = entry[2]/1
+                                
+                                if (self.war_chance + age_factor + (0.05*rel_unit_lost) + (0.1*rel_city_lost)) > N.random.uniform():
+                                    entry[0].at_war.remove(civ)
+                                    civ.wars.remove(entry)
+                                else:
+                                    entry[1]+=1
+                                
+                                    
+                
+
+            #Update State Variables
             self.turns.append(copy.deepcopy(self.cur_grid))
-            return yield_vals
+        return yield_vals
