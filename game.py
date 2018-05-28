@@ -51,8 +51,11 @@ class Game(object):
         for i in range(num_civ):
             self.civs.append(Civ(i))
             xrand = N.random.normal(0,0.05*self.x)
+            while self.x//xdiv - xrand < 0 or xrand > self.x//xdiv:
+                xrand = N.random.normal(0,0.05*self.x)
             yrand = N.random.normal(0,0.05*self.y)
-
+            while self.y//ydiv - yrand < 0 or yrand > self.y//ydiv:
+                yrand = N.random.normal(0,0.05*self.y)
             self.civs[i].city_list.append(City(self.cur_grid,int(self.y//ydiv*((i//ydiv)+1)+yrand),int(((self.x//xdiv)*((i+1)%4))+xrand),self.civs[i]))
             warrior = classlookup.ClassLookUp.unit_lookup['warrior']
             warrior_add = Unit(name = warrior.name,atype = warrior.atype,prod_cost = warrior.prod_cost,speed = warrior.speed,y=-1,x=-1,civ=self.civs[i])
