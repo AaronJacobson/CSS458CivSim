@@ -133,7 +133,10 @@ class City(object):
         elif decision < unit_chance+settler_chance:
             return heappop(unit_heap)[1]
         else:
-            return heappop(building_heap)[1]
+            if len(building_heap) == 0:
+                return heappop(unit_heap)[1]
+            else:
+                return heappop(building_heap)[1]
 
     def grow_borders(self):
         self.border_distance = self.border_distance + 1
@@ -199,7 +202,7 @@ class City(object):
         self.check_food()
         
         #add prod, check production
-        self.production = self.production + self.get_prod_yield
+        self.production = self.production + self.get_prod_yield()
         if self.to_build == None:
             #choose something to build
             self.to_build = self.choose_production()
@@ -236,10 +239,12 @@ class City(object):
         heap_of_tiles = []
         for i in range(len(self.tile_list)):
             self.tile_list[i].worked = False
-            heappush(heap_of_tiles,(self.tile_list[i].total_yield,i))
+            heappush(heap_of_tiles,(self.tile_list[i].total_yield(),i))
         for i in range(self.pop):
             self.tile_list[heappop(heap_of_tiles)[1]].worked = True
-    
+        #food,prod,gold,sci
+        return self.get_food_yield(),self.get_prod_yield(),self.get_gold_yield(),self.get_science_yield()
+        
     """
         Takes a given value and returns the population based on previous data.
     """
@@ -258,9 +263,3 @@ class City(object):
             return look.pop_table[self.pop]
         else:
             return int(self.popF(self.pop))
-
-if __name__ == "__main__":
-    test_city = City(None,None,None,None)
-    for i in range(41):
-        test_city.pop = i
-        print(test_city.calculate_population())

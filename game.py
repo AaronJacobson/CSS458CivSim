@@ -15,7 +15,9 @@ class Game(object):
     """
     """
 
-    def __init__(self,y = 50,x = 100,num_turns = 500, num_civ = 0):
+    def __init__(self,y = 50,x = 100,num_turns = 500, num_civ = 0,percent_grass=.5,\
+    desert_chance=.01,desert_size=2,snow_width=0.05,tundra_width=0.075,\
+    prob_forest=0.05,prob_jungle=0.05,prob_river = 0.2,prob_hill=.085):
         """
         """
 
@@ -29,7 +31,9 @@ class Game(object):
         self.turns = []
 
         self.num_civ = num_civ
-        self.cur_grid = Grid(y,x)
+        self.cur_grid = Grid(y,x,percent_grass=percent_grass,desert_chance=desert_chance,\
+        desert_size=desert_size,snow_width=snow_width,tundra_width=tundra_width,\
+        prob_forest=prob_forest,prob_jungle=prob_jungle,prob_river=prob_river,prob_hill=prob_hill)
         self.initCivs(num_civ)
 
         #TODO initialize the list/dictionary of biomes and they're yields
@@ -69,9 +73,9 @@ class Game(object):
 
             #Process Tiles
             #Gods this is inefficient, but without creating a list of tile changes, cellular automata is the way to go!
-            for m in range(self.y):
-                for n in range(self.x):
-                    self.cur_grid[m][n].process_turn()
+            # for m in range(self.y):
+            #     for n in range(self.x):
+            #         self.cur_grid.tiles[m][n].process_turn()
             #Update State Variables if any exist
             self.turns.append(copy.deepcopy(self.cur_grid))
             return yield_vals
