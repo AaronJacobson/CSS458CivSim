@@ -64,17 +64,15 @@ class Game(object):
             self.civs[i].mil_unit_list.append(warrior_add)
                 
     
-    def run(self,turn):
+    def run(self):
         """
         """
         yield_vals = N.zeros((self.num_turns,len(self.civs),4),dtype='l')
         #Initialize run loop
         for i in range(self.num_turns):
-            print(i)
             #Process Civs Individual turns and Civ Wars
             for civ in self.civs:
                 #Process turn
-                
                 yield_vals[i,civ.civNum]=civ.process_turn(i)
                 
                 #Try to be at war if not at war
@@ -110,7 +108,6 @@ class Game(object):
                                 #Civ, Turns war has gone on, Lost cities, Lost Units, Gained Cities, Killed units
                                 civ.wars.append([otherciv,0,0,0,0,0])
                                 otherciv.at_war.append(civ)
-                                print("War were declared!")
 
                 #Process War!
                 for entry in civ.wars:
