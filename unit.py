@@ -40,7 +40,7 @@ class Unit(object):
                 neighbors.append(self.target_city_tile)
                 for tile in neighbors:
                     tile.close_to_city = True
-        # print("-------------------target= " + str(self.target_city_tile.y) + "," + str(self.target_city_tile.x))
+        print("-------------------target= " + str(self.target_city_tile.y) + "," + str(self.target_city_tile.x))
         
     
     def process_turn(self):
@@ -49,22 +49,41 @@ class Unit(object):
                 self.choose_city_location()
             #move to city location
             moved = False
+            print("my pos:\t"+str(self.y)+'\t'+str(self.x))
             if self.target_city_tile.y > self.y:
                 self.move_unit(self.y+1,self.x)
                 moved = True
-            if self.target_city_tile.y < self.y:
+                print("Moving to: \t"+str(self.y)+'\t'+str(self.x))
+            elif self.target_city_tile.y < self.y:
                 self.move_unit(self.y-1,self.x)
                 moved = True
+                print("Moving to: \t"+str(self.y)+'\t'+str(self.x))
+            elif self.target_city_tile.x > self.x:
+                self.move_unit(self.y,self.x+1)
+                moved = True
+                print("Moving to: \t"+str(self.y)+'\t'+str(self.x))
+            elif self.target_city_tile.x < self.x:
+                self.move_unit(self.y,self.x-1)
+                moved = True
+                print("Moving to: \t"+str(self.y)+'\t'+str(self.x))
             if moved:
                 if self.grid.tiles[self.y,self.x].terrain == "hills" or \
                 self.grid.tiles[self.y,self.x].terrain == "forest" or \
                 self.grid.tiles[self.y,self.x].terrain == "jungle":
                     pass #don't move more
                 else:
-                    if self.target_city_tile.x > self.x:
+                    if self.target_city_tile.y > self.y:
+                        self.move_unit(self.y+1,self.x)
+                        print("Moving 2nd to: \t"+str(self.y)+'\t'+str(self.x))
+                    elif self.target_city_tile.x > self.x:
                         self.move_unit(self.y,self.x+1)
-                    if self.target_city_tile.x < self.x:
+                        print("Moving 2nd to: \t"+str(self.y)+'\t'+str(self.x))
+                    elif self.target_city_tile.x < self.x:
                         self.move_unit(self.y,self.x-1)
+                        print("Moving 2nd to: \t"+str(self.y)+'\t'+str(self.x))
+                    elif self.target_city_tile.y < self.y:
+                        self.move_unit(self.y-1,self.x)
+                        print("Moving 2nd to: \t"+str(self.y)+'\t'+str(self.x))
             if (self.target_city_tile.y == self.y) and (self.target_city_tile.x == self.x):
                 #found city
                 print("--------------------------------------founding city")
@@ -86,7 +105,7 @@ class Unit(object):
         if self.grid.tiles[y,x].unit == None:
             # print("moving from " + str(self.y) + " " + str(self.x) + " to " + str(y) + " " + str(x))
             # print("target is   " + str(self.target_city_tile.y) + " " + str(self.target_city_tile.x))
-            self.grid.tiles[self.y,self.x].unit == None
+            self.grid.tiles[self.y,self.x].unit = None
             self.grid.tiles[y,x].unit = self
             self.y = self.grid.tiles[y,x].y
             self.x = self.grid.tiles[y,x].x
