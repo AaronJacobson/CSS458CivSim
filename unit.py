@@ -92,7 +92,7 @@ class Unit(object):
                 self.grid.tiles[self.y,self.x].city.process_turn()
                 self.grid.tiles[self.y,self.x].unit = None
                 self.can_found_city = False
-                # self.civ.unit_list.remove(self)#this might or might not work
+                self.civ.unit_list.remove(self)#this might or might not work
         else:
             pass
         #TODO if civ is at war
