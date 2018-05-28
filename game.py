@@ -67,7 +67,7 @@ class Game(object):
     def run(self):
         """
         """
-        yield_vals = N.zeros((self.num_turns,len(self.civs),4),dtype='l')
+        yield_vals = N.zeros((self.num_turns,len(self.civs),5),dtype='l')
         #Initialize run loop
         for i in range(self.num_turns):
             print("Turn: "+str(i))

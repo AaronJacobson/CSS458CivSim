@@ -23,6 +23,7 @@ class Civ(object):
         sum_prod = 0
         sum_gold = 0
         sum_sci = 0
+        sum_pop = 0
         
         #process settler turns
         for unit in self.unit_list:
@@ -30,13 +31,14 @@ class Civ(object):
 
         #Process each cities turn
         for city in self.city_list:
-            food,prod,gold,sci = city.process_turn()
+            food,prod,gold,sci,pop = city.process_turn()
             #Do stuff with that
             #add to sums
             sum_food += food
             sum_prod += prod
             sum_gold += gold
             sum_sci += sci
+            sum_pop += pop
         
         #sum_gold -= unit_maintenance(len(sel.unit_list)+len(self.mil_unit_list), turn)
         
@@ -44,7 +46,7 @@ class Civ(object):
         self.science += sum_sci
         
         #return sum values
-        return sum_food,sum_prod,sum_gold,sum_sci
+        return sum_food,sum_prod,sum_gold,sum_sci,sum_pop
     
     def unit_maintenance(unit, turn):
         #TODO input formula
