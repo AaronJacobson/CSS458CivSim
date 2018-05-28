@@ -62,23 +62,18 @@ class Game(object):
             self.civs[i].mil_unit_list.append(warrior_add)
                 
     
-    def run(self):
+    def run(self,turn):
         """
         """
-        yield_vals = N.zeros((self.num_turns,len(self.civs),4))
+        # yield_vals = N.zeros((self.num_turns,len(self.civs),4))
         #Initialize run loop
-        for i in range(self.num_turns):
+        # for i in range(self.num_turns):
             #Process Civ Wars
 
             #Process Civs Individual turns
-            for civ in self.civs:
-                yield_vals[i,civ.civNum]=civ.process_turn(i)
-
-            #Process Tiles
-            #Gods this is inefficient, but without creating a list of tile changes, cellular automata is the way to go!
-            # for m in range(self.y):
-            #     for n in range(self.x):
-            #         self.cur_grid.tiles[m][n].process_turn()
+        for civ in self.civs:
+            # yield_vals[turn,civ.civNum]=
+            civ.process_turn(turn)
             #Update State Variables if any exist
-            self.turns.append(copy.deepcopy(self.cur_grid))
-            return yield_vals
+            # self.turns.append(copy.deepcopy(self.cur_grid))
+        # return yield_vals

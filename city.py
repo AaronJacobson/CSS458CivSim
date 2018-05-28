@@ -43,7 +43,7 @@ class City(object):
 
 
     def set_close_to_city(self):
-        close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
+        close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=2)
         for tile in close_tiles:
             tile.close_to_city = True
         self.grid.tiles[self.y,self.x].close_to_city = True
@@ -130,6 +130,10 @@ class City(object):
                         unit_priority = 1.0/(unit.prod_cost+unit.strength+unit.range_strength)
                         heappush(unit_heap,(unit_priority,unit))
         decision = random.uniform(0,1)
+        if self.pop < 3:
+            settler_chance = 0
+        elif self.pop > 7:
+            settler_chance *= 2
         if decision < settler_chance:
             return look.unit_lookup["settler"]
         elif decision < unit_chance+settler_chance:

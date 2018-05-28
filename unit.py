@@ -1,4 +1,5 @@
 from heapq import heappush,heappop
+import numpy as N
 import city
 class Unit(object):
 
@@ -18,51 +19,62 @@ class Unit(object):
         self.health = 100
         self.airdrop = airdrop
         self.type = "unit"
+        self.can_found_city = False
 
         if self.name == "settler":
             self.target_city_tile = None
-
-
+    
+    def choose_city_location(self):
+        #find a city location to move to
+        distance = 5
+        while self.target_city_tile == None:
+            distance += 5
+            tiles_to_consider = self.grid.tiles[self.y,self.x].get_neighbors(distance=distance)
+            N.random.shuffle(tiles_to_consider)
+            if tiles_to_consider[1].close_to_city:
+                pass
+            else:
+                self.can_found_city = True
+                self.target_city_tile = tiles_to_consider[1]
+                neighbors = self.target_city_tile.get_neighbors(distance=2)
+                neighbors.append(self.target_city_tile)
+                for tile in neighbors:
+                    tile.close_to_city = True
+        print("-------------------target= " + str(self.target_city_tile.y) + "," + str(self.target_city_tile.x))
+        
+    
     def process_turn(self):
         if self.name== "settler":#TODO move to found city
             if self.target_city_tile == None:
-                #find a city location to move to
-                tiles_to_consider = self.grid.tiles[self.y,self.x].get_neighbors(distance=10)
-                heap_of_tiles = []
-                for tile in tiles_to_consider:
-                    if not tile.close_to_city:
-                        city_val = 0
-                        city_tiles = tile.get_neighbors(distance=1)
-                        for tile in city_tiles:
-                            city_val += tile.total_yield()
-                        heappush(heap_of_tiles,(100-city_val,tile))#it's a min heap function
-                self.target_city_tile = heappop(heap_of_tiles)[1]
-                # print("------------target= " + str(self.target_city_tile.y) + "," + str(self.target_city_tile.x))
+                self.choose_city_location()
             #move to city location
-            moved = False
-            if self.target_city_tile.y > self.y:
-                self.move_unit(self.y+1,self.x)
-                moved = True
-            if self.target_city_tile.y < self.y:
-                self.move_unit(self.y-1,self.x)
-                moved = True
-            if moved:
-                if self.grid.tiles[self.y,self.x].terrain == "hills" or \
-                self.grid.tiles[self.y,self.x].terrain == "forest" or \
-                self.grid.tiles[self.y,self.x].terrain == "jungle":
-                   pass #don't move more
-                else:
-                    if self.target_city_tile.x > self.x:
-                        self.move_unit(self.y,self.x+1)
-                    if self.target_city_tile.x < self.x:
-                        self.move_unit(self.y,self.x-1)
-            if (self.target_city_tile.y == self.y) and (self.target_city_tile.x == self.x):
-                #found city
-                print("--------------attempting to found city")
-                self.grid.tiles[self.y,self.x].city = city.City(self.grid,self.y,self.x,self.civ)
-                self.civ.city_list.append(self.grid.tiles[self.y,self.x].city)
-                self.grid.tiles[self.y,self.x].city.process_turn()
-                self.grid.tiles[self.y,self.x].unit = None
+            if True:
+                moved = False
+                if self.target_city_tile.y > self.y:
+                    self.move_unit(self.y+1,self.x)
+                    moved = True
+                if self.target_city_tile.y < self.y:
+                    self.move_unit(self.y-1,self.x)
+                    moved = True
+                if moved:
+                    if self.grid.tiles[self.y,self.x].terrain == "hills" or \
+                    self.grid.tiles[self.y,self.x].terrain == "forest" or \
+                    self.grid.tiles[self.y,self.x].terrain == "jungle":
+                        pass #don't move more
+                    else:
+                        if self.target_city_tile.x > self.x:
+                            self.move_unit(self.y,self.x+1)
+                        if self.target_city_tile.x < self.x:
+                            self.move_unit(self.y,self.x-1)
+                if (self.target_city_tile.y == self.y) and (self.target_city_tile.x == self.x):
+                    #found city
+                    print("--------------------------------------founding city")
+                    self.grid.tiles[self.y,self.x].city = city.City(self.grid,self.y,self.x,self.civ)
+                    self.civ.city_list.append(self.grid.tiles[self.y,self.x].city)
+                    self.grid.tiles[self.y,self.x].city.process_turn()
+                    self.grid.tiles[self.y,self.x].unit = None
+                    self.can_found_city = False
+                    self.civ.unit_list.remove(self)#this might or might not work
         else:
             pass
         #TODO if civ is at war
