@@ -58,6 +58,7 @@ class City(object):
             food_yield = food_yield + building.food
             total_bonus = total_bonus + building.food_bonus
         food_yield = food_yield * (1.0 + total_bonus)
+        food_yield = food_yield - self.pop*2
         return food_yield
 
     def get_prod_yield(self):
@@ -130,7 +131,7 @@ class City(object):
                         unit_priority = (unit.prod_cost-unit.strength-unit.range_strength)
                         heappush(unit_heap,(unit_priority,unit))
         decision = random.uniform(0,1)
-        settler_chance = settler_chance * min(5,self.pop) * (1.0/len(self.civ.city_list))
+        settler_chance = settler_chance * min(5,self.pop/2) * (1.0/len(self.civ.city_list))
         # if self.pop < 4:
         #     settler_chance = 0
         if decision < settler_chance:
@@ -171,20 +172,21 @@ class City(object):
                 tile_to_improve.improvement_turns = 4
                 self.improving_tiles.append(tile_to_improve)
         for tile in self.improving_tiles:
-            tile.improvement_turns = tile.improvement_turns - 1
-            if tile.improvement_turns == 0:
-                if tile.terrain == "forest":
-                    tile.add_improvement("lumber_mill")
-                elif tile.terrain == "hills":
-                    tile.add_improvement("mine")
-                elif tile.terrain == "jungle":
-                    tile.add_improvement("trading_post")
-                else:
-                    if tile.biome == "grassland" or tile.biome == "plains" or tile.near_river:
-                        tile.add_improvement("farm")
-                    else:
+            if tile.improvement == None:
+                tile.improvement_turns = tile.improvement_turns - 1
+                if tile.improvement_turns == 0:
+                    if tile.terrain == "forest":
+                        tile.add_improvement("lumber_mill")
+                    elif tile.terrain == "hills":
+                        tile.add_improvement("mine")
+                    elif tile.terrain == "jungle":
                         tile.add_improvement("trading_post")
-                self.improving_tiles.remove(tile)
+                    else:
+                        if tile.biome == "grassland" or tile.biome == "plains" or tile.near_river:
+                            tile.add_improvement("farm")
+                        else:
+                            tile.add_improvement("trading_post")
+                    self.improving_tiles.remove(tile)
 
     def check_food(self):
         self.food = self.food + self.get_food_yield()
@@ -192,6 +194,8 @@ class City(object):
             #grow
             self.pop = self.pop + 1
             self.food = 0
+        elif self.pop > 1 and self.food < (-1*self.food_to_grow(self.pop-1)):
+            self.pop = self.pop - 1
 
     def process_turn(self):
         #improve the tiles

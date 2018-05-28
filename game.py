@@ -71,9 +71,8 @@ class Game(object):
         yield_vals = N.zeros((self.num_turns,len(self.civs),5),dtype=N.dtype(int))
         #Initialize run loop
         for i in range(self.num_turns):
-            if (i+1) % 50 == 0:
-                d = Dataplotter(self.cur_grid,plotType=['All'],numCiv=self.num_civ)              
-                # d = Dataplotter(game.cur_grid,plotType=['All'],numCiv=game.num_civ)
+            # if (i+1) % 50 == 0:
+                # d = Dataplotter(self.cur_grid,plotType=['All'],numCiv=self.num_civ)
             print("Turn: "+str(i))
             #Process Civs Individual turns and Civ Wars
             for civ in self.civs:
