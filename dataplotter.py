@@ -146,10 +146,10 @@ class Dataplotter(object):
                 if grid.tiles[i,j].owner != 'none':
                     #Create a polygon based on owner context
                     if grid.tiles[i,j].has_city == True:
-                        line = plt.Polygon(poly,edgecolor='k',facecolor=cmap(val[grid.tiles[i,j].owner.civNum]))
+                        line = plt.Polygon(poly,edgecolor='k',facecolor='k')
                     else:
                         color = N.array(cmap(val[grid.tiles[i,j].owner.civNum]))                      
-                        color[3] = 0.5
+                        color[3] = 0.7
                         line = plt.Polygon(poly,edgecolor='k',facecolor=color)
                 else:
                     #Create a "blank" polygon
@@ -223,10 +223,11 @@ class Dataplotter(object):
                 if grid.tiles[i,j].owner != None:
                     #Create a polygon based on owner context
                     if grid.tiles[i,j].has_city == True:
-                        line3 = plt.Polygon(poly,edgecolor='none',facecolor=cmap(val[grid.tiles[i,j].owner.civNum]))
+                        #line3 = plt.Polygon(poly,edgecolor='none',facecolor=cmap(val[grid.tiles[i,j].owner.civNum]))
+                        line3 = plt.Polygon(poly,edgecolor='none',facecolor='k')
                     else:
                         color = N.array(cmap(val[grid.tiles[i,j].owner.civNum]))                      
-                        color[3] = 0.5
+                        color[3] = 0.7
                         line3 = plt.Polygon(poly,edgecolor='none',facecolor=color)
                     axes.add_patch(line3)
                 
