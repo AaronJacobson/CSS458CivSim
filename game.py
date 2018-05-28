@@ -174,6 +174,7 @@ class Game(object):
                                     war[0].at_war.remove(lose_civ)
                                 self.num_civ -= 1
                                 self.civs.remove(lose_civ)
+                                # lose_civ.dead = True
                             #This civ has no cities and loses
                             elif len(civ.city_list) == 0:
                                 for warciv in civ.at_war:
