@@ -137,7 +137,7 @@ class ClassLookUp(object):
     #Biome name, Food Val, Prod Val, Gold Val, Movement Cost, Strength Mod, Map Color
     desert = ["desert",0,0,0,1,0,'beige']
     grassland = ["grassland",1,2,2,1,0,'darkseagreen']
-    plains = ["plains",1,1,0,1,0,'yellowgreen']
+    plains = ["plains",1,1,0,1,0,'y']
     snow = ["snow",0,0,0,1,0,'snow']
     tundra = ["tundra",1,0,0,1,0,'silver']
     biome_lookup = {desert[0]:desert,grassland[0]:grassland,plains[0]:plains,snow[0]:snow,tundra[0]:tundra}
