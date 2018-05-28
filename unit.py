@@ -40,7 +40,7 @@ class Unit(object):
                 neighbors.append(self.target_city_tile)
                 for tile in neighbors:
                     tile.close_to_city = True
-        print("-------------------target= " + str(self.target_city_tile.y) + "," + str(self.target_city_tile.x))
+        # print("-------------------target= " + str(self.target_city_tile.y) + "," + str(self.target_city_tile.x))
         
     
     def process_turn(self):
@@ -48,33 +48,32 @@ class Unit(object):
             if self.target_city_tile == None:
                 self.choose_city_location()
             #move to city location
-            if True:
-                moved = False
-                if self.target_city_tile.y > self.y:
-                    self.move_unit(self.y+1,self.x)
-                    moved = True
-                if self.target_city_tile.y < self.y:
-                    self.move_unit(self.y-1,self.x)
-                    moved = True
-                if moved:
-                    if self.grid.tiles[self.y,self.x].terrain == "hills" or \
-                    self.grid.tiles[self.y,self.x].terrain == "forest" or \
-                    self.grid.tiles[self.y,self.x].terrain == "jungle":
-                        pass #don't move more
-                    else:
-                        if self.target_city_tile.x > self.x:
-                            self.move_unit(self.y,self.x+1)
-                        if self.target_city_tile.x < self.x:
-                            self.move_unit(self.y,self.x-1)
-                if (self.target_city_tile.y == self.y) and (self.target_city_tile.x == self.x):
-                    #found city
-                    print("--------------------------------------founding city")
-                    self.grid.tiles[self.y,self.x].city = city.City(self.grid,self.y,self.x,self.civ)
-                    self.civ.city_list.append(self.grid.tiles[self.y,self.x].city)
-                    self.grid.tiles[self.y,self.x].city.process_turn()
-                    self.grid.tiles[self.y,self.x].unit = None
-                    self.can_found_city = False
-                    self.civ.unit_list.remove(self)#this might or might not work
+            moved = False
+            if self.target_city_tile.y > self.y:
+                self.move_unit(self.y+1,self.x)
+                moved = True
+            if self.target_city_tile.y < self.y:
+                self.move_unit(self.y-1,self.x)
+                moved = True
+            if moved:
+                if self.grid.tiles[self.y,self.x].terrain == "hills" or \
+                self.grid.tiles[self.y,self.x].terrain == "forest" or \
+                self.grid.tiles[self.y,self.x].terrain == "jungle":
+                    pass #don't move more
+                else:
+                    if self.target_city_tile.x > self.x:
+                        self.move_unit(self.y,self.x+1)
+                    if self.target_city_tile.x < self.x:
+                        self.move_unit(self.y,self.x-1)
+            if (self.target_city_tile.y == self.y) and (self.target_city_tile.x == self.x):
+                #found city
+                print("--------------------------------------founding city")
+                self.grid.tiles[self.y,self.x].city = city.City(self.grid,self.y,self.x,self.civ)
+                self.civ.city_list.append(self.grid.tiles[self.y,self.x].city)
+                self.grid.tiles[self.y,self.x].city.process_turn()
+                self.grid.tiles[self.y,self.x].unit = None
+                self.can_found_city = False
+                self.civ.unit_list.remove(self)#this might or might not work
         else:
             pass
         #TODO if civ is at war
@@ -89,3 +88,8 @@ class Unit(object):
             self.grid.tiles[y,x].unit = self
             self.y = self.grid.tiles[y,x].y
             self.x = self.grid.tiles[y,x].x
+    def value(self):
+        return self.prod_cost - self.strength - self.speed * 2
+        
+    def __lt__(self,other):
+        return self.value() < other.value()

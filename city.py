@@ -26,11 +26,11 @@ class City(object):
         self.tile_improve_heap = []
 
         self.set_close_to_city()
+        self.grid.tiles[y,x].food_yield = 2
+        self.grid.tiles[y,x].prod_yield = 2
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
         self.grid.tiles[y,x].has_city = True
-        self.grid.tiles[y,x].food_yield = 2
-        self.grid.tiles[y,x].prod_yield = 2
         for tile in self.tile_list:
             if tile.city == None:
                 tile.city = self
@@ -49,7 +49,7 @@ class City(object):
         self.grid.tiles[self.y,self.x].close_to_city = True
 
     def get_food_yield(self):
-        food_yield = 0
+        food_yield = 2
         total_bonus = 0
         for tile in self.tile_list:
             if tile.worked:
@@ -61,7 +61,7 @@ class City(object):
         return food_yield
 
     def get_prod_yield(self):
-        prod_yield = 0
+        prod_yield = 2
         total_bonus = 0
         for tile in self.tile_list:
             if tile.worked:
@@ -73,7 +73,7 @@ class City(object):
         return prod_yield
 
     def get_science_yield(self):
-        science_yield = 0
+        science_yield = self.pop
         total_bonus = 0
         for tile in self.tile_list:
             if tile.worked:
@@ -127,7 +127,7 @@ class City(object):
                 for name in unit_stage:
                     if not name == "settler":
                         unit = look.unit_lookup[name]
-                        unit_priority = 1.0/(unit.prod_cost+unit.strength+unit.range_strength)
+                        unit_priority = (unit.prod_cost-unit.strength-unit.range_strength)
                         heappush(unit_heap,(unit_priority,unit))
         decision = random.uniform(0,1)
         if self.pop < 3:
@@ -175,20 +175,15 @@ class City(object):
             tile.improvement_turns = tile.improvement_turns - 1
             if tile.improvement_turns == 0:
                 if tile.terrain == "forest":
-                    #build lumbermill
                     tile.add_improvement("lumber_mill")
                 elif tile.terrain == "hills":
-                    #build mine
                     tile.add_improvement("mine")
                 elif tile.terrain == "jungle":
-                    #build trading post
                     tile.add_improvement("trading_post")
                 else:
                     if tile.biome == "grassland" or tile.biome == "plains" or tile.near_river:
-                        #build farm
                         tile.add_improvement("farm")
                     else:
-                        #build trading post
                         tile.add_improvement("trading_post")
                 self.improving_tiles.remove(tile)
 

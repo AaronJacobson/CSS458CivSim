@@ -23,6 +23,7 @@ class ClassLookUp(object):
         crossbowman = Unit(name="crossbowman",atype="archery",prod_cost=120,speed=2,strength=13,\
         range_strength=8,rangeSize=2)
         longswordsman = Unit(name="longswordsman",atype="melee",prod_cost=120,speed=2,strength=21)
+        pikeman = Unit(name="pikeman",atype="melee",prod_cost=90,speed=2,strength=16)
         knight = Unit(name="knight",atype="mounted",prod_cost=120,speed=4,strength=20)
         trebuchet = Unit(name="trebuchet",atype="siege",prod_cost=120,speed=2,strength=12,\
         range_strength=14,rangeSize=2)
@@ -67,7 +68,8 @@ class ClassLookUp(object):
         tank.name:tank,paratrooper.name:paratrooper,bazooka.name:bazooka,\
         helicopter.name:helicopter,rocket_artillery.name:rocket_artillery,\
         mobile_sam.name:mobile_sam,modern_armor.name:modern_armor,mech_infantry.name:mech_infantry,\
-        xcom_squad.name:xcom_squad,giant_death_robot.name:giant_death_robot}
+        xcom_squad.name:xcom_squad,giant_death_robot.name:giant_death_robot,\
+        pikeman.name:pikeman }
         return unit_lookup
     
     #Create Class Dictionary for find unit information

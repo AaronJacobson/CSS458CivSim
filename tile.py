@@ -86,21 +86,6 @@ class Tile(object):
             self.improve_gold(improvement.gold_yield)
             self.improve_science(improvement.science_yield)
 
-#     def move_unit(self, unit_object):
-#         if(self.unit == None):
-#             self.unit = unit_object
-# 
-#     def remove_unit(self):
-#         if(self.unit != None):
-#             self.unit = None
-
-    def process_turn(self):
-        if(self.road == 0.5):
-            self.road = 1
-        if(self.road == 1.5):
-            self.road = 2
-        #TODO add processing new improvement for the turn
-
     #Class calls with amount needed to improve resource
     def improve_food(self,amount):
         self.food_yield += amount
@@ -171,5 +156,6 @@ class Tile(object):
     def total_yield(self,food_coefficient=1.0,prod_coefficient=1.0,science_coefficient=1.0,gold_coefficent=1.0):
         return int(self.get_food_yield() * food_coefficient + self.get_prod_yield() * prod_coefficient \
         + self.get_science_yield() * science_coefficient + self.get_gold_yield() * gold_coefficent)
+        
     def __lt__(self,other):
         return self.total_yield() < other.total_yield()
