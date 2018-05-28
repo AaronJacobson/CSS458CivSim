@@ -11,8 +11,11 @@ class Civ(object):
         self.wars = []
         self.at_war = []
         self.science = 0
+        self.dead = False
         
     def process_turn(self, turn):
+        if self.dead:
+            return
         """
         """
         #Create variables for turn processing

@@ -130,8 +130,8 @@ class ClassLookUp(object):
     unitResearch = [["warrior","settler","scout"],["archer"],["chariot_archer","spearman"],["horseman","composite_bowman"],
         ["swordsman"],["pikeman"],["knight","crossbowman","trebuchet","longswordsman"],
         ["musketman"],["lancer","cannon"],["rifleman","cavalry","gatling_gun"],["artillery"],
-        ["great_war_infantry"],["infantry","machine_gun","landship"],["marine","paratrooper","tank","Anti-tank_gun"],
-        ["bazooka","rocket_artillery","helicopter","mobile_sam"],["mech_infantry","modern_armor"],["xcom_squad","death_robot"]]
+        ["great_war_infantry"],["infantry","machine_gun","landship"],["paratrooper","tank"],
+        ["bazooka","rocket_artillery","helicopter","mobile_sam"],["mech_infantry","modern_armor"],["xcom_squad","giant_death_robot"]]
     improvementResearch =[['farm'],['mine'],['lumber_mill'],['fort'],['trading_post'],[],[],[],[],[],[],[],[],[],[],[],[]]
     
     
