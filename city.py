@@ -229,7 +229,7 @@ class City(object):
                     self.grid.tiles[self.y,self.x].unit.process_turn()
                 else:
                     unit = self.to_build
-                    unit_to_add = tunit.Unit(name=unit.name,atype=unit.atype,prod_cost=unit.prod_cost,speed=unit.speed,y=-1,x=-1,civ=self.civ)
+                    unit_to_add = tunit.Unit(name=unit.name,atype=unit.atype,prod_cost=unit.prod_cost,speed=unit.speed, strength=unit.strength,y=-1,x=-1,civ=self.civ)
                     self.civ.mil_unit_list.append(unit_to_add)
 
             if self.to_build.name == "hydro_plant":
