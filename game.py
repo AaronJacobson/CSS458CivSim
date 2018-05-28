@@ -6,6 +6,7 @@ from building import Building
 from unit import Unit
 from city import City
 import classlookup
+from dataplotter import Dataplotter
 #from interpreter import Interpreter
 import numpy as N
 import os
@@ -66,9 +67,16 @@ class Game(object):
             self.civs[i].mil_unit_list.append(warrior_add)
                 
     
-    def run(self):
+    def run(self,output=False):
         """
         """
+        if output:
+            if not os.path.isdir(os.path.dirname(__file__)+"\\ExampleOutput\\GameOutput\\"):
+                os.makedirs(os.path.dirname(__file__)+"\\ExampleOutput\\GameOutput\\")
+                os.chdir(os.path.dirname(__file__)+"\\ExampleOutput\\GameOutput\\")
+            else:
+                os.chdir(os.path.dirname(__file__)+"\\ExampleOutput\\GameOutput\\")
+            
         yield_vals = N.zeros((self.num_turns,len(self.civs),5),dtype=N.dtype(int))
         #Initialize run loop
         for i in range(self.num_turns):
@@ -263,4 +271,8 @@ class Game(object):
             # inp = input()
             # if inp == 'ret':
             #     return
+            Dataplotter(self.cur_grid,savefig=True,plotType=['All'],numCiv=self.num_civ,turnNum=i)
+        if output:
+            os.path.chdir("..")
+            os.path.chdir("..")
         return yield_vals
