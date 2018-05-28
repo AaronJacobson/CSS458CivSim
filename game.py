@@ -212,7 +212,7 @@ class Game(object):
 
             #Update State Variables
             #self.turns.append(copy.deepcopy(self.cur_grid))
-            inp = input()
-            if inp == 'ret':
-                return
+            # inp = input()
+            # if inp == 'ret':
+            #     return
         return yield_vals
