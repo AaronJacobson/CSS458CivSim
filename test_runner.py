@@ -9,11 +9,10 @@ def print_pop():
         for city in civ.city_list:
             print("pop " + str(city.pop))
         print("next civ")
-num_turns = 250
+num_turns = 300
 num_civ = 6
 game = Game(num_civ=num_civ,num_turns=num_turns)
 print("initialized the map")
-print_pop()
 vals = game.run()
 
 x_axis = N.arange(num_turns)+1
