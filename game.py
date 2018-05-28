@@ -15,7 +15,7 @@ class Game(object):
     """
     """
 
-    def __init__(self,y = 50,x = 100,num_turns = 500, num_civ = 0,war_chance = 0.05,loss_chance = 0.005,percent_grass=.5,\
+    def __init__(self,y = 50,x = 100,num_turns = 500, num_civ = 0,war_chance = 0.01,loss_chance = 0.005,percent_grass=.5,\
     desert_chance=.01,desert_size=2,snow_width=0.05,tundra_width=0.075,\
     prob_forest=0.05,prob_jungle=0.05,prob_river = 0.2,prob_hill=.085):
         """
@@ -75,13 +75,13 @@ class Game(object):
             for civ in self.civs:
                 if civ.civNum!=-1:
                     #Process turn
-                    print("get yields")
+                    #print("get yields")
                     yield_vals[i,civ.civNum]=civ.process_turn(i)
                     #Temporily get Settlers position
                     print("Civ #"+str(civ.civNum))
-                    for i in range(len(civ.unit_list)):
-                        print("Settler "+str(i)+":\t"+str(civ.unit_list[i].y)+'\t'+str(civ.unit_list[i].x))
-                    print("Trying to War!")
+                    #for i in range(len(civ.unit_list)):
+                    #    print("Settler "+str(i)+":\t"+str(civ.unit_list[i].y)+'\t'+str(civ.unit_list[i].x))
+                    #print("Trying to War!")
                     #Try to be at war if not at war
                     if len(civ.wars) == 0 and len(civ.at_war) == 0:
                         close_val = 999999999
@@ -109,13 +109,19 @@ class Game(object):
                                     rel_prod = yield_vals[i,civ.civNum,1]/1
                                 
                                 rel_dist = close_val / dist
-                                
-                                adjusted_chance = self.war_chance * rel_strength * rel_prod * rel_dist
+                                if sum_strength != 0:
+                                    mil_strength = N.log(sum_strength/(8+(0.5*i)))
+                                else:
+                                    mil_strength = -1
+                                if mil_strength > 0:
+                                    mil_strength = 0    
+                                adjusted_chance = self.war_chance * rel_strength * rel_prod * rel_dist + mil_strength
                                 if adjusted_chance > N.random.uniform():
+                                    print("War were declared")
                                     #Civ, Turns war has gone on, Lost cities, Lost Units, Gained Cities, Killed units
                                     civ.wars.append([otherciv,0,0,0,0,0])
                                     otherciv.at_war.append(civ)
-                    print("Warring!")
+                    #print("Warring!")
                     #Process War!
                     for entry in civ.wars:
                                 #Compute Relative Strength
@@ -131,8 +137,23 @@ class Game(object):
                                     rel_strength = sum_strength/1
                                 if rel_strength == 0:
                                     rel_strength = 0.0001
+                                #Compute our mil_strength score
+                                if sum_strength != 0:
+                                    mil_strength = N.log(sum_strength/(8+(0.5*i)))
+                                else:
+                                    mil_strength = -1
+                                if mil_strength > 0:
+                                    mil_strength = 0 
+                                #Compute their mill strength score
+                                if other_sum_strength != 0:
+                                    other_mil_strength = N.log(other_sum_strength/(8+(0.5*i)))
+                                else:
+                                    other_mil_strength = -1
+                                if other_mil_strength > 0:
+                                    other_mil_strength = 0 
+                                
                                 #Lose a city (oh no)
-                                if self.loss_chance*(1/rel_strength) > N.random.uniform():
+                                if self.loss_chance*(1/rel_strength)+other_mil_strength > N.random.uniform():
                                     civ.city_list[-1].pop = civ.city_list[-1].pop//2
                                     entry[0].city_list.append(civ.city_list[-1])
                                     entry[0].city_list[-1].civ=entry[0]
@@ -142,7 +163,7 @@ class Game(object):
                                     entry[2]+=1
                                 
                                 #Gain a city (yay)
-                                if self.loss_chance*(rel_strength) > N.random.uniform():
+                                if self.loss_chance*(rel_strength)+mil_strength > N.random.uniform():
                                     entry[0].city_list[-1].pop = entry[0].city_list[-1].pop//2
                                     civ.city_list.append(entry[0].city_list[-1])
                                     civ.city_list[-1].civ=civ
