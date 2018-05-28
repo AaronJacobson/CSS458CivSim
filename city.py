@@ -106,7 +106,7 @@ class City(object):
         return False
 
     def choose_production(self,yield_coef=1.0,food_val_coef=1.0,prod_val_coef=1.0,\
-    science_val_coef=1.0,gold_val_coef=1.0,settler_chance=.25,unit_chance=.1):
+    science_val_coef=1.0,gold_val_coef=1.0,settler_chance=.1,unit_chance=.1):
         look = classlookup.ClassLookUp()
         building_heap = []
         unit_heap = []
@@ -266,6 +266,6 @@ class City(object):
     def calculate_population(self):
         look = classlookup.ClassLookUp()
         if self.pop < 10:
-            return look.pop_table[self.pop]
+            return int(look.pop_table[self.pop])
         else:
             return int(self.popF(self.pop))

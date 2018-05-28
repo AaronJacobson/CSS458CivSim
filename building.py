@@ -16,3 +16,6 @@ class Building(object):
         self.production_bonus = prod_bonus
         self.prod_cost = prod_cost
         self.type = "building"
+    
+    def __lt__(self,other):
+        return (self.gold+self.food+self.science+self.production) < (other.gold+other.food+other.science+other.production)
