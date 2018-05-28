@@ -64,7 +64,7 @@ class Game(object):
             self.civs[i].mil_unit_list.append(warrior_add)
                 
     
-    def run(self):
+    def run(self,turn):
         """
         """
         yield_vals = N.zeros((self.num_turns,len(self.civs),4),dtype='l')

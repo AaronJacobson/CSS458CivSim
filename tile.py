@@ -156,15 +156,16 @@ class Tile(object):
             for row in range(1+distance*2):
                 for col in range(1+distance*2):
                     x_actual = x_coords[col]
-                    if x_actual >= self.grid.x:
-                        x_actual -= self.grid.x
+                    while x_actual >= self.grid.x:
+                        x_actual -= (self.grid.x+1)
                     
                     if y_coords[row] >= 0 and y_coords[row] < self.grid.y:
-                        if y_coords[row] == self.y and x_actual == self.x:
-                            pass #found yourself
-                        else:
-                            # print("y " + str(y_coords[row]) + " x " + str(x_actual))
-                            list_of_neighbors.append(self.grid.tiles[y_coords[row],x_actual])
+                        if x_actual >= 0 and x_actual < self.grid.x:
+                            if y_coords[row] == self.y and x_actual == self.x:
+                                pass #found yourself
+                            else:
+                                # print("y " + str(y_coords[row]) + " x " + str(x_actual))
+                                list_of_neighbors.append(self.grid.tiles[y_coords[row],x_actual])
         return list_of_neighbors
 
     def total_yield(self,food_coefficient=1.0,prod_coefficient=1.0,science_coefficient=1.0,gold_coefficent=1.0):
