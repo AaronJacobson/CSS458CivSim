@@ -249,7 +249,7 @@ class City(object):
                 tile_to_work.worked = True
             # self.tile_list[heappop(heap_of_tiles)[1]].worked = True
         #food,prod,gold,sci
-        return self.get_food_yield(),self.get_prod_yield(),self.get_gold_yield(),self.get_science_yield()
+        return self.get_food_yield(),self.get_prod_yield(),self.get_gold_yield(),self.get_science_yield(),self.calculate_population()
         
     """
         Takes a given value and returns the population based on previous data.
