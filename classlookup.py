@@ -139,7 +139,7 @@ class ClassLookUp(object):
     grassland = ["grassland",1,2,2,1,0,'darkseagreen']
     plains = ["plains",1,1,0,1,0,'y']
     snow = ["snow",0,0,0,1,0,'snow']
-    tundra = ["tundra",1,0,0,1,0,'lightblue']
+    tundra = ["tundra",1,0,0,1,0,'silver']
     biome_lookup = {desert[0]:desert,grassland[0]:grassland,plains[0]:plains,snow[0]:snow,tundra[0]:tundra}
     
     #Class Terrain Definition

@@ -10,7 +10,7 @@ class Civ(object):
         self.city_list = []
         self.science = 0
         
-    def process_turn(self):
+    def process_turn(self, turn):
         """
         """
         #Create variables for turn processing

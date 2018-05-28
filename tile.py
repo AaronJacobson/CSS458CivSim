@@ -4,7 +4,7 @@ import classlookup
 class Tile(object):
     """
     """
-    def __init__(self,grid,y=-1,x=-1,biome="grassland",elevation="none",terrain="none",unique_resource=None,food_yield=0,prod_yield=0,\
+    def __init__(self,grid,y=-1,x=-1,biome="none",elevation="none",terrain="none",unique_resource=None,food_yield=0,prod_yield=0,\
     science_yield=0,gold_yield=0, road=False, river = False):
         self.grid = grid
         self.y = y
@@ -132,14 +132,14 @@ class Tile(object):
                 else:
                     #odd row
                     if self.x+1 == self.grid.x:
-                        #list_of_neighbors.append(self.grid.tiles[self.y-1,0])
+                        list_of_neighbors.append(self.grid.tiles[self.y-1,0])
                         pass
                     else:
                         list_of_neighbors.append(self.grid.tiles[self.y-1,self.x+1])
                         
             list_of_neighbors.append(self.grid.tiles[self.y,self.x-1])
             if self.x+1 == self.grid.x:
-                #list_of_neighbors.append(self.grid.tiles[self.y,0])
+                list_of_neighbors.append(self.grid.tiles[self.y,0])
                 pass
             else:
                 list_of_neighbors.append(self.grid.tiles[self.y,self.x+1])
@@ -152,7 +152,7 @@ class Tile(object):
                 else:
                     #odd row
                     if self.x+1 == self.grid.x:
-                        #list_of_neighbors.append(self.grid.tiles[self.y+1,0])
+                        list_of_neighbors.append(self.grid.tiles[self.y+1,0])
                         pass
                     else:
                         list_of_neighbors.append(self.grid.tiles[self.y+1,self.x+1])
@@ -161,8 +161,11 @@ class Tile(object):
             x_coords = N.arange(1+distance*2)-distance+self.x
             for row in range(1+distance*2):
                 for col in range(1+distance*2):
-                    if y_coords[row] >= 0 and y_coords[row] < self.grid.y \
-                    and x_coords[col] >= 0 and x_coords[col] < self.grid.x:
+
+                    if x_coords[col] >= self.grid.x:
+                        x_coords[col] = x_coords[col] - self.grid.x
+                    
+                    if y_coords[row] >= 0 or y_coords[row] < self.grid.y:
                         if y_coords[row] == self.y and x_coords[col] == self.x:
                             pass #found yourself
                         else:
