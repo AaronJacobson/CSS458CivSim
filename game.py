@@ -3,7 +3,6 @@
 from grid import Grid
 from civilization import Civ
 from building import Building
-from dataplotter import Dataplotter
 from unit import Unit
 from city import City
 import classlookup
@@ -73,9 +72,6 @@ class Game(object):
         yield_vals = N.zeros((self.num_turns,len(self.civs),5),dtype=N.dtype(int))
         #Initialize run loop
         for i in range(self.num_turns):
-            if (i+1) % 50 == 0:
-                d = Dataplotter(self.cur_grid,plotType=['All'],numCiv=self.num_civ)              
-                # d = Dataplotter(game.cur_grid,plotType=['All'],numCiv=game.num_civ)
             print("Turn: "+str(i))
             #Process Civs Individual turns and Civ Wars
             for civ in self.civs:
@@ -84,7 +80,7 @@ class Game(object):
                     #print("get yields")
                     yield_vals[i,civ.civNum]=civ.process_turn(i)
                     #Temporily get Settlers position
-                    # print("Civ #"+str(civ.civNum))
+                    print("Civ #"+str(civ.civNum))
                     #for i in range(len(civ.unit_list)):
                     #    print("Settler "+str(i)+":\t"+str(civ.unit_list[i].y)+'\t'+str(civ.unit_list[i].x))
                     #print("Trying to War!")
@@ -183,19 +179,35 @@ class Game(object):
                                     
                                 #Kill Unit!
                                 if len(entry[0].mil_unit_list) != 0:
-                                    if self.loss_chance*rel_strength > N.random.uniform():
-                                        other_sum_strength -= entry[0].mil_unit_list[0].strength
-                                        del(entry[0].mil_unit_list[0])
-                                        entry[5]+=1
-                                    print("Unit killed!")
+                                    units_killed = 0
+                                    for times in range(int(self.loss_chance*len(entry[0].mil_unit_list)*rel_strength)):
+                                        if len(entry[0].mil_unit_list) != 0:
+                                            del(entry[0].mil_unit_list[0])
+                                            entry[5]+=1
+                                            units_killed+=1
+                                    # if (self.loss_chance+(0.2))*rel_strength > N.random.uniform():
+                                    #     other_sum_strength -= entry[0].mil_unit_list[0].strength
+                                    #     del(entry[0].mil_unit_list[0])
+                                    #     entry[5]+=1
+                                    #     print("Unit killed!")
+                                    if units_killed != 0:
+                                        print(str(units_killed)+" Units killed!")
                                 
                                 #Lose Unit
                                 if len(civ.mil_unit_list) != 0:
-                                    if self.loss_chance*(1/rel_strength) > N.random.uniform():
-                                        sum_strength -= civ.mil_unit_list[0].strength
-                                        del(civ.mil_unit_list[0])
-                                        entry[3]+=1
-                                    print('Lost a unit!')
+                                    units_lost = 0
+                                    for times in range(int(self.loss_chance*len(civ.mil_unit_list)*(1/rel_strength))):
+                                        if len(civ.mil_unit_list) != 0:
+                                            del(civ.mil_unit_list[0])
+                                            entry[3]+=1
+                                            units_lost+=1
+                                    if units_lost != 0:
+                                        print(str(units_lost)+" Units lost!")
+                                    # if (self.loss_chance+(0.2))*(1/rel_strength) > N.random.uniform():
+                                    #     sum_strength -= civ.mil_unit_list[0].strength
+                                    #     del(civ.mil_unit_list[0])
+                                    #     entry[3]+=1
+                                    #     print('Lost a unit!')
                                 #Other Civ has no cities and loses
                                 if len(entry[0].city_list) == 0:
                                     lose_civ = entry[0]
