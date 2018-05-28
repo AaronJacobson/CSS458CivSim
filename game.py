@@ -182,7 +182,8 @@ class Game(object):
                                 #Kill Unit!
                                 if len(entry[0].mil_unit_list) != 0:
                                     units_killed = 0
-                                    for times in range(int(self.loss_chance*len(entry[0].mil_unit_list)*rel_strength)):
+                                    #for times in range(int(self.loss_chance*len(entry[0].mil_unit_list)*rel_strength)):
+                                    for times in range(int((self.loss_chance+0.1)*len(entry[0].mil_unit_list))):
                                         if len(entry[0].mil_unit_list) != 0:
                                             del(entry[0].mil_unit_list[0])
                                             entry[5]+=1
@@ -198,7 +199,8 @@ class Game(object):
                                 #Lose Unit
                                 if len(civ.mil_unit_list) != 0:
                                     units_lost = 0
-                                    for times in range(int(self.loss_chance*len(civ.mil_unit_list)*(1/rel_strength))):
+                                    #for times in range(int(self.loss_chance*len(civ.mil_unit_list)*(1/rel_strength))):
+                                    for times in range(int((self.loss_chance+0.1)*len(civ.mil_unit_list))):
                                         if len(civ.mil_unit_list) != 0:
                                             del(civ.mil_unit_list[0])
                                             entry[3]+=1
