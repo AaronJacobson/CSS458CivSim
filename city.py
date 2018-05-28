@@ -29,11 +29,13 @@ class City(object):
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
         self.grid.tiles[y,x].has_city = True
+        self.grid.tiles[y,x].food_yield = 2
+        self.grid.tiles[y,x].prod_yield = 2
         for tile in self.tile_list:
             if tile.city == None:
                 tile.city = self
                 tile.owner = self.civ
-                #heappush(self.tile_improve_heap,(int(tile.total_yield()),tile))
+                heappush(self.tile_improve_heap,(int(tile.total_yield()),tile))
         
         self.grid.tiles[self.y,self.x].city = self#not sure if this is redundant
         
@@ -104,7 +106,7 @@ class City(object):
         return False
 
     def choose_production(self,yield_coef=1.0,food_val_coef=1.0,prod_val_coef=1.0,\
-    science_val_coef=1.0,gold_val_coef=1.0,settler_chance=.1,unit_chance=.4):
+    science_val_coef=1.0,gold_val_coef=1.0,settler_chance=.25,unit_chance=.1):
         look = classlookup.ClassLookUp()
         building_heap = []
         unit_heap = []
@@ -140,13 +142,13 @@ class City(object):
 
     def grow_borders(self):
         self.border_distance = self.border_distance + 1
-        tiles_to_add = self.grid[self.y,self.x].get_neighbors(distance=self.border_distance)
+        tiles_to_add = self.grid.tiles[self.y,self.x].get_neighbors(distance=self.border_distance)
         for tile in tiles_to_add:
             if tile.owner == None:
                 tile.city = self
-                tile.ownder = self.civ
+                tile.owner = self.civ
                 self.tile_list.append(tile)
-                heappush(self.tile_improve_heap,(tile.total_yield,tile))
+                heappush(self.tile_improve_heap,(int(tile.total_yield()),tile))
     
     def improve_tiles(self):
         #improve one at a time
@@ -213,6 +215,7 @@ class City(object):
                 self.building_list.append(self.to_build)
             else:
                 if self.to_build.name == "settler":
+                    print("-------------------finished a settler")
                     self.grid.tiles[self.y,self.x].unit = tunit.Unit(name="settler",atype="civilian",prod_cost=106,speed=2,y=self.y,x=self.x,civ=self.civ,grid=self.grid)
                     self.civ.unit_list.append(self.grid.tiles[self.y,self.x].unit)
                     self.grid.tiles[self.y,self.x].unit.process_turn()
@@ -230,6 +233,7 @@ class City(object):
             self.to_build = self.choose_production()
 
         #growing borders
+        self.border_growth_count += 1
         if self.border_growth_count >= 100 and self.border_distance == 1:
             self.grow_borders()
         elif self.border_growth_count >= 200 and self.border_distance == 2:
@@ -237,11 +241,14 @@ class City(object):
 
         #Setting which tiles will be worked.
         heap_of_tiles = []
-        for i in range(len(self.tile_list)):
-            self.tile_list[i].worked = False
-            heappush(heap_of_tiles,(self.tile_list[i].total_yield(),i))
+        for tile in self.tile_list:
+            tile.worked = False
+            heappush(heap_of_tiles,(int(tile.total_yield()),tile))
         for i in range(self.pop):
-            self.tile_list[heappop(heap_of_tiles)[1]].worked = True
+            if len(heap_of_tiles) > 0:
+                tile_to_work = heappop(heap_of_tiles)[1]
+                tile_to_work.worked = True
+            # self.tile_list[heappop(heap_of_tiles)[1]].worked = True
         #food,prod,gold,sci
         return self.get_food_yield(),self.get_prod_yield(),self.get_gold_yield(),self.get_science_yield()
         

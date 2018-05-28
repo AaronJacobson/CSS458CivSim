@@ -14,11 +14,11 @@ from dataplotter import Dataplotter
 game = Game(num_civ=5)
 game.run()
 
-civ0 = Civ(0)
-civ1 = Civ(1)
-civ2 = Civ(2)
-civ3 = Civ(3)
-civ4 = Civ(4)
+# civ0 = Civ(0)
+# civ1 = Civ(1)
+# civ2 = Civ(2)
+# civ3 = Civ(3)
+# civ4 = Civ(4)
 
 # city1 = City(g,3,4,civ0)
 #print('city 1: '+str(city1.y)+', '+str(city1.x)+', '+str(city1.civ.civNum))

@@ -118,4 +118,24 @@ class Grid(object):
                         self.tiles[row,col].biome = "plains"
                         self.tiles[row,col+1].biome = "plains"
         #-----------------------------------------------------------------------
-        #TODO initialize all the tiles in the grid
+        #TODO initialize all the tile yields
+        for row in range(self.y):
+            for col in range(self.x):
+                tile = self.tiles[row,col]
+                if tile.terrain == "forest":
+                    tile.food_yield = 1
+                    tile.prod_yield = 1
+                elif tile.terrain == "jungle":
+                    tile.food_yield = 2
+                elif tile.elevation == "hill":
+                    tile.prod_yield = 2
+                elif tile.biome == "grassland":
+                    tile.food_yield = 2
+                elif tile.biome == "tundra":
+                    tile.food_yield = 1
+                elif tile.biome == "plains":
+                    tile.food_yield = 1
+                    tile.prod_yield = 1
+                elif tile.biome == "desert" and tile.near_river:
+                    tile.food_yield = 2
+                

@@ -19,6 +19,10 @@ class Civ(object):
         sum_gold = 0
         sum_sci = 0
         
+        #process settler turns
+        for unit in self.unit_list:
+            unit.process_turn()
+
         #Process each cities turn
         for city in self.city_list:
             food,prod,gold,sci = city.process_turn()

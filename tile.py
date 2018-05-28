@@ -30,56 +30,50 @@ class Tile(object):
         self.worked = False
         self.improvement_turns = -1
         
-    """
-    Roads take 2 turns to build. Road is set to .5 when starting to build.
-    on following turn, processing turn will increase number to 1 to represent
-    a built road. Railroad will be represented the same way, but with 1.5 and 2.
-    """
-    def build_road(self):
-        self.road = 0.5
-
-    def build_railroad(self):
-        if(self.road == 1):
-            self.road = 1.5
 
     def set_owner(self,civ):
         self.owner = civ
 
     def get_science_yield(self):
         science_bonus = 0
-        if(self.city.has_university == True):
-            if(self.terrain == "jungle"):
-                science_bonus += 2
+        if not (self.city == None):
+            if(self.city.has_university == True):
+                if(self.terrain == "jungle"):
+                    science_bonus += 2
         return (self.science_yield + science_bonus)
         
     def get_prod_yield(self):
         prod_bonus = 0
-        if(self.city.has_hydro_plant == True):
-            if(self.near_river == True):
-                prod_bonus += 1
-        if(self.improvement == "mine"):
-            if(self.owner.science >= 2930):
-                prod_bonus += 1
-        if(self.improvement == "lumber_mill"):
-            if(self.owner.science >= 4530):
-                prod_bonus += 1
+        if not (self.city == None):
+            if(self.city.has_hydro_plant == True):
+                if(self.near_river == True):
+                    prod_bonus += 1
+        if not (self.owner == None):
+            if(self.improvement == "mine"):
+                if(self.owner.science >= 2930):
+                    prod_bonus += 1
+            if(self.improvement == "lumber_mill"):
+                if(self.owner.science >= 4530):
+                    prod_bonus += 1
         return (self.prod_yield + prod_bonus)
         
     def get_food_yield(self):
         food_bonus = 0
-        if(self.improvement == "farm"):
-            if(self.owner.science >= 625):
-                if(self.near_river == True):
+        if not (self.owner == None):
+            if(self.improvement == "farm"):
+                if(self.owner.science >= 625):
+                    if(self.near_river == True):
+                        food_bonus += 1
+                if(self.owner.science >= 4530):
                     food_bonus += 1
-            if(self.owner.science >= 4530):
-                food_bonus += 1
         return (self.food_yield + food_bonus)
         
     def get_gold_yield(self):
         gold_bonus = 0
-        if(self.improvement == "trading_post"):
-            if(self.owner.science >= 2930):
-                gold_bonus += 1
+        if not (self.owner == None):
+            if(self.improvement == "trading_post"):
+                if(self.owner.science >= 2930):
+                    gold_bonus += 1
         return (self.gold_yield + gold_bonus)
 
     #TODO change how to deal with improvements
@@ -92,13 +86,13 @@ class Tile(object):
             self.improve_gold(improvement.gold_yield)
             self.improve_science(improvement.science_yield)
 
-    def move_unit(self, unit_object):
-        if(self.unit == None):
-            self.unit = unit_object
-
-    def remove_unit(self):
-        if(self.unit != None):
-            self.unit = None
+#     def move_unit(self, unit_object):
+#         if(self.unit == None):
+#             self.unit = unit_object
+# 
+#     def remove_unit(self):
+#         if(self.unit != None):
+#             self.unit = None
 
     def process_turn(self):
         if(self.road == 0.5):
@@ -161,28 +155,20 @@ class Tile(object):
             x_coords = N.arange(1+distance*2)-distance+self.x
             for row in range(1+distance*2):
                 for col in range(1+distance*2):
-
-                    if x_coords[col] >= self.grid.x:
-                        x_coords[col] = x_coords[col] - self.grid.x
+                    x_actual = x_coords[col]
+                    if x_actual >= self.grid.x:
+                        x_actual -= self.grid.x
                     
-                    if y_coords[row] >= 0 or y_coords[row] < self.grid.y:
-                        if y_coords[row] == self.y and x_coords[col] == self.x:
+                    if y_coords[row] >= 0 and y_coords[row] < self.grid.y:
+                        if y_coords[row] == self.y and x_actual == self.x:
                             pass #found yourself
                         else:
-                            list_of_neighbors.append(self.grid.tiles[y_coords[row],x_coords[col]])
+                            # print("y " + str(y_coords[row]) + " x " + str(x_actual))
+                            list_of_neighbors.append(self.grid.tiles[y_coords[row],x_actual])
         return list_of_neighbors
 
     def total_yield(self,food_coefficient=1.0,prod_coefficient=1.0,science_coefficient=1.0,gold_coefficent=1.0):
         return int(self.get_food_yield() * food_coefficient + self.get_prod_yield() * prod_coefficient \
         + self.get_science_yield() * science_coefficient + self.get_gold_yield() * gold_coefficent)
-
-if __name__ == "__main__":
-    #Moved this in here to prevent circular imports
-
-    from grid import Grid
-
-    test_grid = Grid(50,50)
-    list_of_tiles = test_grid.tiles[2,2].get_neighbors(distance=1)
-    for tile in list_of_tiles:
-        print("y " + str(tile.y) + " x " + str(tile.x))
-    print("length: " + str(len(list_of_tiles)))
+    def __lt__(self,other):
+        return self.total_yield() < other.total_yield()
