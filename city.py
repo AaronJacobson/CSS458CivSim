@@ -132,8 +132,6 @@ class City(object):
         decision = random.uniform(0,1)
         if self.pop < 3:
             settler_chance = 0
-        elif self.pop > 7:
-            settler_chance *= 2
         if decision < settler_chance:
             return look.unit_lookup["settler"]
         elif decision < unit_chance+settler_chance:
@@ -192,7 +190,6 @@ class City(object):
         if self.food >= self.food_to_grow(self.pop+1):
             #grow
             self.pop = self.pop + 1
-            #TODO set which tile is being worked.
             self.food = 0
 
     def process_turn(self):
@@ -249,7 +246,7 @@ class City(object):
                 tile_to_work.worked = True
             # self.tile_list[heappop(heap_of_tiles)[1]].worked = True
         #food,prod,gold,sci
-        return self.get_food_yield(),self.get_prod_yield(),self.get_gold_yield(),self.get_science_yield(),self.calculate_population()
+        return self.get_food_yield(),self.get_prod_yield(),self.get_gold_yield(),self.get_science_yield(),self.pop
         
     """
         Takes a given value and returns the population based on previous data.
