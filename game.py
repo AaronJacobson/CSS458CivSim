@@ -70,11 +70,13 @@ class Game(object):
         yield_vals = N.zeros((self.num_turns,len(self.civs),4),dtype='l')
         #Initialize run loop
         for i in range(self.num_turns):
+            print("Turn: "+str(i))
             #Process Civs Individual turns and Civ Wars
             for civ in self.civs:
                 #Process turn
+                print("get yields")
                 yield_vals[i,civ.civNum]=civ.process_turn(i)
-                
+                print("Trying to War!")
                 #Try to be at war if not at war
                 if len(civ.wars) == 0 and len(civ.at_war) == 0:
                     close_val = 999999999
@@ -108,7 +110,7 @@ class Game(object):
                                 #Civ, Turns war has gone on, Lost cities, Lost Units, Gained Cities, Killed units
                                 civ.wars.append([otherciv,0,0,0,0,0])
                                 otherciv.at_war.append(civ)
-
+                print("Warring!")
                 #Process War!
                 for entry in civ.wars:
                             #Compute Relative Strength
@@ -128,6 +130,9 @@ class Game(object):
                             if self.loss_chance*(1/rel_strength) > N.random.uniform():
                                 civ.city_list[-1].pop = civ.city_list[-1].pop//2
                                 entry[0].city_list.append(civ.city_list[-1])
+                                entry[0].city_list[-1].civ=entry[0]
+                                for tile in entry[0].city_list[-1].tile_list:
+                                    tile.owner = entry[0]
                                 del(civ.city_list[-1])
                                 entry[2]+=1
                             
@@ -135,6 +140,9 @@ class Game(object):
                             if self.loss_chance*(rel_strength) > N.random.uniform():
                                 entry[0].city_list[-1].pop = entry[0].city_list[-1].pop//2
                                 civ.city_list.append(entry[0].city_list[-1])
+                                civ.city_list[-1].civ=civ
+                                for tile in civ.city_list[-1].tile_list:
+                                    tile.owner = civ
                                 del(entry[0].city_list[-1])
                                 entry[4]+=1
                                                 
@@ -198,5 +206,5 @@ class Game(object):
                 
 
             #Update State Variables
-            self.turns.append(copy.deepcopy(self.cur_grid))
+            #self.turns.append(copy.deepcopy(self.cur_grid))
         return yield_vals
