@@ -15,8 +15,10 @@ labels = ["food","prod","gold","science","pop"]
 for val in range(5):
     fig = plt.figure()
     fig.suptitle(labels[val],fontsize=20)
+    cmap = plt.get_cmap('gist_rainbow')
+    cval = N.arange(0,1,1/num_civ)
     ax = fig.add_subplot(111)
     for i in range(num_civ):
-        ax.plot(x_axis,vals[:,i,val])
+        ax.plot(x_axis,vals[:,i,val],color=cmap(cval[i]))
 plt.show()
 d = Dataplotter(game.cur_grid,plotType=['All'],numCiv=game.num_civ)
