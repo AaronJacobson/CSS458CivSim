@@ -5,7 +5,8 @@ import random
 
 class City(object):
 
-    def __init__(self,grid,y,x,civ):
+    def __init__(self,grid,y,x,civ,capitol=False):
+        self.capitol = capitol
         self.grid = grid
         self.y = y
         self.x = x
@@ -31,6 +32,7 @@ class City(object):
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
         self.grid.tiles[y,x].has_city = True
+        self.trade_and_road_sub_coef = .25
         self.temp_gold = 0
         for tile in self.tile_list:
             if tile.city == None:
@@ -59,7 +61,6 @@ class City(object):
             food_yield = food_yield + building.food
             total_bonus = total_bonus + building.food_bonus
         food_yield = food_yield * (1.0 + total_bonus)
-        # food_yield -= self.pop*2
         return food_yield
 
     def get_prod_yield(self):
@@ -96,6 +97,8 @@ class City(object):
             gold_yield = gold_yield + building.gold
             total_bonus = total_bonus + building.gold_bonus
         gold_yield = gold_yield * (1.0 + total_bonus)
+        if not self.capitol:
+            gold_yield = int(gold_yield + self.pop * self.trade_and_road_sub_coef)
         return gold_yield
 
     def food_to_grow(self,pop):
@@ -134,7 +137,7 @@ class City(object):
                         unit_priority = (unit.prod_cost-unit.strength-unit.range_strength)
                         heappush(unit_heap,(unit_priority,unit))
         decision = random.uniform(0,1)
-        settler_chance = settler_chance * min(3,self.pop/2) * (1.0/len(self.civ.city_list)) * 1.5 / (len(self.civ.unit_list)+1)
+        settler_chance = settler_chance * min(3,self.pop/2) * (1.0/len(self.civ.city_list)) * 1.0 / (len(self.civ.unit_list)+1)
         # if self.pop < 4:
         #     settler_chance = 0
         if decision < settler_chance:

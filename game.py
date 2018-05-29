@@ -60,7 +60,7 @@ class Game(object):
             yrand = N.random.normal(0,0.05*self.y)
             while self.y//ydiv - yrand < 0 or yrand > self.y//ydiv:
                 yrand = N.random.normal(0,0.05*self.y)
-            self.civs[i].city_list.append(City(self.cur_grid,int(self.y//ydiv*((i//ydiv)+1)+yrand),int(((self.x//xdiv)*((i+1)%4))+xrand),self.civs[i]))
+            self.civs[i].city_list.append(City(self.cur_grid,int(self.y//ydiv*((i//ydiv)+1)+yrand),int(((self.x//xdiv)*((i+1)%4))+xrand),self.civs[i],capitol=True))
             warrior = classlookup.ClassLookUp.unit_lookup['warrior']
             warrior_add = Unit(name = warrior.name,atype = warrior.atype,prod_cost = warrior.prod_cost,speed = warrior.speed,strength=warrior.strength,y=-1,x=-1,civ=self.civs[i])
             self.civs[i].mil_unit_list.append(warrior_add)
@@ -76,7 +76,7 @@ class Game(object):
             else:
                 os.chdir(os.path.dirname(__file__)+"\\ExampleOutput\\GameOutput\\")
             
-        yield_vals = N.zeros((self.num_turns,len(self.civs),5),dtype=N.dtype(int))
+        yield_vals = N.zeros((self.num_turns,len(self.civs),6),dtype=N.dtype(int))
         #Initialize run loop
         for i in range(self.num_turns):
             # if (i+1) % 50 == 0:
