@@ -18,7 +18,7 @@ class Grid(object):
         self.prob_hill = prob_hill
 
         self.tiles = N.zeros((y,x),dtype='object')
-        
+
         for row in range(self.y):
             for col in range(self.x):
                 self.tiles[row,col] = Tile(self,row,col)
@@ -41,7 +41,7 @@ class Grid(object):
                 if(isHillTile):
                     self.tiles[row,col].elevation = "hill"
                     self.tiles[row,col-1].elevation = "hill"
-                    
+
                 isHillTile = N.random.binomial(1,self.prob_hill)#for bottom
                 #set elevation
                 if(isHillTile):
@@ -63,7 +63,7 @@ class Grid(object):
                 if(isHillTile):
                     self.tiles[row+self.snow_width,col].elevation = "hill"
                     self.tiles[row+self.snow_width,col-1].elevation = "hill"
-                    
+
                 isHillTile = N.random.binomial(1,self.prob_hill)#for bottom
                 #set elevation
                 if(isHillTile):
@@ -71,7 +71,6 @@ class Grid(object):
                     self.tiles[self.y-(1+row+self.snow_width),col-1].elevation = "hill"
 
         #Set the middle terrain
-
         for row in range((self.tundra_width+self.snow_width),(self.y-self.tundra_width-self.snow_width)):
             for col in range(x):
                 if self.tiles[row,col].biome == "none":
@@ -82,7 +81,7 @@ class Grid(object):
                     else:
                         self.tiles[row,col].biome = "plains"
                     if (N.random.binomial(1,desert_chance)):
-                        self.tiles[row,col].biome = "desert" 
+                        self.tiles[row,col].biome = "desert"
                         neighbors = self.tiles[row,col].get_neighbors(distance=desert_size)
                         for tile in neighbors:
                             tile.biome = "desert"
@@ -98,7 +97,7 @@ class Grid(object):
         #----------------------Setting rivers/terrain/elevation-----------------------------------
         for row in range(self.snow_width+self.tundra_width,y-(self.snow_width+self.tundra_width)):
             isRiverTile = N.random.binomial(1,self.prob_river)
-            
+
             for col in range(x-1):
                 isJungleTile = N.random.binomial(1,self.prob_jungle)
                 isForrestTile = N.random.binomial(1,self.prob_forest)
@@ -138,4 +137,3 @@ class Grid(object):
                     tile.prod_yield = 1
                 elif tile.biome == "desert" and tile.near_river:
                     tile.food_yield = 2
-                
