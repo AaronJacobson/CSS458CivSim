@@ -31,6 +31,7 @@ class City(object):
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
         self.grid.tiles[y,x].has_city = True
+        self.temp_gold = 0
         for tile in self.tile_list:
             if tile.city == None:
                 tile.city = self
@@ -133,16 +134,25 @@ class City(object):
                         unit_priority = (unit.prod_cost-unit.strength-unit.range_strength)
                         heappush(unit_heap,(unit_priority,unit))
         decision = random.uniform(0,1)
-        settler_chance = settler_chance * min(5,self.pop/2) * (1.0/len(self.civ.city_list))
+        settler_chance = settler_chance * min(5,self.pop/2) * (1.0/len(self.civ.city_list)) * 2.0 / (len(self.civ.unit_list)+1)
         # if self.pop < 4:
         #     settler_chance = 0
         if decision < settler_chance:
-            return look.unit_lookup["settler"]
+                if self.civ.get_total_pop_count() > (len(self.civ.unit_list) + len(self.civ.mil_unit_list)):
+                    return look.unit_lookup["settler"]
+                else:
+                    return look.building_lookup["prod_gold"]
         elif decision < unit_chance+settler_chance:
-            return heappop(unit_heap)[1]
+                if self.civ.get_total_pop_count() > (len(self.civ.unit_list) + len(self.civ.mil_unit_list)):
+                    return heappop(unit_heap)[1]
+                else:
+                    return look.building_lookup["prod_gold"]
         else:
             if len(building_heap) == 0:
-                return heappop(unit_heap)[1]
+                if self.civ.get_total_pop_count() > (len(self.civ.unit_list) + len(self.civ.mil_unit_list)):
+                    return heappop(unit_heap)[1]
+                else:
+                    return look.building_lookup["prod_gold"]
             else:
                 return heappop(building_heap)[1]
 
@@ -177,8 +187,8 @@ class City(object):
             if tile.improvement == None:
                 tile.improvement_turns = tile.improvement_turns - 1
                 if tile.improvement_turns == 0:
-                    # if self.get_gold_yield() <= 0:
-                    #     tile.add_improvement("trading_post")
+                    if self.get_gold_yield() <= -2:
+                        tile.add_improvement("trading_post")
                     
                     if tile.terrain == "forest":
                         tile.add_improvement("lumber_mill")
@@ -220,7 +230,11 @@ class City(object):
         if self.production >= self.to_build.prod_cost:
             #complete production
             if self.to_build.type == "building":
-                self.building_list.append(self.to_build)
+                if self.to_build.name == "prod_gold":
+                    self.temp_gold = int(self.production * .25)
+                    self.production = 0
+                else:
+                    self.building_list.append(self.to_build)
             else:
                 if self.to_build.name == "settler":
                     # print("-------------------finished a settler")
@@ -265,7 +279,9 @@ class City(object):
                 tile_to_work.worked = True
             # self.tile_list[heappop(heap_of_tiles)[1]].worked = True
         #food,prod,gold,sci
-        return self.get_food_yield(),self.get_prod_yield(),self.get_gold_yield(),self.get_science_yield(),self.calculate_population()
+        to_return_gold = self.get_gold_yield() + self.temp_gold
+        self.temp_gold = 0
+        return self.get_food_yield(),self.get_prod_yield(),to_return_gold,self.get_science_yield(),self.calculate_population()
         
     """
         Takes a given value and returns the population based on previous data.

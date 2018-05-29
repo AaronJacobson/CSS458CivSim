@@ -97,13 +97,14 @@ class ClassLookUp(object):
         research_lab = Building(name="research_lab",gold_yield=-3,science_yield=4,science_bonus=.5,prod_cost=500)
         #We're combining nuclear and solar plants since we're not looking at strategic resource counts
         power_plant = Building(name="power_plant",gold_yield=-3,prod_yield=5,prod_bonus=.15,prod_cost=500)
+        prod_gold = Building(name="prod_gold")
         building_lookup = { granary.name:granary, library.name:library \
         ,stoneworks.name:stoneworks, watermill.name:watermill, market.name:market \
         , university.name:university, workshop.name:workshop, bank.name:bank \
         , observatory.name:observatory, windmill.name:windmill, factory.name:factory \
         , hospital.name:hospital, public_school.name:public_school, stock_exchange.name:stock_exchange \
         , research_lab.name:research_lab, power_plant.name:power_plant\
-        , hydro_plant.name:hydro_plant}
+        , hydro_plant.name:hydro_plant, prod_gold.name:prod_gold}
         return building_lookup
     
     #Create class dictionary for finding building information

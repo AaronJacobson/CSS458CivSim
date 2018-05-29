@@ -52,3 +52,9 @@ class Civ(object):
         #TODO input formula
         #maintenance = ((0.5 + (8/1000)*turn) round(unit, 2))**(1 + (2/700) * turn)
         return unit
+        
+    def get_total_pop_count(self):
+        pop_count = 0
+        for city in self.city_list:
+            pop_count += city.pop
+        return pop_count

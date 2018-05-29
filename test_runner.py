@@ -4,14 +4,9 @@ import matplotlib.pyplot as plt
 import numpy as N
 from game import Game
 
-def print_pop_cities():
-    for civ in game.civs:
-        for city in civ.city_list:
-            print("pop " + str(city.pop))
-        print("next civ")
 num_turns = 500
-num_civ = 6
-game = Game(num_civ=num_civ,num_turns=num_turns)
+num_civ = 5
+game = Game(y=42,x=66,num_civ=num_civ,num_turns=num_turns)
 print("initialized the map")
 vals = game.run()
 
