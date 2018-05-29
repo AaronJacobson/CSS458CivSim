@@ -12,16 +12,20 @@ import os
 import copy
 
 class Game(object):
-    """Creates and runs a simulation of the Civilization V video game.
+    """
+    Summary:
+        Creates and runs a simulation of the Civilization V video game.
     """
 
     def __init__(self,y = 50,x = 100,num_turns = 500, num_civ = 0,war_chance = 0.02,loss_chance = 0.01,war_base = 9, war_mod = 0.2,percent_grass=.5,\
     desert_chance=.01,desert_size=2,snow_width=0.05,tundra_width=0.075,\
     prob_forest=0.05,prob_jungle=0.05,prob_river = 0.2,prob_hill=.085):
-        """Constructor for the Game class that runs the simulation
+        """
         Summary:
-            Initializes state variables, creates the grid using inputted parameters, populates civs into grid and civ list using inputted parameters.
-        
+            Constructor for the Game class that runs the simulation. Initializes
+            state variables, creates the grid using inputted parameters,
+            populates civs into grid and civ list using inputted parameters.
+
         Method Arguments:
             y*: the height of the grid to be created
             x*: the length of the grid to be created
@@ -41,7 +45,7 @@ class Game(object):
             prob_jungle*: Percent chance that any tile and its next neighbor will be made into jungles.
             prob_river*: Percent chance that any tile and its next neighbor will have a river running through them.
             prob_hill*: Percent chance that any tile will become a hill.
-            
+
         """
 
         #Initialize Total Turns
@@ -51,25 +55,25 @@ class Game(object):
         self.x = x
         self.y = y
         self.civs = []
-        
+
         #Initialize important variables
         self.num_civ = num_civ
         self.war_chance = war_chance
         self.loss_chance = loss_chance
         self.war_mod = war_mod
         self.war_base = war_base
-        
+
         #Initialize and generate Grid
         self.cur_grid = Grid(y,x,percent_grass=percent_grass,desert_chance=desert_chance,\
         desert_size=desert_size,snow_width=snow_width,tundra_width=tundra_width,\
         prob_forest=prob_forest,prob_jungle=prob_jungle,prob_river=prob_river,prob_hill=prob_hill)
-        
+
         #Place Civs in the civ list and put their inital cities and warriors on the Grid
         self.initCivs(num_civ)
 
     def initCivs(self,num_civ):
         """Generates Civs, places them in state variable civs and puts their initial cities and units on the Grid
-        
+
         Method Arguments:
             num_civ*: The number of civs to be generated.
         """
@@ -105,11 +109,11 @@ class Game(object):
             warrior_add = Unit(name = warrior.name,atype = warrior.atype,prod_cost = warrior.prod_cost,speed = warrior.speed,strength=warrior.strength,y=-1,x=-1,civ=self.civs[i])
             #Add them to the civs military unit list
             self.civs[i].mil_unit_list.append(warrior_add)
-                
-    
+
+
     def run(self,output=False):
         """Runs the Civilization V simulation and outputs through dataplotter every turn if output is set.
-        
+
         Summary:
             Checks if output is set and then looks for the proper directory to switch to, creating it if it doesn't exist.
             initializes the yield values numpy array used for storing important return values.
@@ -123,7 +127,7 @@ class Game(object):
             Finally peace conditions are checked and peace may occur.
             Back outside the civ loop output is again checked and the dataplotter called every other turn.
             Then outside the entire sim loop the yield vals array is returned.
-            
+
         Method Arguments:
             output*: Tells the method whether or not to output dataplotter images every turn to Exampleoutput\\Gameoutput\\
         """
@@ -134,21 +138,21 @@ class Game(object):
                 os.chdir(os.path.dirname(__file__)+"\\ExampleOutput\\GameOutput\\")
             else:
                 os.chdir(os.path.dirname(__file__)+"\\ExampleOutput\\GameOutput\\")
-        
-        #Create array for storing return values    
+
+        #Create array for storing return values
         yield_vals = N.zeros((self.num_turns,len(self.civs),6),dtype=N.dtype(int))
-        
+
         #Initialize run loop
         for i in range(self.num_turns):
-            
+
             #Output the turn number
             print("Turn: "+str(i+1))
-            
+
             #Process Civs Individual turns and Civ Wars
             for civ in self.civs:
                 #Due to a quirk in for each loops, this is necessary to prevent dead civs from being run
                 if civ.civNum!=-1:
-                    
+
                     #Process turn
                     yield_vals[i,civ.civNum]=civ.process_turn(i)
 
@@ -204,7 +208,7 @@ class Game(object):
                                     mil_strength = -1
                                 #Prevent mil_strength score from increasing the chance of war, there are other modifiers that do that better already.
                                 if mil_strength > 0:
-                                    mil_strength = 0    
+                                    mil_strength = 0
                                 #Get the adjusted chance for war
                                 adjusted_chance = self.war_chance * rel_strength * rel_prod * rel_dist + mil_strength
                                 #Get a random value and see if war needs to happen
@@ -243,15 +247,15 @@ class Game(object):
                                 else:
                                     mil_strength = -1
                                 if mil_strength > 0:
-                                    mil_strength = 0 
+                                    mil_strength = 0
                                 #Compute their mill strength score
                                 if other_sum_strength != 0:
                                     other_mil_strength = N.log(other_sum_strength/(self.war_base+(self.war_mod*i)))
                                 else:
                                     other_mil_strength = -1
                                 if other_mil_strength > 0:
-                                    other_mil_strength = 0 
-                                
+                                    other_mil_strength = 0
+
                                 #Lose a city (oh no)
                                 #See if adjusted chance value meets the random value necessary
                                 if self.loss_chance*(1/rel_strength)+other_mil_strength > N.random.uniform():
@@ -269,7 +273,7 @@ class Game(object):
                                     #Increment the war entry tracking cities lost
                                     entry[2]+=1
                                     print("Lost a city!")
-                                
+
                                 #Gain a city (yay)
                                 #See if adjusted chance value meets the random value necessary
                                 if self.loss_chance*(rel_strength)+mil_strength > N.random.uniform():
@@ -287,12 +291,12 @@ class Game(object):
                                     #Increment the war entry tracking cities gained
                                     entry[4]+=1
                                     print("gained a city!")
-                                                    
-                                    
+
+
                                 #Kill Unit!
                                 #Check that their military units list is not empty
-                                if len(entry[0].mil_unit_list) != 0:                             
-                                    
+                                if len(entry[0].mil_unit_list) != 0:
+
                                     #Kill a percentage of their total units
                                     for times in range(int((self.loss_chance+0.1)*len(entry[0].mil_unit_list))):
                                         #Again check that their list is not empty
@@ -333,7 +337,7 @@ class Game(object):
                                     lose_civ.civNum=-1
                                     #"Remove" the civ from the civ list.
                                     self.civs.remove(lose_civ)
-                                
+
                                 #This civ has no cities and loses
                                 elif len(civ.city_list) == 0:
                                     #Get all the civs that this civ is at war with
@@ -379,8 +383,8 @@ class Game(object):
                                     else:
                                         #The civ is not dead, peace has not happened, increase the number of turns that the war has gone on.
                                         entry[1]+=1
-                                    
-                                        
+
+
             #Outside civ for loop but inside turn for loop
             #Check if output and every other turn
             if i%2 == 0 and output:
