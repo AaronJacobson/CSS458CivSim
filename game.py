@@ -270,9 +270,9 @@ class Game(object):
             # inp = input()
             # if inp == 'ret':
             #     return
-            if output:
+            if i%2 == 0 and output:
                 Dataplotter(self.cur_grid,savefig=True,plotType=['All'],numCiv=self.num_civ,turnNum=i)
         if output:
-            os.path.chdir("..")
-            os.path.chdir("..")
+            os.chdir("..")
+            os.chdir("..")
         return yield_vals
