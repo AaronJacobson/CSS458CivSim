@@ -29,7 +29,6 @@ class Game(object):
         self.x = x
         self.y = y
         self.civs = []
-        self.turns = []
 
         self.num_civ = num_civ
         self.war_chance = war_chance
@@ -82,7 +81,7 @@ class Game(object):
         for i in range(self.num_turns):
             # if (i+1) % 50 == 0:
                 # d = Dataplotter(self.cur_grid,plotType=['All'],numCiv=self.num_civ)
-            print("Turn: "+str(i))
+            print("Turn: "+str(i+1))
             #Process Civs Individual turns and Civ Wars
             for civ in self.civs:
                 if civ.civNum!=-1:
@@ -90,7 +89,7 @@ class Game(object):
                     #print("get yields")
                     yield_vals[i,civ.civNum]=civ.process_turn(i)
                     #Temporily get Settlers position
-                    print("Civ #"+str(civ.civNum))
+                    # print("Civ #"+str(civ.civNum))
                     #for i in range(len(civ.unit_list)):
                     #    print("Settler "+str(i)+":\t"+str(civ.unit_list[i].y)+'\t'+str(civ.unit_list[i].x))
                     #print("Trying to War!")
@@ -201,8 +200,8 @@ class Game(object):
                                     #     del(entry[0].mil_unit_list[0])
                                     #     entry[5]+=1
                                     #     print("Unit killed!")
-                                    if units_killed != 0:
-                                        print(str(units_killed)+" Units killed!")
+                                    # if units_killed != 0:
+                                    #     print(str(units_killed)+" Units killed!")
                                 
                                 #Lose Unit
                                 if len(civ.mil_unit_list) != 0:
@@ -213,8 +212,8 @@ class Game(object):
                                             del(civ.mil_unit_list[0])
                                             entry[3]+=1
                                             units_lost+=1
-                                    if units_lost != 0:
-                                        print(str(units_lost)+" Units lost!")
+                                    # if units_lost != 0:
+                                    #     print(str(units_lost)+" Units lost!")
                                     # if (self.loss_chance+(0.2))*(1/rel_strength) > N.random.uniform():
                                     #     sum_strength -= civ.mil_unit_list[0].strength
                                     #     del(civ.mil_unit_list[0])
@@ -260,6 +259,7 @@ class Game(object):
                                     if (self.war_chance + age_factor + (0.05*rel_unit_lost) + (0.1*rel_city_lost)) > N.random.uniform():
                                         entry[0].at_war.remove(civ)
                                         civ.wars.remove(entry)
+                                        print("Peace in our time")
                                     else:
                                         entry[1]+=1
                                     
@@ -267,7 +267,6 @@ class Game(object):
                 
 
             #Update State Variables
-            #self.turns.append(copy.deepcopy(self.cur_grid))
             # inp = input()
             # if inp == 'ret':
             #     return
