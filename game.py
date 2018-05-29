@@ -3,10 +3,10 @@
 from grid import Grid
 from civilization import Civ
 from building import Building
-from dataplotter import Dataplotter
 from unit import Unit
 from city import City
 import classlookup
+from dataplotter import Dataplotter
 #from interpreter import Interpreter
 import numpy as N
 import os
@@ -16,7 +16,7 @@ class Game(object):
     """
     """
 
-    def __init__(self,y = 50,x = 100,num_turns = 500, num_civ = 0,war_chance = 0.01,loss_chance = 0.005,percent_grass=.5,\
+    def __init__(self,y = 50,x = 100,num_turns = 500, num_civ = 0,war_chance = 0.02,loss_chance = 0.01,war_base = 9, war_mod = 0.2,percent_grass=.5,\
     desert_chance=.01,desert_size=2,snow_width=0.05,tundra_width=0.075,\
     prob_forest=0.05,prob_jungle=0.05,prob_river = 0.2,prob_hill=.085):
         """
@@ -34,6 +34,8 @@ class Game(object):
         self.num_civ = num_civ
         self.war_chance = war_chance
         self.loss_chance = loss_chance
+        self.war_mod = war_mod
+        self.war_base = war_base
         self.cur_grid = Grid(y,x,percent_grass=percent_grass,desert_chance=desert_chance,\
         desert_size=desert_size,snow_width=snow_width,tundra_width=tundra_width,\
         prob_forest=prob_forest,prob_jungle=prob_jungle,prob_river=prob_river,prob_hill=prob_hill)
@@ -65,9 +67,16 @@ class Game(object):
             self.civs[i].mil_unit_list.append(warrior_add)
                 
     
-    def run(self):
+    def run(self,output=False):
         """
         """
+        if output:
+            if not os.path.isdir(os.path.dirname(__file__)+"\\ExampleOutput\\GameOutput\\"):
+                os.makedirs(os.path.dirname(__file__)+"\\ExampleOutput\\GameOutput\\")
+                os.chdir(os.path.dirname(__file__)+"\\ExampleOutput\\GameOutput\\")
+            else:
+                os.chdir(os.path.dirname(__file__)+"\\ExampleOutput\\GameOutput\\")
+            
         yield_vals = N.zeros((self.num_turns,len(self.civs),5),dtype=N.dtype(int))
         #Initialize run loop
         for i in range(self.num_turns):
@@ -81,7 +90,7 @@ class Game(object):
                     #print("get yields")
                     yield_vals[i,civ.civNum]=civ.process_turn(i)
                     #Temporily get Settlers position
-                    # print("Civ #"+str(civ.civNum))
+                    print("Civ #"+str(civ.civNum))
                     #for i in range(len(civ.unit_list)):
                     #    print("Settler "+str(i)+":\t"+str(civ.unit_list[i].y)+'\t'+str(civ.unit_list[i].x))
                     #print("Trying to War!")
@@ -113,7 +122,7 @@ class Game(object):
                                 
                                 rel_dist = close_val / dist
                                 if sum_strength != 0:
-                                    mil_strength = N.log(sum_strength/(8+(0.5*i)))
+                                    mil_strength = N.log(sum_strength/(self.war_base+(self.war_mod*i)))
                                 else:
                                     mil_strength = -1
                                 if mil_strength > 0:
@@ -137,19 +146,19 @@ class Game(object):
                                 if other_sum_strength != 0:
                                     rel_strength = sum_strength/other_sum_strength
                                 else:
-                                    rel_strength = sum_strength/1
+                                    rel_strength = 3
                                 if rel_strength == 0:
                                     rel_strength = 0.0001
                                 #Compute our mil_strength score
                                 if sum_strength != 0:
-                                    mil_strength = N.log(sum_strength/(8+(0.5*i)))
+                                    mil_strength = N.log(sum_strength/(self.war_base+(self.war_mod*i)))
                                 else:
                                     mil_strength = -1
                                 if mil_strength > 0:
                                     mil_strength = 0 
                                 #Compute their mill strength score
                                 if other_sum_strength != 0:
-                                    other_mil_strength = N.log(other_sum_strength/(8+(0.5*i)))
+                                    other_mil_strength = N.log(other_sum_strength/(self.war_base+(self.war_mod*i)))
                                 else:
                                     other_mil_strength = -1
                                 if other_mil_strength > 0:
@@ -164,6 +173,7 @@ class Game(object):
                                         tile.owner = entry[0]
                                     del(civ.city_list[-1])
                                     entry[2]+=1
+                                    print("Lost a city!")
                                 
                                 #Gain a city (yay)
                                 if self.loss_chance*(rel_strength)+mil_strength > N.random.uniform():
@@ -174,21 +184,42 @@ class Game(object):
                                         tile.owner = civ
                                     del(entry[0].city_list[-1])
                                     entry[4]+=1
+                                    print("gained a city!")
                                                     
                                     
                                 #Kill Unit!
                                 if len(entry[0].mil_unit_list) != 0:
-                                    if self.loss_chance*rel_strength > N.random.uniform():
-                                        other_sum_strength -= entry[0].mil_unit_list[0].strength
-                                        del(entry[0].mil_unit_list[0])
-                                        entry[5]+=1
+                                    units_killed = 0
+                                    #for times in range(int(self.loss_chance*len(entry[0].mil_unit_list)*rel_strength)):
+                                    for times in range(int((self.loss_chance+0.1)*len(entry[0].mil_unit_list))):
+                                        if len(entry[0].mil_unit_list) != 0:
+                                            del(entry[0].mil_unit_list[0])
+                                            entry[5]+=1
+                                            units_killed+=1
+                                    # if (self.loss_chance+(0.2))*rel_strength > N.random.uniform():
+                                    #     other_sum_strength -= entry[0].mil_unit_list[0].strength
+                                    #     del(entry[0].mil_unit_list[0])
+                                    #     entry[5]+=1
+                                    #     print("Unit killed!")
+                                    if units_killed != 0:
+                                        print(str(units_killed)+" Units killed!")
                                 
                                 #Lose Unit
                                 if len(civ.mil_unit_list) != 0:
-                                    if self.loss_chance*(1/rel_strength) > N.random.uniform():
-                                        sum_strength -= civ.mil_unit_list[0].strength
-                                        del(civ.mil_unit_list[0])
-                                        entry[3]+=1
+                                    units_lost = 0
+                                    #for times in range(int(self.loss_chance*len(civ.mil_unit_list)*(1/rel_strength))):
+                                    for times in range(int((self.loss_chance+0.1)*len(civ.mil_unit_list))):
+                                        if len(civ.mil_unit_list) != 0:
+                                            del(civ.mil_unit_list[0])
+                                            entry[3]+=1
+                                            units_lost+=1
+                                    if units_lost != 0:
+                                        print(str(units_lost)+" Units lost!")
+                                    # if (self.loss_chance+(0.2))*(1/rel_strength) > N.random.uniform():
+                                    #     sum_strength -= civ.mil_unit_list[0].strength
+                                    #     del(civ.mil_unit_list[0])
+                                    #     entry[3]+=1
+                                    #     print('Lost a unit!')
                                 #Other Civ has no cities and loses
                                 if len(entry[0].city_list) == 0:
                                     lose_civ = entry[0]
@@ -216,7 +247,7 @@ class Game(object):
                                     self.civs.remove(civ)
                                 else:
                                     #Peace time?
-                                    age_factor = entry[1]*0.05
+                                    age_factor = entry[1]*0.005
                                     if entry[5] != 0:
                                         rel_unit_lost = entry[3]/entry[5]
                                     else:
@@ -240,4 +271,8 @@ class Game(object):
             # inp = input()
             # if inp == 'ret':
             #     return
+            Dataplotter(self.cur_grid,savefig=True,plotType=['All'],numCiv=self.num_civ,turnNum=i)
+        if output:
+            os.path.chdir("..")
+            os.path.chdir("..")
         return yield_vals

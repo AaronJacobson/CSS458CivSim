@@ -112,7 +112,7 @@ class Unit(object):
             self.y = self.grid.tiles[y,x].y
             self.x = self.grid.tiles[y,x].x
     def value(self):
-        return self.prod_cost - self.strength - self.speed * 2
+        return 1000 - self.strength - self.speed * 2
         
     def __lt__(self,other):
         return self.value() < other.value()

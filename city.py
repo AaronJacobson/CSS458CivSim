@@ -58,7 +58,7 @@ class City(object):
             food_yield = food_yield + building.food
             total_bonus = total_bonus + building.food_bonus
         food_yield = food_yield * (1.0 + total_bonus)
-        food_yield = food_yield - self.pop*2
+        # food_yield -= self.pop*2
         return food_yield
 
     def get_prod_yield(self):
@@ -117,6 +117,8 @@ class City(object):
                 unit_stage = look.unitResearch[i]
                 for name in building_stage:
                     if not self.has_building(name):
+                        if self.get_gold_yield() < 0:
+                            gold_val_coef = 100
                         building = look.building_lookup[name]
                         priority = building.prod_cost
                         food = (building.food + building.food_bonus*self.get_food_yield()) * food_val_coef
@@ -175,6 +177,9 @@ class City(object):
             if tile.improvement == None:
                 tile.improvement_turns = tile.improvement_turns - 1
                 if tile.improvement_turns == 0:
+                    # if self.get_gold_yield() <= 0:
+                    #     tile.add_improvement("trading_post")
+                    
                     if tile.terrain == "forest":
                         tile.add_improvement("lumber_mill")
                     elif tile.terrain == "hills":
@@ -189,12 +194,14 @@ class City(object):
                     self.improving_tiles.remove(tile)
 
     def check_food(self):
-        self.food = self.food + self.get_food_yield()
-        if self.food >= self.food_to_grow(self.pop+1):
+        self.food = self.food + (self.get_food_yield()-self.pop*2)
+        food = self.food
+        # food -= self.pop*2
+        if food >= self.food_to_grow(self.pop+1):
             #grow
             self.pop = self.pop + 1
             self.food = 0
-        elif self.pop > 1 and self.food < (-1*self.food_to_grow(self.pop-1)):
+        elif self.pop > 1 and food < (-1*self.food_to_grow(self.pop-1)):
             self.pop = self.pop - 1
 
     def process_turn(self):
@@ -222,7 +229,7 @@ class City(object):
                     self.grid.tiles[self.y,self.x].unit.process_turn()
                 else:
                     unit = self.to_build
-                    unit_to_add = tunit.Unit(name=unit.name,atype=unit.atype,prod_cost=unit.prod_cost,speed=unit.speed,y=-1,x=-1,civ=self.civ)
+                    unit_to_add = tunit.Unit(name=unit.name,atype=unit.atype,prod_cost=unit.prod_cost,speed=unit.speed, strength=unit.strength,y=-1,x=-1,civ=self.civ)
                     self.civ.mil_unit_list.append(unit_to_add)
 
             if self.to_build.name == "hydro_plant":

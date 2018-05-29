@@ -10,21 +10,21 @@ from classlookup import ClassLookUp
 class Dataplotter(object):
     """
     """
-    def __init__ (self,grid, savefig = False, plotType=["Test"], numCiv=0):
+    def __init__ (self,grid, savefig = False, plotType=["Test"], numCiv=0, turnNum=-1):
         """
         """
         #If multiple plot types passed in
         for item in plotType:
             if item == "Test":
-                self.testPlot(grid,savefig)
+                self.testPlot(grid,savefig,turnNum)
             elif item == "Terrain":
-                self.terrainPlot(grid,savefig)
+                self.terrainPlot(grid,savefig,turnNum)
             elif item == "Civ":
-                self.civPlot(grid,savefig,numCiv)
+                self.civPlot(grid,savefig,numCiv,turnNum)
             elif item == "All":
-                self.allPlot(grid,savefig,numCiv)
+                self.allPlot(grid,savefig,numCiv,turnNum)
         
-    def testPlot(self,grid,savefig):
+    def testPlot(self,grid,savefig,turnNum):
         """
         """
         #Create Plot
@@ -59,7 +59,7 @@ class Dataplotter(object):
         else:
             plt.show()
     
-    def terrainPlot(self,grid,savefig):
+    def terrainPlot(self,grid,savefig,turnNum):
         """
         """
         #Create Plot
@@ -119,7 +119,7 @@ class Dataplotter(object):
             fig.savefig("Civ5SimOut_Terrain.png",dpi=300)
         else:
             plt.show()
-    def civPlot(self,grid,savefig,numCiv):
+    def civPlot(self,grid,savefig,numCiv,turnNum):
         """
         """
         #Check for zero civs
@@ -171,7 +171,7 @@ class Dataplotter(object):
             fig.savefig("Civ5SimOut_Civs.png",dpi=300)
         else:
             plt.show()
-    def allPlot(self,grid,savefig,numCiv):
+    def allPlot(self,grid,savefig,numCiv,turnNum):
         """
         """
         #Create Plot
@@ -242,7 +242,11 @@ class Dataplotter(object):
         
         #Display or save plot
         if savefig:
-            fig.savefig("Civ5SimOut_All.png",dpi=300)
+            if turnNum != -1:
+                fig.savefig("Civ5SimOut_All_"+str(turnNum)+".png",dpi=72)
+                plt.close(fig)
+            else:
+                fig.savefig("Civ5SimOut_All.png",dpi=72)
         else:
             plt.show()
         
