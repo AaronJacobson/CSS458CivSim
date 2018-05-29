@@ -1,10 +1,30 @@
+#Imports from elsewhere in Simulation
 from building import Building
 from unit import Unit
 from improvement import Improvement
 
 class ClassLookUp(object):
+    """
+    Summary:
+        Contains the dictionary lookups for different classes of the simulation.
+    Class Variables:
+        unit_lookup*: Dictionary which contains Unit class examples containing information on each type of Unit.
+        building_lookup*: Dictionary which contains Building class examples containing information on each type of Building.
+        improvement_lookup*: Dictionary which contains Improvement class examples containing information on each type of Improvement.
+        biome_lookup*: Dictionary which contains lists of information for each type of biome.
+        terrain_lookup*: Dictionary which contains lists of information for each type of terrain.
+        researchVal*: List of research values for each column of research in the Civ V Technology Tree.
+        buildingResearch*: List of Lists of strings of Building names, used to determine what Buildings a Civ has unlocked.
+        unitResearch*: List of Lists of strings of Unit names, used to determine what Units a Civ has unlocked.
+        improvementResearch*: List of Lists of strings of Improvement names, used to determine what Improvements a Civ has unlocked.
+        pop_table*: A List of population values used to determine total Civ population
+    """
     def initUnitLookUp():
         """
+        Summary:
+                Creates Unit objects, then fills them into a dictionary and returns it.
+        Output:
+                A dictionary of every unit in the model.
         """
         warrior = Unit(name="warrior",atype="melee",prod_cost=40,speed=2,strength=8)
         settler = Unit(name="settler",atype="civilian",prod_cost=106,speed=2)
@@ -77,6 +97,10 @@ class ClassLookUp(object):
     
     def initBuildingLookUp():
         """
+        Summary:
+                Creates Building objects, then fills them into a dictionary and returns it.
+        Output:
+                A dictionary of every building in the model.
         """
         granary = Building(name="granary",gold_yield=-1,food_yield=2,prod_cost=60)
         library = Building(name="library",gold_yield=-1,science_pop_bonus=.5,prod_cost=75)
@@ -111,6 +135,12 @@ class ClassLookUp(object):
     building_lookup = initBuildingLookUp()
     
     def initImprovementLookUp():
+        """
+        Summary:
+                Creates Improvement objects, then fills them into a dictionary and returns it.
+        Output:
+                A dictionary of every improvement in the model.
+        """
         farm = Improvement(name='farm',food_yield=1)
         fort = Improvement(name='fort',strength_mod=0.50)
         lumber_mill = Improvement(name='lumber_mill',prod_yield=1)
@@ -152,5 +182,6 @@ class ClassLookUp(object):
     jungle = ["jungle",2,0,0,2,0.25,'darkgreen']
     terrain_lookup = {hill[0]:hill,forest[0]:forest,jungle[0]:jungle}
     
+    #Population relation Table Definition
     pop_table = [1000,1000,6000,21000,48000,90000,150000,232000,337000,469000]
     
