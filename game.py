@@ -9,7 +9,6 @@ from dataplotter import Dataplotter
 #General Import statements
 import numpy as N
 import os
-import copy
 
 class Game(object):
     """
