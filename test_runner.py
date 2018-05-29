@@ -9,7 +9,7 @@ def print_pop_cities():
         for city in civ.city_list:
             print("pop " + str(city.pop))
         print("next civ")
-num_turns = 300
+num_turns = 500
 num_civ = 6
 game = Game(num_civ=num_civ,num_turns=num_turns)
 print("initialized the map")

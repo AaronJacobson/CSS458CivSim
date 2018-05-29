@@ -249,9 +249,16 @@ class City(object):
 
         #Setting which tiles will be worked.
         heap_of_tiles = []
+        prioritization_change_count = self.pop/2
         for tile in self.tile_list:
             tile.worked = False
-            heappush(heap_of_tiles,(int(tile.total_yield()),tile))
+            gold_coef = 1.0
+            if self.get_gold_yield() < 0:
+                gold_coef = 3
+            # if prioritization_change_count <= 0:
+            #     gold_coef = 1.0
+            prioritization_change_count -= 1
+            heappush(heap_of_tiles,(int(100-tile.total_yield(gold_coefficent=gold_coef)),tile))
         for i in range(self.pop):
             if len(heap_of_tiles) > 0:
                 tile_to_work = heappop(heap_of_tiles)[1]
