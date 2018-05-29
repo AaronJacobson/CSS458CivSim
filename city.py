@@ -134,7 +134,7 @@ class City(object):
                         unit_priority = (unit.prod_cost-unit.strength-unit.range_strength)
                         heappush(unit_heap,(unit_priority,unit))
         decision = random.uniform(0,1)
-        settler_chance = settler_chance * min(5,self.pop/2) * (1.0/len(self.civ.city_list)) * 1.0 / (len(self.civ.unit_list)+1)
+        settler_chance = settler_chance * min(3,self.pop/2) * (1.0/len(self.civ.city_list)) * 1.5 / (len(self.civ.unit_list)+1)
         # if self.pop < 4:
         #     settler_chance = 0
         if decision < settler_chance:
