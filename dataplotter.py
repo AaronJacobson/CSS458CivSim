@@ -177,6 +177,7 @@ class Dataplotter(object):
         #Create Plot
         fig = plt.figure()
         axes = fig.gca()
+        
         #Get CMap and Value array
         cmap = plt.get_cmap('gist_rainbow')
         val = N.arange(0,1,1/numCiv)
@@ -239,14 +240,14 @@ class Dataplotter(object):
         axes.set_aspect('equal','datalim')
         #Turn off axes labels
         axes.set_axis_off()   
-        
+        fig.tight_layout()
         #Display or save plot
         if savefig:
             if turnNum != -1:
-                fig.savefig("Civ5SimOut_All_"+str(turnNum)+".png",dpi=72)
+                fig.savefig("Civ5SimOut_All_"+str(turnNum)+".png",dpi=200)
                 plt.close(fig)
             else:
-                fig.savefig("Civ5SimOut_All.png",dpi=72)
+                fig.savefig("Civ5SimOut_All.png",dpi=200)
         else:
             plt.show()
         
