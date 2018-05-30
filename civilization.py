@@ -1,10 +1,11 @@
 class Civ(object):
     """
-    
+    Every civilization has units, both military and settler, cities, and wars.
+    On every turn, each civilization processes the turn of every settler and city it has.
     """
     def __init__(self,civNum):
         """
-
+        Initializes all the fields, the civ uses to keep track of what it has.
         """
         self.civNum = civNum
         self.unit_list = []
@@ -14,12 +15,13 @@ class Civ(object):
         self.at_war = []
         self.science = 0
         self.dead = False
-
+    
     def process_turn(self, turn):
         if self.dead:
             return
         """
-
+        Processes the turn of every city and unit the civilization has.
+        Gets the total yields for every city to allow for analysis.
         """
         #Create variables for turn processing
         sum_food = 0
@@ -56,6 +58,10 @@ class Civ(object):
         #maintenance = ((0.5 + (8/1000)*turn) round(unit, 2))**(1 + (2/700) * turn)
         return unit
 
+    """
+    Helper method that can be used to get the population count, rather than the total
+    population, as calculated by the special equation Civilization V uses.
+    """
     def get_total_pop_count(self):
         pop_count = 0
         for city in self.city_list:
