@@ -6,6 +6,16 @@ import random
 class City(object):
 
     def __init__(self,grid,y,x,civ,capitol=False):
+        """
+        Summary:
+            Initializes the city
+        Method Arguments:
+            grid*: The map this city exists in.
+            y*: The row this city is stored in.
+            x*: The column this city is stored in.
+            civ*: The civilization that owns this city.
+            capitol*: True if this city is the first city built by the civilization that owns it.
+        """
         self.capitol = capitol
         self.grid = grid
         self.y = y
@@ -17,8 +27,6 @@ class City(object):
         self.food = 0
         self.production = 0
         self.to_build = None
-        self.health = 200
-        self.strength = 8 #this depends on many factors
         self.border_growth_count = 0
         self.border_distance = 1
         self.has_hydro_plant = False
@@ -27,8 +35,6 @@ class City(object):
         self.tile_improve_heap = []
 
         self.set_close_to_city()
-        self.grid.tiles[y,x].food_yield = 2
-        self.grid.tiles[y,x].prod_yield = 2
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
         self.grid.tiles[y,x].has_city = True
@@ -46,12 +52,22 @@ class City(object):
 
 
     def set_close_to_city(self):
+        """
+        Summary: 
+            Sets the tiles around it that are too close for another city to be
+            founded on.
+        """
         close_tiles = self.grid.tiles[self.y,self.x].get_neighbors(distance=3)
         for tile in close_tiles:
             tile.close_to_city = True
         self.grid.tiles[self.y,self.x].close_to_city = True
 
     def get_food_yield(self):
+        """
+        Summary:
+            Gets the total food yield of all the worked tiles and all the buildings
+            in this city then adds the bonus by %.
+        """
         food_yield = 2
         total_bonus = 0
         for tile in self.tile_list:
@@ -64,6 +80,11 @@ class City(object):
         return food_yield
 
     def get_prod_yield(self):
+        """
+        Summary:
+            Gets the total production yield of all the worked tiles and all the 
+            buildings in this city then adds the bonus by %.
+        """
         prod_yield = 2
         total_bonus = 0
         for tile in self.tile_list:
@@ -76,6 +97,11 @@ class City(object):
         return prod_yield
 
     def get_science_yield(self):
+        """
+        Summary:
+            Gets the total science yield of all the worked tiles, all the buildings
+            in this city, and the base for the population then adds the bonus by %.
+        """
         science_yield = self.pop
         total_bonus = 0
         for tile in self.tile_list:
@@ -88,6 +114,11 @@ class City(object):
         return science_yield
 
     def get_gold_yield(self):
+        """
+        Summary:
+            Gets the total gold yield of all the worked tiles and all the buildings
+            in this city then adds the bonus by %.
+        """
         gold_yield = 0
         total_bonus = 0
         for tile in self.tile_list:
@@ -102,9 +133,22 @@ class City(object):
         return gold_yield
 
     def food_to_grow(self,pop):
+        """
+        Summary:
+            Calculates the food required to grow to the next level of population
+            based on the input population.
+        Method Arguments:
+            pop*: The population to grow from.
+        """
         return int(15 + 6*(pop-1) + (pop-1.0)**1.8)
 
     def has_building(self,name_to_find):
+        """
+        Summary:
+            Checks whether this city has the building with the given name.
+        Method Arguments:
+            name_to_find*: The name of the building to check for.
+        """
         for building in self.building_list:
             if name_to_find == building.name:
                 return True
@@ -113,6 +157,11 @@ class City(object):
 
     def choose_production(self,yield_coef=1.0,food_val_coef=1.0,prod_val_coef=1.0,\
     science_val_coef=1.0,gold_val_coef=1.0,settler_chance=.1,unit_chance=.1):
+        """
+        Summary:
+            
+        Method Arguments:
+        """
         look = classlookup.ClassLookUp()
         building_heap = []
         unit_heap = []
@@ -161,6 +210,11 @@ class City(object):
                 return heappop(building_heap)[1]
 
     def grow_borders(self):
+        """
+        Summary:
+        
+        Method Arguments:
+        """
         self.border_distance = self.border_distance + 1
         tiles_to_add = self.grid.tiles[self.y,self.x].get_neighbors(distance=self.border_distance)
         for tile in tiles_to_add:
@@ -171,6 +225,12 @@ class City(object):
                 heappush(self.tile_improve_heap,(int(tile.total_yield()),tile))
     
     def improve_tiles(self):
+        """
+        Summary:
+        
+        Method Arguments:
+        """
+        look = classlookup.ClassLookUp()
         #improve one at a time
         if len(self.improving_tiles) == 0:
             if len(self.tile_improve_heap) > 0:
@@ -191,23 +251,29 @@ class City(object):
             if tile.improvement == None:
                 tile.improvement_turns = tile.improvement_turns - 1
                 if tile.improvement_turns == 0:
-                    if self.get_gold_yield() <= -2:
+                    if self.get_gold_yield() <= -2 and self.civ.science >= look.researchVal[4]*self.civ.science_cost_multiplier():
                         tile.add_improvement("trading_post")
-                    
-                    if tile.terrain == "forest":
+                    elif tile.terrain == "forest" and self.civ.science >= look.researchVal[2]*self.civ.science_cost_multiplier():
                         tile.add_improvement("lumber_mill")
-                    elif tile.terrain == "hills":
+                    elif tile.terrain == "hills" and self.civ.science >= look.researchVal[1]*self.civ.science_cost_multiplier():
                         tile.add_improvement("mine")
-                    elif tile.terrain == "jungle":
+                    elif tile.terrain == "jungle" and self.civ.science >= look.researchVal[4]*self.civ.science_cost_multiplier():
                         tile.add_improvement("trading_post")
                     else:
                         if tile.biome == "grassland" or tile.biome == "plains" or tile.near_river:
                             tile.add_improvement("farm")
-                        else:
+                        elif self.civ.science >= look.researchVal[4]*self.civ.science_cost_multiplier():
                             tile.add_improvement("trading_post")
+                        else:
+                            tile.add_improvement("farm")
                     self.improving_tiles.remove(tile)
 
     def check_food(self):
+        """
+        Summary:
+        
+        Method Arguments:
+        """
         self.food = self.food + (self.get_food_yield()-self.pop*2)
         food = self.food
         # food -= self.pop*2
@@ -219,6 +285,11 @@ class City(object):
             self.pop = self.pop - 1
 
     def process_turn(self):
+        """
+        Summary:
+        
+        Method Arguments:
+        """
         #improve the tiles
         self.improve_tiles()
         
@@ -273,8 +344,8 @@ class City(object):
             gold_coef = 1.0
             if self.get_gold_yield() < 0:
                 gold_coef = 3
-            # if prioritization_change_count <= 0:
-            #     gold_coef = 1.0
+            if prioritization_change_count <= 0:
+                gold_coef = 1.0
             prioritization_change_count -= 1
             heappush(heap_of_tiles,(int(100-tile.total_yield(gold_coefficent=gold_coef)),tile))
         for i in range(self.pop):

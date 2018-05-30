@@ -15,6 +15,38 @@ class Civ(object):
         self.at_war = []
         self.science = 0
         self.dead = False
+        
+        #-----------------------------------------------------------------------
+        #These are the base probabilities and the weight this civilization assigns
+        #to each yield.
+        self.tile_food_value_coef = 1.0
+        self.tile_prod_value_coef = 1.0
+        self.tile_science_value_coef = 1.0
+        self.tile_gold_value_coef = 1.0
+        
+        self.settler_distance_increase = 1
+        self.settler_base_distance = 5
+        
+        self.speed_value_coef = 2.0
+        self.strength_value_coef = 1.0
+        
+        self.city_trade_and_road_substitute_per_pop = .25
+        self.building_food_value_coef = 1.0
+        self.building_prod_value_coef = 1.0
+        self.building_science_value_coef = 1.0
+        self.building_gold_value_coef = 1.0
+        
+        self.settler_chance_base = .1
+        self.unit_chance = .1
+        #building chance is 1-settler_chance_base-unit_chance
+        self.settler_chance_city_size_max_multiplier = 3
+        self.settler_chance_city_size_coef = .5
+        self.settler_chance_city_count_coef = 1.0
+        self.settler_chance_settler_count_coef = 1.0
+        
+        self.first_border_threshold = 50
+        self.second_border_threshold = 175
+        
     
     def process_turn(self, turn):
         if self.dead:
@@ -68,5 +100,8 @@ class Civ(object):
             pop_count += city.pop
         return pop_count
 
+    """
+    Helper method that gets the multiplier for how much 
+    """
     def science_cost_multiplier(self):
         return 1.0 + .05*len(self.city_list)

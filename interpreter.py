@@ -6,7 +6,7 @@ class Interpreter(object):
 
     def write(self, grid):
 
-    '''
+        '''
         #get from grid and write all the info about each tile
         self.mapFile = open("testMap","w")
 
@@ -42,8 +42,8 @@ class Interpreter(object):
             unitFile.write(self.unit.name + " " + )
         self.unitFile.close()
         #--------------------------------------------------------
-    '''
-    return
+        '''
+        return
 
     #get from grid and write all the info about each tile
     def writeMap(self, grid):
