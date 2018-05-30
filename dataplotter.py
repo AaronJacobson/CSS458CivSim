@@ -19,12 +19,12 @@ class Dataplotter(object):
             Calls methods based on method parameters and kargs.
 
         Method Arguments:
-            grid*: The grid containing the data to be displayed.
-            savefig*: Flag for saving the figure or showing it.
-            plotType*: List of strings containing words used for determining which plot types to output
+            grid*:      The grid containing the data to be displayed.
+            savefig*:   Flag for saving the figure or showing it.
+            plotType*:  List of strings containing words used for determining which plot types to output
                         Usable Tags: "Test", "Terrain", "Civ", "All"
-            numCiv*: The number of civilizations on the Grid.
-            turnNum*: The current turn number, alters allPlot method only.
+            numCiv*:    The number of civilizations on the Grid.
+            turnNum*:   The current turn number, alters allPlot method only.
         """
         #If multiple plot types passed in
         for item in plotType:
@@ -47,8 +47,8 @@ class Dataplotter(object):
             and either saves or shows the plot.
 
         Method Arguments:
-            grid*: the grid to be rendered
-            savefig*: flag indicating whether image should be saved or shown.
+            grid*:      the grid to be rendered
+            savefig*:   flag indicating whether image should be saved or shown.
 
         Output: if savefig is set to true, outputs an image as Civ5SimOut_Test.png
         """
@@ -92,8 +92,8 @@ class Dataplotter(object):
             creates figure, iterates through grid creating hexagons based off of grid data, plots hexagons, adjusts figure, saves of shows image.
 
         Method Arguments:
-            grid*: Grid class containing data to be used in generation.
-            savefig*: Flag indicating if figure should be saved or shown.
+            grid*:      Grid class containing data to be used in generation.
+            savefig*:   Flag indicating if figure should be saved or shown.
 
         Output: if savefig is set to true, outputs an image as "Civ5SimOut_Terrain.png"
         """
@@ -111,7 +111,6 @@ class Dataplotter(object):
                     pointsX = pointsX+0.5
                 #Combine two arrays in one of Nx2 dimensions
                 poly = N.column_stack((pointsX,pointsY))
-                #Get the terrain and biome type for color
                 #Create the polygon
                 #Grabs biome data from the grid and runs it through the class lookup table for biome
                 line = plt.Polygon(poly,edgecolor='k',facecolor=ClassLookUp.biome_lookup[grid.tiles[i,j].biome][6])
@@ -312,7 +311,7 @@ class Dataplotter(object):
         fig.tight_layout()
         #Display or save plot
         if savefig:
-            #Check for turn_num 
+            #Check for turn_num
             if turnNum != -1:
                 fig.savefig("Civ5SimOut_All_"+str(turnNum)+".png",dpi=200)
                 #Close the figure to prevent having 500 figures open
