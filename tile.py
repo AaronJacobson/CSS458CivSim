@@ -96,7 +96,7 @@ class Tile(object):
 
     def get_food_yield(self):
         '''
-        Deternins the food yield of a tile by looking at its biome, terrain, and
+        Determins the food yield of a tile by looking at its biome, terrain, and
         buildings that influence the area.
 
         '''
@@ -112,7 +112,7 @@ class Tile(object):
 
     def get_gold_yield(self):
         '''
-        Deternins the gold yield of a tile by looking at its biome, terrain, and
+        Determins the gold yield of a tile by looking at its biome, terrain, and
         buildings that influence the area.
 
         '''
@@ -156,9 +156,18 @@ class Tile(object):
 
     def get_neighbors(self,distance=1):
         """
-        
+        Summary:
+            Returns a list of tiles that are the "neighbor" of this tile. For 
+            distance = 1, will return the 6 closest. If distance > 1, will get the
+            neighbors based on their distance in the tile grid, which isn't
+            completely accurate, it will give additional tiles.
+            
+        Method Arguments:
+            distance*:      The "radius" of the shape of the tiles in the returned list.
+            
         """
         list_of_neighbors = []
+        #Special case to properly get the first layer of tiles.
         if distance == 1:
             if self.y > 0:
                 list_of_neighbors.append(self.grid.tiles[self.y-1,self.x])
@@ -193,6 +202,9 @@ class Tile(object):
                     else:
                         list_of_neighbors.append(self.grid.tiles[self.y+1,self.x+1])
         else:
+            #dirty way of getting the surrounding nodes, would have to special
+            #case each node or use recurision to be more accurate. When distance
+            #is large the recursion went to the recursion limit.
             y_coords = N.arange(1+distance*2)-distance+self.y
             x_coords = N.arange(1+distance*2)-distance+self.x
             for row in range(1+distance*2):
@@ -212,9 +224,26 @@ class Tile(object):
                             list_of_neighbors.append(self.grid.tiles[y_coords[row],x_actual])
         return list_of_neighbors
 
+    
     def total_yield(self,food_coefficient=1.0,prod_coefficient=1.0,science_coefficient=1.0,gold_coefficent=1.0):
+        """
+        Summary:
+            Adds the yields together to get a simple way of determining the overall
+            "value" of the tile.
+        Method Arguments:
+            food_coefficient*:      The value to determine how much to weight food.
+            prod_coefficient*:      The value to determine how much to weight production.
+            science_coefficient*:   The value to determine how much to weight science.
+            gold_coefficient*:      The value to determine how much to weight gold.
+        """
         return int(self.get_food_yield() * food_coefficient + self.get_prod_yield() * prod_coefficient \
         + self.get_science_yield() * science_coefficient + self.get_gold_yield() * gold_coefficent)
 
     def __lt__(self,other):
+        """
+        Summary:
+            Returns whether the given other has a greater total yield or not.
+        Method Arguments:
+            other*: The other tile to compare this one to.
+        """
         return self.total_yield() < other.total_yield()
