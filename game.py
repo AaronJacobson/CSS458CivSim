@@ -221,6 +221,7 @@ class Game(object):
                     #Process War!
                     #For each war that this civ has
                     for entry in civ.wars:
+                        if civ.civNum != -1:
                                 #Compute Relative Strength
                                 #Compute this civs military strength
                                 sum_strength = 0
@@ -318,6 +319,7 @@ class Game(object):
                                             entry[3]+=1
 
                                 #Other Civ has no cities and loses
+                                lost = False
                                 if len(entry[0].city_list) == 0:
                                     #Grab a reference to the losing civ
                                     lose_civ = entry[0]
@@ -336,9 +338,10 @@ class Game(object):
                                     lose_civ.civNum=-1
                                     #"Remove" the civ from the civ list.
                                     self.civs.remove(lose_civ)
+                                    lost = True
 
                                 #This civ has no cities and loses
-                                elif len(civ.city_list) == 0:
+                                if len(civ.city_list) == 0:
                                     #Get all the civs that this civ is at war with
                                     for warciv in civ.at_war:
                                         #Look at their wars
@@ -355,8 +358,9 @@ class Game(object):
                                     civ.civNum=-1
                                     #Remove the civ from the civ list
                                     self.civs.remove(civ)
+                                    lost = True
                                 #If the civ hasn't lost, check for peace
-                                else:
+                                if not lost:
                                     #Peace time?
                                     #Calculate an age factor that increases the chance of peace the longer the war has gone on.
                                     age_factor = entry[1]*0.005
