@@ -1,0 +1,5 @@
+test 2 parameters:
+game.civs[0].tile_prod_value_coef = 4.0
+    game.civs[0].building_prod_value_coef = 4.0
+    game.civs[1].tile_prod_value_coef = 0.25
+    game.civs[1].building_prod_value_coef = 0.25
