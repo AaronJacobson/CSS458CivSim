@@ -28,8 +28,10 @@ class Unit(object):
         #find a city location to move to
         distance = 5
         while self.target_city_tile == None:
-            distance += 5
+            if distance <= self.grid.x:
+                distance += 1
             tiles_to_consider = self.grid.tiles[self.y,self.x].get_neighbors(distance=distance)
+            # for i in range(min(distance,20)):
             N.random.shuffle(tiles_to_consider)
             if tiles_to_consider[0].close_to_city:
                 pass
@@ -41,7 +43,6 @@ class Unit(object):
                 neighbors.append(self.target_city_tile)
                 for tile in neighbors:
                     tile.close_to_city = True
-        # print("-------------------target= " + str(self.target_city_tile.y) + "," + str(self.target_city_tile.x))
         
     def move_once(self):
         moved = False

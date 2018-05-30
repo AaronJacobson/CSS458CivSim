@@ -390,9 +390,9 @@ class Game(object):
 
             #Outside civ for loop but inside turn for loop
             #Check if output and every other turn
-            if i%2 == 0 and output:
+            if (i+1)%2 == 0 and output:
                 #Call the dataplotter to output the current grid
-                Dataplotter(self.cur_grid,savefig=True,plotType=['All'],numCiv=self.num_civ,turnNum=i)
+                Dataplotter(self.cur_grid,savefig=True,plotType=['All'],numCiv=self.num_civ,turnNum=i+1)
         #Outside both loops
         #Check output and move back up two directories if true
         if output:
