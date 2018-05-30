@@ -286,6 +286,7 @@ class City(object):
         to_return_gold = self.get_gold_yield() + self.temp_gold
         self.temp_gold = 0
         return self.get_food_yield(),self.get_prod_yield(),to_return_gold,self.get_science_yield(),self.calculate_population()
+        # return self.get_food_yield(),self.get_prod_yield(),to_return_gold,self.get_science_yield(),self.pop
         
     """
         Takes a given value and returns the population based on previous data.
