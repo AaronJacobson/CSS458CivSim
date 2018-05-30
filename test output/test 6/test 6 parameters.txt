@@ -1,0 +1,4 @@
+
+    game.civs[0].unit_chance = .4
+    game.civs[0].strength_value_coef = 5.0
+    game.civs[0].settler_chance_base = .3

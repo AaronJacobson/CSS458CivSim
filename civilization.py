@@ -18,7 +18,7 @@ class Civ(object):
         self.settler_distance_increase = 1
         self.settler_base_distance = 5
         
-        self.speed_value_coef = 2.0
+        self.speed_value_coef = 1.0
         self.strength_value_coef = 1.0
         
         self.city_trade_and_road_substitute_per_pop = .25
@@ -29,7 +29,7 @@ class Civ(object):
         
         self.settler_chance_base = .1
         self.unit_chance = .1
-        #building chance is 1-settler_chance_base-unit_chance
+        #building chance is 1-modified_settler_chance-unit_chance
         self.settler_chance_city_size_max_multiplier = 3
         self.settler_chance_city_size_coef = .5
         self.settler_chance_city_count_coef = 1.0
