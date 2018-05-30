@@ -246,4 +246,14 @@ class Tile(object):
         Method Arguments:
             other*: The other tile to compare this one to.
         """
-        return self.total_yield() < other.total_yield()
+        if self.owner != None:
+            return self.total_yield(food_coefficient=self.owner.tile_food_value_coef,\
+                prod_coefficient=self.owner.tile_prod_value_coef,\
+                science_coefficient=self.owner.tile_science_value_coef,
+                gold_coefficent=self.owner.tile_gold_value_coef) < \
+                other.total_yield(food_coefficient=self.owner.tile_food_value_coef,\
+                prod_coefficient=self.owner.tile_prod_value_coef,\
+                science_coefficient=self.owner.tile_science_value_coef,
+                gold_coefficent=self.owner.tile_gold_value_coef)
+        else:
+            return self.totol_yield() < other.total_yield()

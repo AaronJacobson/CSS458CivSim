@@ -38,7 +38,7 @@ class City(object):
         self.tile_list = self.grid.tiles[y,x].get_neighbors(distance=1)
         self.tile_list.append(self.grid.tiles[y,x])
         self.grid.tiles[y,x].has_city = True
-        self.trade_and_road_sub_coef = .25
+        self.trade_and_road_sub_coef = self.civ.city_trade_and_road_substitute_per_pop
         self.temp_gold = 0
         for tile in self.tile_list:
             if tile.city == None:
@@ -155,12 +155,19 @@ class City(object):
         return False
     
 
-    def choose_production(self,yield_coef=1.0,food_val_coef=1.0,prod_val_coef=1.0,\
+    def choose_production(self,food_val_coef=1.0,prod_val_coef=1.0,\
     science_val_coef=1.0,gold_val_coef=1.0,settler_chance=.1,unit_chance=.1):
         """
         Summary:
-            
+            Chooses what the city will build next based on probabilities and the
+            weights given.
         Method Arguments:
+            food_val_coef*: The amount to multiply the yield of food by when valuing.
+            prod_val_coef*: The amount to multiply the yield of production by when valuing.
+            science_val_coef*: The amount to multiply the yield of science by when valuing.
+            gold_val_coef*: The amount to multiply the yield of gold by when valuing.
+            settler_chance*: The base chance that a settler will be built, is then modified based
+                on an equation.
         """
         look = classlookup.ClassLookUp()
         building_heap = []
@@ -172,7 +179,7 @@ class City(object):
                 for name in building_stage:
                     if not self.has_building(name):
                         if self.get_gold_yield() < 0:
-                            gold_val_coef = 100
+                            gold_val_coef = gold_val_coef * 100
                         building = look.building_lookup[name]
                         priority = building.prod_cost
                         food = (building.food + building.food_bonus*self.get_food_yield()) * food_val_coef
@@ -186,10 +193,10 @@ class City(object):
                         unit = look.unit_lookup[name]
                         unit_priority = (unit.prod_cost-unit.strength-unit.range_strength)
                         heappush(unit_heap,(unit_priority,unit))
+        #decide whether to build a settler, military unit, or building
         decision = random.uniform(0,1)
-        settler_chance = settler_chance * min(3,self.pop/2) * (1.0/len(self.civ.city_list)) * 1.0 / (len(self.civ.unit_list)+1)
-        # if self.pop < 4:
-        #     settler_chance = 0
+        settler_chance = settler_chance * min(self.civ.settler_chance_city_size_max_multiplier,self.pop*self.civ.settler_chance_city_size_coef)\
+        * (self.civ.settler_chance_city_count_coef/len(self.civ.city_list)) * self.civ.settler_chance_settler_count_coef / (len(self.civ.unit_list)+1)
         if decision < settler_chance:
                 if self.civ.get_total_pop_count() > (len(self.civ.unit_list) + len(self.civ.mil_unit_list)):
                     return look.unit_lookup["settler"]
@@ -212,8 +219,8 @@ class City(object):
     def grow_borders(self):
         """
         Summary:
-        
-        Method Arguments:
+            Increases the size of the city's borders by 1, this also increases
+            how many tiles can be improved as well as worked.
         """
         self.border_distance = self.border_distance + 1
         tiles_to_add = self.grid.tiles[self.y,self.x].get_neighbors(distance=self.border_distance)
@@ -227,8 +234,8 @@ class City(object):
     def improve_tiles(self):
         """
         Summary:
-        
-        Method Arguments:
+            Improves the tiles around the city. Has special case for when the city
+            is costing the civ money that it will build more trading posts.
         """
         look = classlookup.ClassLookUp()
         #improve one at a time
@@ -271,8 +278,8 @@ class City(object):
     def check_food(self):
         """
         Summary:
-        
-        Method Arguments:
+            Checks to see if the city will grow, shrink, or keep the same
+            population count.
         """
         self.food = self.food + (self.get_food_yield()-self.pop*2)
         food = self.food
@@ -287,8 +294,8 @@ class City(object):
     def process_turn(self):
         """
         Summary:
-        
-        Method Arguments:
+            Improves tiles, checks for growth, chooses production, expands borders,
+            and returns the yield values of the city for analysis.
         """
         #improve the tiles
         self.improve_tiles()
@@ -300,7 +307,10 @@ class City(object):
         self.production = self.production + self.get_prod_yield()
         if self.to_build == None:
             #choose something to build
-            self.to_build = self.choose_production()
+            self.to_build = self.choose_production(food_val_coef=self.civ.building_food_value_coef,\
+            prod_val_coef=self.civ.building_prod_value_coef,science_val_coef=self.civ.building_science_value_coef,\
+            gold_val_coef=self.civ.building_gold_value_coef,settler_chance=self.civ.settler_chance_base,\
+            unit_chance=self.civ.unit_chance)
 
         if self.production >= self.to_build.prod_cost:
             #complete production
@@ -327,13 +337,16 @@ class City(object):
                 self.has_university = True
             #choose new production
             self.production = self.production - self.to_build.prod_cost
-            self.to_build = self.choose_production()
+            self.to_build = self.choose_production(food_val_coef=self.civ.building_food_value_coef,\
+            prod_val_coef=self.civ.building_prod_value_coef,science_val_coef=self.civ.building_science_value_coef,\
+            gold_val_coef=self.civ.building_gold_value_coef,settler_chance=self.civ.settler_chance_base,\
+            unit_chance=self.civ.unit_chance)
 
         #growing borders
         self.border_growth_count += 1
-        if self.border_growth_count >= 50 and self.border_distance == 1:
+        if self.border_growth_count >= self.civ.first_border_threshold and self.border_distance == 1:
             self.grow_borders()
-        elif self.border_growth_count >= 175 and self.border_distance == 2:
+        elif self.border_growth_count >= self.civ.second_border_threshold and self.border_distance == 2:
             self.grow_borders()
 
         #Setting which tiles will be worked.
@@ -352,26 +365,27 @@ class City(object):
             if len(heap_of_tiles) > 0:
                 tile_to_work = heappop(heap_of_tiles)[1]
                 tile_to_work.worked = True
-            # self.tile_list[heappop(heap_of_tiles)[1]].worked = True
         #food,prod,gold,sci
         to_return_gold = self.get_gold_yield() + self.temp_gold
         self.temp_gold = 0
         return self.get_food_yield(),self.get_prod_yield(),to_return_gold,self.get_science_yield(),self.calculate_population()
-        # return self.get_food_yield(),self.get_prod_yield(),to_return_gold,self.get_science_yield(),self.pop
-        
-    """
-        Takes a given value and returns the population based on previous data.
-    """
+        # return self.get_food_yield(),self.get_prod_yield(),to_return_gold,self.get_science_yield(),self.pop #kept to make it easier to compare civilizations' pop count
+      
 
-    def popF(self,x):
+    def popF(self,x):  
+        """
+        Summary:
+            Takes a given value and returns the population based on previous data.
+        """
         return 959.0549*x**2.8132
 
-    """
-        Returns the population, not population points, in the city. Uses a look
-        up table for the first 9 values to increase accuracy. Likely innaccurate
-        beyond pop = 40.
-    """
     def calculate_population(self):
+        """
+        Summary:
+            Returns the population, not population points, in the city. Uses a look
+            up table for the first 9 values to increase accuracy. Likely innaccurate
+            beyond pop = 40.
+        """
         look = classlookup.ClassLookUp()
         if self.pop < 10:
             return int(look.pop_table[self.pop])

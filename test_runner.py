@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 import numpy as N
 from game import Game
 
-num_turns = 300
+num_turns = 500
 num_civ = 5
 game = Game(y=42,x=66,num_civ=num_civ,num_turns=num_turns)
 print("initialized the map")
-vals = game.run(output=False,print_war_peace=True)
+vals = game.run(output=True,print_war_peace=True)
 x_axis = N.arange(num_turns)+1
 labels = ["food","prod","gold","science","pop","num_cities"]
 for val in range(6):

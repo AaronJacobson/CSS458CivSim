@@ -7,15 +7,6 @@ class Civ(object):
         """
         Initializes all the fields, the civ uses to keep track of what it has.
         """
-        self.civNum = civNum
-        self.unit_list = []
-        self.mil_unit_list = []
-        self.city_list = []
-        self.wars = []
-        self.at_war = []
-        self.science = 0
-        self.dead = False
-        
         #-----------------------------------------------------------------------
         #These are the base probabilities and the weight this civilization assigns
         #to each yield.
@@ -46,6 +37,16 @@ class Civ(object):
         
         self.first_border_threshold = 50
         self.second_border_threshold = 175
+        #-----------------------------------------------------------------------
+        self.civNum = civNum
+        self.unit_list = []
+        self.mil_unit_list = []
+        self.city_list = []
+        self.wars = []
+        self.at_war = []
+        self.science = 0
+        self.dead = False
+        
         
     
     def process_turn(self, turn):

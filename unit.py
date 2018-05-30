@@ -26,17 +26,15 @@ class Unit(object):
     
     def choose_city_location(self):
         #find a city location to move to
-        distance = 5
+        distance = self.civ.settler_base_distance
         while self.target_city_tile == None:
             if distance <= self.grid.x:
-                distance += 1
+                distance += self.civ.settler_distance_increase
             tiles_to_consider = self.grid.tiles[self.y,self.x].get_neighbors(distance=distance)
-            # for i in range(min(distance,20)):
             N.random.shuffle(tiles_to_consider)
             if tiles_to_consider[0].close_to_city:
                 pass
             else:
-                # max_value_tile = tiles_to_consider[0]
                 self.can_found_city = True
                 self.target_city_tile = tiles_to_consider[0]
                 neighbors = self.target_city_tile.get_neighbors(distance=3)
@@ -83,25 +81,19 @@ class Unit(object):
                 self.can_found_city = False
 
                 self.civ.unit_list.remove(self)
-
+                #just in case this unit is accessed again somehow
                 self.y = -1
                 self.x = -1
-        else:
-            pass
-        #TODO if civ is at war
-        #move unit to army if forming one, move it as part of the army if attacking city
-        #TODO if civ is not at war
-        #move unit to protect city
+
     def move_unit(self, y, x):
         if self.grid.tiles[y,x].unit == None:
-            # print("moving from " + str(self.y) + " " + str(self.x) + " to " + str(y) + " " + str(x))
-            # print("target is   " + str(self.target_city_tile.y) + " " + str(self.target_city_tile.x))
             self.grid.tiles[self.y,self.x].unit = None
             self.grid.tiles[y,x].unit = self
             self.y = self.grid.tiles[y,x].y
             self.x = self.grid.tiles[y,x].x
+
     def value(self):
-        return 1000 - self.strength - self.speed * 2
+        return 1000 - self.strength * self.civ.strength_value_coef - self.speed * self.civ.speed_value_coef
         
     def __lt__(self,other):
         return self.value() < other.value()
