@@ -6,15 +6,16 @@ from game import Game
 
 num_turns =250
 num_civ = 5
-num_sims = 50
+num_sims = 30
 # N.zeros((self.num_turns,len(self.civs),6),dtype=N.dtype(int))
 average_vals = N.zeros((num_turns,num_civ,6),dtype="f")
 for i in range(num_sims):
     print("game " + str(i+1))
     game = Game(y=42,x=66,num_civ=num_civ,num_turns=num_turns)
     print("initialized the map")
-    game.civs[0].settler_chance_base = .4
-    game.civs[1].settler_chance_base = .001
+    game.civs[0].unit_chance = .4
+    game.civs[0].strength_value_coef = 5.0
+    game.civs[0].settler_chance_base = .3
     # game.war_chance = 0
     vals = game.run(output=False,print_war_peace=False)
     average_vals = average_vals + vals

@@ -1,0 +1,5 @@
+
+    game.civs[0].tile_food_value_coef = .5
+    game.civs[0].tile_prod_value_coef = 2.0
+    game.civs[0].building_food_value_coef = .5
+    game.civs[0].building_prod_value_coef = 2.0

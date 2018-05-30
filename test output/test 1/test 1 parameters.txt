@@ -1,0 +1,3 @@
+
+    game.civs[0].settler_chance_base = .4
+    game.civs[1].settler_chance_base = .001
