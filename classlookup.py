@@ -4,7 +4,21 @@ from unit import Unit
 from improvement import Improvement
 
 class ClassLookUp(object):
-    
+    """
+    Summary:
+        Contains the dictionary lookups for different classes of the simulation.
+    Class Variables:
+        unit_lookup*: Dictionary which contains Unit class examples containing information on each type of Unit.
+        building_lookup*: Dictionary which contains Building class examples containing information on each type of Building.
+        improvement_lookup*: Dictionary which contains Improvement class examples containing information on each type of Improvement.
+        biome_lookup*: Dictionary which contains lists of information for each type of biome.
+        terrain_lookup*: Dictionary which contains lists of information for each type of terrain.
+        researchVal*: List of research values for each column of research in the Civ V Technology Tree.
+        buildingResearch*: List of Lists of strings of Building names, used to determine what Buildings a Civ has unlocked.
+        unitResearch*: List of Lists of strings of Unit names, used to determine what Units a Civ has unlocked.
+        improvementResearch*: List of Lists of strings of Improvement names, used to determine what Improvements a Civ has unlocked.
+        pop_table*: A List of population values used to determine total Civ population
+    """
     def initUnitLookUp():
         """
         Summary:
