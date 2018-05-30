@@ -168,7 +168,7 @@ class ClassLookUp(object):
 
     #Class Biome Definition
     #Biome name, Food Val, Prod Val, Gold Val, Movement Cost, Strength Mod, Map Color
-    desert = ["desert",0,0,0,1,0,'beige']
+    desert = ["desert",0,0,0,1,0,'khaki']
     grassland = ["grassland",1,2,2,1,0,'darkseagreen']
     plains = ["plains",1,1,0,1,0,'y']
     snow = ["snow",0,0,0,1,0,'snow']
