@@ -3,6 +3,10 @@ Class building
 '''
 class Building(object):
 
+    """
+    Initializes the building with the given yields, default is a building named none
+    that does nothing.
+    """
     def __init__(self,name="none",gold_yield=0,gold_bonus=0.0,food_yield=0,food_bonus=0.0,
     science_yield=0,science_bonus=0.0,science_pop_bonus=0,prod_yield=0,prod_bonus=0.0,\
     prod_cost=0):
@@ -19,5 +23,8 @@ class Building(object):
         self.prod_cost = prod_cost
         self.type = "building"
 
+    """
+    Used in comparisons with heaps, compares the total yields of each building
+    """
     def __lt__(self,other):
         return (self.gold+self.food+self.science+self.production) < (other.gold+other.food+other.science+other.production)
