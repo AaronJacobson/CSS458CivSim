@@ -1,8 +1,10 @@
 class Civ(object):
     """
+    
     """
     def __init__(self,civNum):
         """
+
         """
         self.civNum = civNum
         self.unit_list = []
@@ -12,11 +14,12 @@ class Civ(object):
         self.at_war = []
         self.science = 0
         self.dead = False
-        
+
     def process_turn(self, turn):
         if self.dead:
             return
         """
+
         """
         #Create variables for turn processing
         sum_food = 0
@@ -24,7 +27,7 @@ class Civ(object):
         sum_gold = 0
         sum_sci = 0
         sum_pop = 0
-        
+
         #process settler turns
         for unit in self.unit_list:
             unit.process_turn()
@@ -39,20 +42,20 @@ class Civ(object):
             sum_gold += gold
             sum_sci += sci
             sum_pop += pop
-        
+
         #sum_gold -= unit_maintenance(len(sel.unit_list)+len(self.mil_unit_list), turn)
-        
+
         #add new science to civ science value
         self.science += sum_sci
-        
+
         #return sum values
-        return sum_food,sum_prod,sum_gold,sum_sci,sum_pop,len(self.city_list)
-    
+        return sum_food,sum_prod,sum_gold,sum_sci,sum_pop
+
     def unit_maintenance(unit, turn):
         #TODO input formula
         #maintenance = ((0.5 + (8/1000)*turn) round(unit, 2))**(1 + (2/700) * turn)
         return unit
-        
+
     def get_total_pop_count(self):
         pop_count = 0
         for city in self.city_list:

@@ -91,10 +91,10 @@ class ClassLookUp(object):
         xcom_squad.name:xcom_squad,giant_death_robot.name:giant_death_robot,\
         pikeman.name:pikeman }
         return unit_lookup
-    
+
     #Create Class Dictionary for find unit information
     unit_lookup = initUnitLookUp()
-    
+
     def initBuildingLookUp():
         """
         Summary:
@@ -130,10 +130,10 @@ class ClassLookUp(object):
         , research_lab.name:research_lab, power_plant.name:power_plant\
         , hydro_plant.name:hydro_plant, prod_gold.name:prod_gold}
         return building_lookup
-    
+
     #Create class dictionary for finding building information
     building_lookup = initBuildingLookUp()
-    
+
     def initImprovementLookUp():
         """
         Summary:
@@ -149,10 +149,10 @@ class ClassLookUp(object):
         improvement_lookup = {farm.name:farm,fort.name:fort,lumber_mill.name:lumber_mill,
         mine.name:mine,trading_post.name:trading_post}
         return improvement_lookup
-    
+
     #Create class dictionary for finding improvement information
     improvement_lookup = initImprovementLookUp()
-    
+
     #Reasearch creation
     researchVal = [    0,    35,    90,   175,   350,   625,  1000,  1780,  2930,
         4530,  6880,  9980, 14080, 19180, 25580, 33280, 42080]
@@ -164,8 +164,8 @@ class ClassLookUp(object):
         ["great_war_infantry"],["infantry","machine_gun","landship"],["paratrooper","tank"],
         ["bazooka","rocket_artillery","helicopter","mobile_sam"],["mech_infantry","modern_armor"],["xcom_squad","giant_death_robot"]]
     improvementResearch =[['farm'],['mine'],['lumber_mill'],['fort'],['trading_post'],[],[],[],[],[],[],[],[],[],[],[],[]]
-    
-    
+
+
     #Class Biome Definition
     #Biome name, Food Val, Prod Val, Gold Val, Movement Cost, Strength Mod, Map Color
     desert = ["desert",0,0,0,1,0,'beige']
@@ -174,14 +174,13 @@ class ClassLookUp(object):
     snow = ["snow",0,0,0,1,0,'snow']
     tundra = ["tundra",1,0,0,1,0,'silver']
     biome_lookup = {desert[0]:desert,grassland[0]:grassland,plains[0]:plains,snow[0]:snow,tundra[0]:tundra}
-    
+
     #Class Terrain Definition
     #Terrain name, Food Val, Prod Val, Gold Val, Movement Cost, Strength Mod, Map Color
     hill = ["hill",0,2,0,2,0.25,'olive']
     forest = ["forest",1,1,0,2,0.25,'green']
     jungle = ["jungle",2,0,0,2,0.25,'darkgreen']
     terrain_lookup = {hill[0]:hill,forest[0]:forest,jungle[0]:jungle}
-    
+
     #Population relation Table Definition
     pop_table = [1000,1000,6000,21000,48000,90000,150000,232000,337000,469000]
-    
