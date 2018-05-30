@@ -320,7 +320,7 @@ class Dataplotter(object):
         fig.tight_layout()
         #Display or save plot
         if savefig:
-            #Check for turn_num
+            #Check for turn_num 
             if turnNum != -1:
                 fig.savefig("Civ5SimOut_All_"+str(turnNum)+".png",dpi=200)
                 #Close the figure to prevent having 500 figures open
