@@ -1,0 +1,2 @@
+tile science value coef = 2
+tile food, prod, gold = 0.5
