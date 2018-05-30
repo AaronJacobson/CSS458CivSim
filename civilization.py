@@ -51,7 +51,7 @@ class Civ(object):
         self.science += sum_sci
 
         #return sum values
-        return sum_food,sum_prod,sum_gold,sum_sci,sum_pop
+        return sum_food,sum_prod,sum_gold,sum_sci,sum_pop,len(self.city_list)
 
     def unit_maintenance(unit, turn):
         #TODO input formula
@@ -67,3 +67,6 @@ class Civ(object):
         for city in self.city_list:
             pop_count += city.pop
         return pop_count
+
+    def science_cost_multiplier(self):
+        return 1.0 + .05*len(self.city_list)

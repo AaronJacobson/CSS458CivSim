@@ -31,16 +31,33 @@ class Unit(object):
             distance += 5
             tiles_to_consider = self.grid.tiles[self.y,self.x].get_neighbors(distance=distance)
             N.random.shuffle(tiles_to_consider)
-            if tiles_to_consider[1].close_to_city:
+            if tiles_to_consider[0].close_to_city:
                 pass
             else:
+                # max_value_tile = tiles_to_consider[0]
                 self.can_found_city = True
-                self.target_city_tile = tiles_to_consider[1]
+                self.target_city_tile = tiles_to_consider[0]
                 neighbors = self.target_city_tile.get_neighbors(distance=3)
                 neighbors.append(self.target_city_tile)
                 for tile in neighbors:
                     tile.close_to_city = True
         # print("-------------------target= " + str(self.target_city_tile.y) + "," + str(self.target_city_tile.x))
+        
+    def move_once(self):
+        moved = False
+        if self.target_city_tile.y > self.y:
+            self.move_unit(self.y+1,self.x)
+            moved = True
+        elif self.target_city_tile.y < self.y:
+            self.move_unit(self.y-1,self.x)
+            moved = True
+        elif self.target_city_tile.x > self.x:
+            self.move_unit(self.y,self.x+1)
+            moved = True
+        elif self.target_city_tile.x < self.x:
+            self.move_unit(self.y,self.x-1)
+            moved = True
+        return moved
         
     
     def process_turn(self):
@@ -48,52 +65,23 @@ class Unit(object):
             if self.target_city_tile == None:
                 self.choose_city_location()
             #move to city location
-            moved = False
-            # print("my pos:\t"+str(self.y)+'\t'+str(self.x))
-            if self.target_city_tile.y > self.y:
-                self.move_unit(self.y+1,self.x)
-                moved = True
-                # print("Moving to: \t"+str(self.y)+'\t'+str(self.x))
-            elif self.target_city_tile.y < self.y:
-                self.move_unit(self.y-1,self.x)
-                moved = True
-                # print("Moving to: \t"+str(self.y)+'\t'+str(self.x))
-            elif self.target_city_tile.x > self.x:
-                self.move_unit(self.y,self.x+1)
-                moved = True
-                # print("Moving to: \t"+str(self.y)+'\t'+str(self.x))
-            elif self.target_city_tile.x < self.x:
-                self.move_unit(self.y,self.x-1)
-                moved = True
-                # print("Moving to: \t"+str(self.y)+'\t'+str(self.x))
+            moved = self.move_once()
             if moved:
                 if self.grid.tiles[self.y,self.x].terrain == "hills" or \
                 self.grid.tiles[self.y,self.x].terrain == "forest" or \
                 self.grid.tiles[self.y,self.x].terrain == "jungle":
                     pass #don't move more
                 else:
-                    if self.target_city_tile.y > self.y:
-                        self.move_unit(self.y+1,self.x)
-                        # print("Moving 2nd to: \t"+str(self.y)+'\t'+str(self.x))
-                    elif self.target_city_tile.x > self.x:
-                        self.move_unit(self.y,self.x+1)
-                        # print("Moving 2nd to: \t"+str(self.y)+'\t'+str(self.x))
-                    elif self.target_city_tile.x < self.x:
-                        self.move_unit(self.y,self.x-1)
-                        # print("Moving 2nd to: \t"+str(self.y)+'\t'+str(self.x))
-                    elif self.target_city_tile.y < self.y:
-                        self.move_unit(self.y-1,self.x)
-                        # print("Moving 2nd to: \t"+str(self.y)+'\t'+str(self.x))
+                    self.move_once()
             if (self.target_city_tile.y == self.y) and (self.target_city_tile.x == self.x):
                 #found city
-                # print("--------------------------------------founding city")
                 self.grid.tiles[self.y,self.x].city = city.City(self.grid,self.y,self.x,self.civ)
                 self.civ.city_list.append(self.grid.tiles[self.y,self.x].city)
                 self.grid.tiles[self.y,self.x].city.process_turn()
                 self.grid.tiles[self.y,self.x].unit = None
                 self.can_found_city = False
 
-                self.civ.unit_list.remove(self)#this might or might not work
+                self.civ.unit_list.remove(self)
 
                 self.y = -1
                 self.x = -1

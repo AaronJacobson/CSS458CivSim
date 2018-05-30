@@ -4,43 +4,43 @@ from tile import Tile
 from classlookup import ClassLookUp
 
 class Grid(object):
-"""
-Summary:
+    """
+    Summary:
     Grid holds the map of the game. The way this is done is by holding the
     2-dimensional array of tile objects. Tile objects will hold all the data
     about each tile but grid will be used to change the overall actions of the
     board.
-"""
+    """
     def __init__(self,y,x,percent_grass=.5,desert_chance=.01,desert_size=2,\
     snow_width=0.05,tundra_width=0.075,prob_forest=0.05,prob_jungle=0.05,\
     prob_river = 0.2,prob_hill=.085):
-    """
-    Summary:
-        Constructor for the Grid class that runs the simulation. Initializes
-        state variables, creates the 2-d array and populates it with tiles. Then
-        creates gives each tile the correct biom, elevation, and terrain.
-
-    Method Arguments:
-        y*: the height of the grid to be created
-        x*: the length of the grid to be created
-        percent_grass*: Percent chance that a tile in the middle of the map is
-                        grassland instead of plains.
-        desert_chance*: Percent chance that a tile and its surrounding tiles up
-                        to distance desert_size are made into desert tiles.
-        desert_size*:   The number of steps away from a central desert tile that
-                        will be made into desert upon map generation.
-        snow_width*:    The percentage of the top and bottom of the grid that will
-                        become snow tiles.
-        tundra_width*:  The percentage of the top and bottom of the grid that will
-                        become tundra tiles.
-        prob_forest*:   Percent chance that any tile and its next neighbor will be
-                        made into forests.
-        prob_jungle*:   Percent chance that any tile and its next neighbor will be
-                        made into jungles.
-        prob_river*:    Percent chance that any tile and its next neighbor will
-                        have a river running through them.
-        prob_hill*:     Percent chance that any tile will become a hill.
-    """
+        """
+        Summary:
+            Constructor for the Grid class that runs the simulation. Initializes
+            state variables, creates the 2-d array and populates it with tiles. Then
+            creates gives each tile the correct biom, elevation, and terrain.
+    
+        Method Arguments:
+            y*: the height of the grid to be created
+            x*: the length of the grid to be created
+            percent_grass*: Percent chance that a tile in the middle of the map is
+                            grassland instead of plains.
+            desert_chance*: Percent chance that a tile and its surrounding tiles up
+                            to distance desert_size are made into desert tiles.
+            desert_size*:   The number of steps away from a central desert tile that
+                            will be made into desert upon map generation.
+            snow_width*:    The percentage of the top and bottom of the grid that will
+                            become snow tiles.
+            tundra_width*:  The percentage of the top and bottom of the grid that will
+                            become tundra tiles.
+            prob_forest*:   Percent chance that any tile and its next neighbor will be
+                            made into forests.
+            prob_jungle*:   Percent chance that any tile and its next neighbor will be
+                            made into jungles.
+            prob_river*:    Percent chance that any tile and its next neighbor will
+                            have a river running through them.
+            prob_hill*:     Percent chance that any tile will become a hill.
+        """
         self.y = y
         self.x = x
         self.percent_grass = percent_grass

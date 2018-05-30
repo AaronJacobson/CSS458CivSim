@@ -111,12 +111,7 @@ class Dataplotter(object):
                     pointsX = pointsX+0.5
                 #Combine two arrays in one of Nx2 dimensions
                 poly = N.column_stack((pointsX,pointsY))
-<<<<<<< HEAD
                 #Get the terrain and biome type for color
-
-=======
-
->>>>>>> 2ae02c1799c487158eb5791aee2882e485c55588
                 #Create the polygon
                 #Grabs biome data from the grid and runs it through the class lookup table for biome
                 line = plt.Polygon(poly,edgecolor='k',facecolor=ClassLookUp.biome_lookup[grid.tiles[i,j].biome][6])
@@ -261,11 +256,8 @@ class Dataplotter(object):
                 line = plt.Polygon(poly,edgecolor='none',facecolor=ClassLookUp.biome_lookup[grid.tiles[i,j].biome][6])
                 #Draw the polygon on the plot
                 axes.add_patch(line)
-<<<<<<< HEAD
 
-=======
                 #Check for terrain on the grid point
->>>>>>> 2ae02c1799c487158eb5791aee2882e485c55588
                 if grid.tiles[i,j].terrain != 'none':
                     #Get smaller polygon points at same location
                     pointsX = j + N.array([0.5,0.9,0.9,0.5,0.1,0.1])

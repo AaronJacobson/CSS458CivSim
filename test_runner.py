@@ -8,7 +8,7 @@ num_turns = 500
 num_civ = 5
 game = Game(y=42,x=66,num_civ=num_civ,num_turns=num_turns)
 print("initialized the map")
-vals = game.run()
+vals = game.run(print_war_peace=True)
 # total_vals = N.zeros((num_turns,5))
 # for turn in range(num_turns):
 #     for civ in range(num_civ):
