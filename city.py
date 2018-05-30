@@ -109,6 +109,7 @@ class City(object):
             if name_to_find == building.name:
                 return True
         return False
+    
 
     def choose_production(self,yield_coef=1.0,food_val_coef=1.0,prod_val_coef=1.0,\
     science_val_coef=1.0,gold_val_coef=1.0,settler_chance=.1,unit_chance=.1):
@@ -116,7 +117,7 @@ class City(object):
         building_heap = []
         unit_heap = []
         for i in range(len(look.researchVal)):
-            if self.civ.science >= look.researchVal[i]:
+            if self.civ.science >= look.researchVal[i]*self.civ.science_cost_multiplier():
                 building_stage = look.buildingResearch[i]
                 unit_stage = look.unitResearch[i]
                 for name in building_stage:
@@ -285,6 +286,7 @@ class City(object):
         to_return_gold = self.get_gold_yield() + self.temp_gold
         self.temp_gold = 0
         return self.get_food_yield(),self.get_prod_yield(),to_return_gold,self.get_science_yield(),self.calculate_population()
+        # return self.get_food_yield(),self.get_prod_yield(),to_return_gold,self.get_science_yield(),self.pop
         
     """
         Takes a given value and returns the population based on previous data.

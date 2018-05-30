@@ -110,7 +110,7 @@ class Game(object):
             self.civs[i].mil_unit_list.append(warrior_add)
 
 
-    def run(self,output=False):
+    def run(self,output=False,print_war_peace=False):
         """Runs the Civilization V simulation and outputs through dataplotter every turn if output is set.
 
         Summary:
@@ -213,7 +213,8 @@ class Game(object):
                                 #Get a random value and see if war needs to happen
                                 if adjusted_chance > N.random.uniform():
                                     #For bookkeeping purposes
-                                    print("War were declared")
+                                    if print_war_peace:
+                                        print("War were declared")
                                     #Civ, Turns war has gone on, Lost cities, Lost Units, Gained Cities, Killed units
                                     civ.wars.append([otherciv,0,0,0,0,0])
                                     #Tell the other civ that they are at war with this civ.
@@ -272,7 +273,8 @@ class Game(object):
                                     del(civ.city_list[-1])
                                     #Increment the war entry tracking cities lost
                                     entry[2]+=1
-                                    print("Lost a city!")
+                                    if print_war_peace:
+                                        print("Lost a city!")
 
                                 #Gain a city (yay)
                                 #See if adjusted chance value meets the random value necessary
@@ -290,7 +292,8 @@ class Game(object):
                                     del(entry[0].city_list[-1])
                                     #Increment the war entry tracking cities gained
                                     entry[4]+=1
-                                    print("gained a city!")
+                                    if print_war_peace:
+                                        print("gained a city!")
 
 
                                 #Kill Unit!
@@ -382,7 +385,8 @@ class Game(object):
                                         entry[0].at_war.remove(civ)
                                         #Remove the war from this civ
                                         civ.wars.remove(entry)
-                                        print("Peace in our time")
+                                        if print_war_peace:
+                                            print("Peace in our time")
                                     else:
                                         #The civ is not dead, peace has not happened, increase the number of turns that the war has gone on.
                                         entry[1]+=1
@@ -390,9 +394,9 @@ class Game(object):
 
             #Outside civ for loop but inside turn for loop
             #Check if output and every other turn
-            if i%2 == 0 and output:
+            if (i+1)%2 == 0 and output:
                 #Call the dataplotter to output the current grid
-                Dataplotter(self.cur_grid,savefig=True,plotType=['All'],numCiv=self.num_civ,turnNum=i)
+                Dataplotter(self.cur_grid,savefig=True,plotType=['All'],numCiv=self.num_civ,turnNum=i+1)
         #Outside both loops
         #Check output and move back up two directories if true
         if output:

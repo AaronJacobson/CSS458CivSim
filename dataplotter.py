@@ -111,7 +111,6 @@ class Dataplotter(object):
                     pointsX = pointsX+0.5
                 #Combine two arrays in one of Nx2 dimensions
                 poly = N.column_stack((pointsX,pointsY))
-
                 #Create the polygon
                 #Grabs biome data from the grid and runs it through the class lookup table for biome
                 line = plt.Polygon(poly,edgecolor='k',facecolor=ClassLookUp.biome_lookup[grid.tiles[i,j].biome][6])

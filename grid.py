@@ -40,8 +40,6 @@ class Grid(object):
             prob_river*:    Percent chance that any tile and its next neighbor will
                             have a river running through them.
             prob_hill*:     Percent chance that any tile will become a hill.
-        
-        
         """
         self.y = y
         self.x = x

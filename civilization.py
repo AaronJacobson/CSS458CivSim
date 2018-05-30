@@ -67,3 +67,6 @@ class Civ(object):
         for city in self.city_list:
             pop_count += city.pop
         return pop_count
+
+    def science_cost_multiplier(self):
+        return 1.0 + .05*len(self.city_list)
