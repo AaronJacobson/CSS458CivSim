@@ -1,0 +1,9 @@
+test 7
+game.civs[0].tile_prod_value_coef = 10.0
+    game.civs[0].building_prod_value_coef = 10.0
+    game.civs[1].tile_food_value_coef = 0.1
+    game.civs[1].building_food_value_coef = 0.1
+    game.civs[1].tile_prod_value_coef = 0.1
+    game.civs[1].building_prod_value_coef = 0.1
+    game.civs[1].tile_food_value_coef = 10.0
+    game.civs[1].building_food_value_coef = 10.0

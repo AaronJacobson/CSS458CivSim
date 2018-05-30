@@ -1,0 +1,4 @@
+game.civs[0].speed_value_coef = 0.1
+game.civs[0].strength_value_coef = 10.0
+game.civs[1].speed_value_coef = 10.0
+game.civs[1].strength_value_coef = 0.1
