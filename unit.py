@@ -2,11 +2,30 @@ from heapq import heappush,heappop
 import numpy as N
 import city
 class Unit(object):
-
+    """
+    Summary:
+        Unit is a non-city entiy on the game map. They are able to move around
+        the map and preform actions such as attacking other units or cities. In
+        addition some units can settle cities.
+    """
     def __init__(self,name="none",atype="nothing",prod_cost=0,strength=0,\
     speed=0,range_strength=0,rangeSize=0,civ=None,grid=None,y=0,x=0,airdrop=0):
         """
-
+        Summary:
+            The constructor for this class. It initiallizes the units general
+            stats that will then be used to controle the unit.
+            name* :             The name of the unit, such as 
+            atype*:
+            prod_cost*:
+            strength* :
+            speed* :
+            range_strength* :
+            rangeSize* :
+            civ* :
+            grid* :
+            y*  :
+            x*  :
+            airdrop* :
         """
         self.name = name
         self.atype = atype

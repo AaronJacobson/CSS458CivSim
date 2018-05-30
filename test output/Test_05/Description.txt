@@ -1,0 +1,2 @@
+game.civs[0].tile_gold_value_coef = 10.0
+game.civs[1].tile_gold_value_coef = 0.01

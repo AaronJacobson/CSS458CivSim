@@ -13,8 +13,11 @@ for i in range(num_sims):
     print("game " + str(i+1))
     game = Game(y=42,x=66,num_civ=num_civ,num_turns=num_turns)
     print("initialized the map")
-    game.civs[0].settler_chance_base = .4
-    game.civs[1].settler_chance_base = .001
+    game.civs[0].strength_value_coef = 10.0
+    game.civs[0].speed_value_coef = 0.01
+    game.civs[1].strength_value_coef = 0.01
+    game.civs[1].speed_value_coef = 10.0
+
     # game.war_chance = 0
     vals = game.run(output=False,print_war_peace=False)
     average_vals = average_vals + vals
