@@ -66,6 +66,10 @@ class Civ(object):
         #process settler turns
         for unit in self.unit_list:
             unit.process_turn()
+            #clean up late game settlers that can't found a city
+            if unit.name == "settler":
+                if unit.can_found_city == False:
+                    del unit
 
         #Process each cities turn
         for city in self.city_list:

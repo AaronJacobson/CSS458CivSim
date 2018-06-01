@@ -110,7 +110,7 @@ class Game(object):
             self.civs[i].mil_unit_list.append(warrior_add)
 
 
-    def run(self,output=False,print_war_peace=False):
+    def run(self,output=False,print_war_peace=False,print_turn=False):
         """Runs the Civilization V simulation and outputs through dataplotter every turn if output is set.
 
         Summary:
@@ -143,9 +143,9 @@ class Game(object):
 
         #Initialize run loop
         for i in range(self.num_turns):
-
-            #Output the turn number
-            print("Turn: "+str(i+1))
+            if print_turn:
+                #Output the turn number
+                print("Turn: "+str(i+1))
 
             #Process Civs Individual turns and Civ Wars
             for civ in self.civs:

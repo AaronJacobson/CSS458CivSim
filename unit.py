@@ -49,20 +49,29 @@ class Unit(object):
     def choose_city_location(self):
         #find a city location to move to
         distance = self.civ.settler_base_distance
-        while self.target_city_tile == None:
-            if distance <= self.grid.x:
-                distance += self.civ.settler_distance_increase
+        while self.target_city_tile == None and distance < self.grid.x * 2:
+            # if distance <= self.grid.x:
+            distance += self.civ.settler_distance_increase
             tiles_to_consider = self.grid.tiles[self.y,self.x].get_neighbors(distance=distance)
             N.random.shuffle(tiles_to_consider)
-            if tiles_to_consider[0].close_to_city:
-                pass
-            else:
-                self.can_found_city = True
-                self.target_city_tile = tiles_to_consider[0]
-                neighbors = self.target_city_tile.get_neighbors(distance=3)
-                neighbors.append(self.target_city_tile)
-                for tile in neighbors:
-                    tile.close_to_city = True
+            for i in range(5):
+                if tiles_to_consider[i].close_to_city:
+                    pass
+                else:
+                    self.can_found_city = True
+                    self.target_city_tile = tiles_to_consider[i]
+                    neighbors = self.target_city_tile.get_neighbors(distance=3)
+                    neighbors.append(self.target_city_tile)
+                    for tile in neighbors:
+                        tile.close_to_city = True
+        if distance > self.grid.x*2:
+            #make sure the sim doesn't get stuck trying to find a city spot in the end game
+            self.grid.tiles[self.y,self.x].unit = None
+            self.can_found_city = False
+            self.civ.unit_list.remove(self)
+            #just in case this unit is accessed again somehow
+            self.y = -1
+            self.x = -1
 
     def move_once(self):
         moved = False
@@ -85,27 +94,28 @@ class Unit(object):
         if self.name== "settler":#TODO move to found city
             if self.target_city_tile == None:
                 self.choose_city_location()
-            #move to city location
-            moved = self.move_once()
-            if moved:
-                if self.grid.tiles[self.y,self.x].terrain == "hills" or \
-                self.grid.tiles[self.y,self.x].terrain == "forest" or \
-                self.grid.tiles[self.y,self.x].terrain == "jungle":
-                    pass #don't move more
-                else:
-                    self.move_once()
-            if (self.target_city_tile.y == self.y) and (self.target_city_tile.x == self.x):
-                #found city
-                self.grid.tiles[self.y,self.x].city = city.City(self.grid,self.y,self.x,self.civ)
-                self.civ.city_list.append(self.grid.tiles[self.y,self.x].city)
-                self.grid.tiles[self.y,self.x].city.process_turn()
-                self.grid.tiles[self.y,self.x].unit = None
-                self.can_found_city = False
-
-                self.civ.unit_list.remove(self)
-                #just in case this unit is accessed again somehow
-                self.y = -1
-                self.x = -1
+            if self.can_found_city:
+                #move to city location
+                moved = self.move_once()
+                if moved:
+                    if self.grid.tiles[self.y,self.x].terrain == "hills" or \
+                    self.grid.tiles[self.y,self.x].terrain == "forest" or \
+                    self.grid.tiles[self.y,self.x].terrain == "jungle":
+                        pass #don't move more
+                    else:
+                        self.move_once()
+                if (self.target_city_tile.y == self.y) and (self.target_city_tile.x == self.x):
+                    #found city
+                    self.grid.tiles[self.y,self.x].city = city.City(self.grid,self.y,self.x,self.civ)
+                    self.civ.city_list.append(self.grid.tiles[self.y,self.x].city)
+                    self.grid.tiles[self.y,self.x].city.process_turn()
+                    self.grid.tiles[self.y,self.x].unit = None
+                    self.can_found_city = False
+    
+                    self.civ.unit_list.remove(self)
+                    #just in case this unit is accessed again somehow
+                    self.y = -1
+                    self.x = -1
 
     def move_unit(self, y, x):
         if self.grid.tiles[y,x].unit == None:
